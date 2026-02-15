@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ESL Speech Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Work+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --ink: #0f1a2b;
+        --paper: #f7f3ec;
+        --accent: #ff6b4a;
+        --accent-dark: #c9442d;
+        --sea: #4bb5b1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Work Sans", "Helvetica Neue", Arial, sans-serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top right, rgba(255, 107, 74, 0.2), transparent 55%),
+          radial-gradient(circle at 15% 40%, rgba(75, 181, 177, 0.25), transparent 55%),
+          var(--paper);
+        min-height: 100vh;
+      }
+
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 80px 24px 64px;
+      }
+
+      header {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        align-items: flex-start;
+      }
+
+      .tag {
+        font-size: 0.95rem;
+        letter-spacing: 0.25rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: var(--accent-dark);
+      }
+
+      h1 {
+        font-family: "Abril Fatface", "Times New Roman", serif;
+        font-size: clamp(2.8rem, 6vw, 5rem);
+        margin: 0;
+        line-height: 1.05;
+      }
+
+      p {
+        font-size: clamp(1.05rem, 2vw, 1.25rem);
+        line-height: 1.7;
+        margin: 0;
+        max-width: 640px;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-top: 12px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 14px 26px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .button.primary {
+        background: var(--accent);
+        color: white;
+        box-shadow: 0 16px 30px rgba(255, 107, 74, 0.25);
+      }
+
+      .button.secondary {
+        border: 2px solid var(--ink);
+        color: var(--ink);
+        background: transparent;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+      }
+
+      .grid {
+        margin-top: 64px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 24px;
+      }
+
+      .card {
+        padding: 24px;
+        border-radius: 24px;
+        background: white;
+        box-shadow: 0 18px 40px rgba(15, 26, 43, 0.08);
+      }
+
+      .card h2 {
+        margin: 0 0 12px;
+        font-size: 1.25rem;
+      }
+
+      .contact {
+        margin-top: 56px;
+        padding: 28px;
+        border-radius: 20px;
+        background: rgba(15, 26, 43, 0.06);
+      }
+
+      footer {
+        margin-top: 56px;
+        font-size: 0.95rem;
+        color: rgba(15, 26, 43, 0.7);
+      }
+
+      @media (max-width: 640px) {
+        main {
+          padding-top: 56px;
+        }
+
+        .hero-actions {
+          width: 100%;
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <span class="tag">ESL Speech Analysis</span>
+        <h1>Turn speaking practice into crisp, confident feedback.</h1>
+        <p>
+          A lightweight workspace for capturing ESL audio, segmenting speech, and
+          surfacing actionable insights for learners and educators.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="./">View the demo</a>
+          <a class="button secondary" href="https://github.com">See the repo</a>
+        </div>
+      </header>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Record in the browser</h2>
+          <p>Capture clean audio clips with a focused, distraction-free recorder.</p>
+        </article>
+        <article class="card">
+          <h2>Surface key moments</h2>
+          <p>Track pauses, pacing, and clarity to spotlight coaching opportunities.</p>
+        </article>
+        <article class="card">
+          <h2>Export fast</h2>
+          <p>Keep transcripts and segments tidy with one-click exports.</p>
+        </article>
+      </section>
+
+      <section class="contact">
+        <h2>Say hello</h2>
+        <p>
+          Want to collaborate or request a feature? Email
+          <a href="mailto:hello@example.com">hello@example.com</a> and we will get
+          back to you.
+        </p>
+      </section>
+
+      <footer>
+        Built for ESL educators, language coaches, and learners who want feedback
+        that feels human.
+      </footer>
+    </main>
+  </body>
+</html>
