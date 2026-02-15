@@ -29,8 +29,9 @@ title: Qualifications
     <div class="authority-grid" style="margin-top:18px;">
       {% for item in site.data.home.authority.items %}
       <div class="auth-card">
-        <strong>{{ item.title }}</strong>
-        <p>{{ item.body }}</p>
+        <div class="card-icon" aria-hidden="true">{{ item.icon }}</div>
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.benefit }}</p>
       </div>
       {% endfor %}
     </div>
