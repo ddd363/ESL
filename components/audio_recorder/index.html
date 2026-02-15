@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/streamlit-component-lib@1.6.0/dist/streamlit-component-lib.js"></script>
+    <style>
+      body {
+        margin: 0;
+        font-family: sans-serif;
+      }
+      #recorder {
+        padding: 8px 0;
+      }
+      #controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      #waveform {
+        width: 100%;
+        max-width: 520px;
+        margin-top: 8px;
+        background: #f6f7f8;
+        border-radius: 6px;
+      }
+      #error {
+        color: #b00020;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="recorder">
+      <div id="controls">
+        <button id="start" style="padding: 6px 12px;">START</button>
+        <button id="stop" style="padding: 6px 12px;" disabled>STOP</button>
+        <span id="status">Not recording</span>
+      </div>
+      <canvas id="waveform" width="520" height="70"></canvas>
+      <div id="error"></div>
+    </div>
+    <script>
+      const startBtn = document.getElementById("start");
+      const stopBtn = document.getElementById("stop");
+      const statusEl = document.getElementById("status");
+      const errorEl = document.getElementById("error");
+      const canvas = document.getElementById("waveform");
+      const ctx = canvas.getContext("2d");
+
+      let audioContext = null;
+      let mediaStream = null;
+      let processor = null;
+      let input = null;
+      let analyser = null;
+      let animationId = null;
+      let micReady = false;
+      let micInitPromise = null;
+      let recording = false;
+      let buffers = [];
+
+      function setStatus(text) {
+        statusEl.textContent = text;
+      }
+
+      function clearWaveform() {
+        ctx.fillStyle = "#f6f7f8";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      function drawWaveform() {
+        if (!analyser) {
+          return;
+        }
+        const bufferLength = analyser.fftSize;
+        const dataArray = new Uint8Array(bufferLength);
+        analyser.getByteTimeDomainData(dataArray);
+
+        ctx.fillStyle = "#f6f7f8";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "#2d3a4a";
+        ctx.beginPath();
+
+        const sliceWidth = canvas.width / bufferLength;
+        let x = 0;
+        for (let i = 0; i < bufferLength; i += 1) {
+          const v = dataArray[i] / 128.0;
+          const y = (v * canvas.height) / 2;
+          if (i === 0) {
+            ctx.moveTo(x, y);
+          } else {
+            ctx.lineTo(x, y);
+          }
+          x += sliceWidth;
+        }
+        ctx.lineTo(canvas.width, canvas.height / 2);
+        ctx.stroke();
+        animationId = requestAnimationFrame(drawWaveform);
+      }
+
+      async function initMic() {
+        if (micReady) {
+          return;
+        }
+        if (micInitPromise) {
+          return micInitPromise;
+        }
+        errorEl.textContent = "";
+        micInitPromise = (async () => {
+          try {
+            setStatus("Initializing mic...");
+            mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioContext.state === "suspended") {
+              await audioContext.resume();
+            }
+            input = audioContext.createMediaStreamSource(mediaStream);
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 2048;
+            processor = audioContext.createScriptProcessor(4096, 1, 1);
+            processor.onaudioprocess = (event) => {
+              if (!recording) {
+                return;
+              }
+              const channel = event.inputBuffer.getChannelData(0);
+              buffers.push(new Float32Array(channel));
+            };
+            input.connect(analyser);
+            analyser.connect(processor);
+            processor.connect(audioContext.destination);
+            micReady = true;
+            setStatus("Ready");
+          } catch (err) {
+            errorEl.textContent = "Microphone access denied or unavailable.";
+            setStatus("Not recording");
+          }
+        })();
+        return micInitPromise;
+      }
+
+      function writeString(view, offset, text) {
+        for (let i = 0; i < text.length; i += 1) {
+          view.setUint8(offset + i, text.charCodeAt(i));
+        }
+      }
+
+      function mergeBuffers(chunks) {
+        let length = 0;
+        chunks.forEach((c) => {
+          length += c.length;
+        });
+        const result = new Float32Array(length);
+        let offset = 0;
+        chunks.forEach((c) => {
+          result.set(c, offset);
+          offset += c.length;
+        });
+        return result;
+      }
+
+      function encodeWav(samples, sampleRate) {
+        const buffer = new ArrayBuffer(44 + samples.length * 2);
+        const view = new DataView(buffer);
+        writeString(view, 0, "RIFF");
+        view.setUint32(4, 36 + samples.length * 2, true);
+        writeString(view, 8, "WAVE");
+        writeString(view, 12, "fmt ");
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(view, 36, "data");
+        view.setUint32(40, samples.length * 2, true);
+        let offset = 44;
+        for (let i = 0; i < samples.length; i += 1) {
+          let s = Math.max(-1, Math.min(1, samples[i]));
+          view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
+          offset += 2;
+        }
+        return new Uint8Array(buffer);
+      }
+
+      function uint8ToBase64(uint8) {
+        let binary = "";
+        const chunkSize = 0x8000;
+        for (let i = 0; i < uint8.length; i += chunkSize) {
+          const chunk = uint8.subarray(i, i + chunkSize);
+          binary += String.fromCharCode.apply(null, chunk);
+        }
+        return btoa(binary);
+      }
+
+      async function startRecording() {
+        if (recording) {
+          return;
+        }
+        buffers = [];
+        errorEl.textContent = "";
+        try {
+          await initMic();
+          if (audioContext && audioContext.state === "suspended") {
+            await audioContext.resume();
+          }
+          recording = true;
+          startBtn.disabled = true;
+          stopBtn.disabled = false;
+          setStatus("Recording...");
+          drawWaveform();
+        } catch (err) {
+          errorEl.textContent = "Microphone access denied or unavailable.";
+          setStatus("Not recording");
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+        }
+      }
+
+      function stopRecording() {
+        if (!recording) {
+          return;
+        }
+        recording = false;
+        startBtn.disabled = fßalse;
+        stopBtn.disabled = true;
+        setStatus("Recording complete");
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+        clearWaveform();
+        const sampleRate = audioContext ? audioContext.sampleRate : 44100;
+        if (!buffers.length) {
+          return;
+        }
+        const merged = mergeBuffers(buffers);
+        const wavBytes = encodeWav(merged, sampleRate);
+        const wavBase64 = uint8ToBase64(wavBytes);
+        Streamlit.setComponentValue({ wav_base64: wavBase64 });
+      }
+
+      startBtn.addEventListener("click", startRecording);
+      stopBtn.addEventListener("click", stopRecording);
+      Streamlit.setComponentReady();
+      Streamlit.setFrameHeight(200);
+      initMic();
+      clearWaveform();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+streamlit
+faster-whisper
+language-tool-python
+pydub
+openai
+replicate
+typing_extensions
+requests
