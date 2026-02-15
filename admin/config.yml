@@ -3,6 +3,8 @@ backend:
   repo: ddd363/ESL
   branch: main
 
+local_backend: true
+
 media_folder: assets/uploads
 public_folder: /ESL/assets/uploads
 

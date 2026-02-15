@@ -17,6 +17,8 @@ This repo now includes a full static-site stack:
 
 This updates `_data/home.yml` and triggers a new Pages deployment.
 
+Production note: Decap's GitHub login needs an OAuth provider endpoint. This repo is configured for the GitHub backend, but you still need to wire an auth provider (for example Netlify OAuth flow or a self-hosted Decap auth endpoint) for hosted `/admin` login to complete.
+
 ### Code editor
 
 - Page template: `index.html`
@@ -46,6 +48,17 @@ bundle exec jekyll serve
 ```
 
 Open `http://127.0.0.1:4000/ESL/`
+
+### Local CMS mode (no OAuth needed)
+
+With `local_backend: true`, you can run Decap locally and edit content without hosted OAuth setup.
+
+```bash
+cd "/Users/spc/PYTHON NOTEBOOKS/ESL"
+npx decap-server
+```
+
+Then open `http://127.0.0.1:4000/ESL/admin/` while Jekyll is running.
 
 ## Notes
 
