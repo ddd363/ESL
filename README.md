@@ -17,7 +17,25 @@ This repo now includes a full static-site stack:
 
 This updates `_data/home.yml` and triggers a new Pages deployment.
 
-Production note: Decap's GitHub login needs an OAuth provider endpoint. This repo is configured for the GitHub backend, but you still need to wire an auth provider (for example Netlify OAuth flow or a self-hosted Decap auth endpoint) for hosted `/admin` login to complete.
+## Netlify OAuth setup (express)
+
+This repo is prewired for Netlify OAuth in `admin/config.yml`.
+
+You only need to replace:
+
+- `site_domain: YOUR-NETLIFY-SITE.netlify.app`
+
+with your real Netlify site domain.
+
+Then complete these account-side steps:
+
+1. Create a Netlify site (any deployment type is fine; this is used as auth provider metadata).
+2. In that Netlify site, enable the GitHub authentication provider for OAuth access (UI labels can vary by Netlify version).
+3. Ensure the provider is configured for the GitHub repo `ddd363/ESL`.
+4. Commit the updated `site_domain` in `admin/config.yml`.
+5. Open `https://ddd363.github.io/ESL/admin/` and click **Login with GitHub**.
+
+If Netlify asks for callback/redirect URLs, use the values Netlify shows in its provider UI for your site.
 
 ### Code editor
 

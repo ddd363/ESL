@@ -2,6 +2,9 @@ backend:
   name: github
   repo: ddd363/ESL
   branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: auth
+  site_domain: YOUR-NETLIFY-SITE.netlify.app
 
 local_backend: true
 
