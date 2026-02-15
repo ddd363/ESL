@@ -1,23 +1,21 @@
 <footer class="site-footer">
   <div class="site-footer-inner">
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="font-weight:700;color:var(--text-main)">{{ site.data.home.site.brand }}</div>
-      <div class="muted-note">Structured English coaching for interviews, meetings, and IELTS.</div>
-      <div class="muted-note">© {{ 'now' | date: "%Y" }} {{ site.data.home.site.brand }}</div>
-    </div>
-
     <div>
-      <div class="footer-col-title">Quick Links</div>
+      <div style="font-weight:700;color:var(--text-main);font-size:18px">{{ site.data.home.site.brand }}</div>
+      <div class="muted-note" style="margin-top:8px;max-width:34ch">English coaching for interviews, meetings, and IELTS speaking performance.</div>
+      <div class="footer-divider">© {{ 'now' | date: "%Y" }} {{ site.data.home.site.brand }}</div>
+    </div>
+    <div>
+      <div class="footer-block-title">Quick links</div>
       <div class="footer-links">
         <a class="footer-link" href="{{ '/' | relative_url }}">Home</a>
         <a class="footer-link" href="{{ '/qualifications/' | relative_url }}">Qualifications</a>
         <a class="footer-link" href="{{ '/methodology/' | relative_url }}">Methodology</a>
       </div>
     </div>
-
     <div>
-      <div class="footer-col-title">Contact</div>
-      <div class="muted-note">Email: <a class="footer-link" href="mailto:{{ site.data.home.site.email }}">{{ site.data.home.site.email }}</a></div>
+      <div class="footer-block-title">Contact</div>
+      <a class="footer-link" href="mailto:{{ site.data.home.site.email }}">{{ site.data.home.site.email }}</a>
     </div>
   </div>
 </footer>

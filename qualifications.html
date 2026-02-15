@@ -26,13 +26,14 @@ title: Qualifications
 <section class="section alt">
   <div class="container">
     <h2>{{ site.data.home.authority.heading }}</h2>
-    <div class="authority-grid" style="margin-top:18px;">
+    <p class="section-intro">{{ site.data.home.authority.intro }}</p>
+    <div class="credibility-grid" style="margin-top:18px;">
       {% for item in site.data.home.authority.items %}
-      <div class="auth-card">
-        <div class="card-icon" aria-hidden="true">{{ item.icon }}</div>
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.benefit }}</p>
-      </div>
+      <article class="credibility-card">
+        <div class="icon-chip" aria-hidden="true">{{ item.icon }}</div>
+        <strong>{{ item.title }}</strong>
+        <p>{{ item.body }}</p>
+      </article>
       {% endfor %}
     </div>
   </div>

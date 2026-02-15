@@ -10,18 +10,19 @@ title: Home
         <h1>{{ site.data.home.hero.title }}</h1>
         <div class="hero-accent" aria-hidden></div>
         <p>{{ site.data.home.hero.description }}</p>
-        <div style="height:22px"></div>
+        <div style="height:24px"></div>
         <div class="hero-actions">
           <a class="btn-primary" href="{{ site.data.home.hero.button_href }}">{{ site.data.home.hero.button_text }}</a>
           <a class="btn-ghost" href="{{ '/methodology/' | relative_url }}">View Method</a>
         </div>
       </div>
       <div>
-        <div class="hero-visual" role="img" aria-label="Professional portrait placeholder">
-          <!-- replace with portrait image: use site.data.home.hero.image when available -->
-          <div style="text-align:center; padding:20px;">
-            <div style="width:120px;height:120px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));margin:0 auto;box-shadow:0 10px 30px rgba(0,0,0,0.35)"></div>
-            <div style="margin-top:12px;color:var(--text-muted);font-weight:600">Sam — English Coaching</div>
+        <div class="hero-visual" role="img" aria-label="Abstract pattern background for coaching brand">
+          <div class="hero-orbit hero-orbit-a" aria-hidden="true"></div>
+          <div class="hero-orbit hero-orbit-b" aria-hidden="true"></div>
+          <div class="hero-panel">
+            <strong>Measured speaking gains</strong>
+            <p>Interview, meeting, and IELTS communication training.</p>
           </div>
         </div>
       </div>
@@ -33,13 +34,13 @@ title: Home
   <div class="container">
     <h2>{{ site.data.home.authority.heading }}</h2>
     <p class="section-intro">{{ site.data.home.authority.intro }}</p>
-    <div class="authority-grid" style="margin-top:18px;">
+    <div class="credibility-grid" style="margin-top:20px;">
       {% for item in site.data.home.authority.items %}
-      <div class="auth-card">
-        <div class="card-icon" aria-hidden="true">{{ item.icon }}</div>
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.benefit }}</p>
-      </div>
+      <article class="credibility-card">
+        <div class="icon-chip" aria-hidden="true">{{ item.icon }}</div>
+        <strong>{{ item.title }}</strong>
+        <p>{{ item.body }}</p>
+      </article>
       {% endfor %}
     </div>
   </div>
@@ -52,7 +53,7 @@ title: Home
     <div class="work-grid">
       {% for item in site.data.home.work.items %}
       <div class="work-item">
-        <div class="card-icon" aria-hidden="true">{{ item.icon }}</div>
+        <div class="icon-chip" aria-hidden="true">{{ item.icon }}</div>
         <h3>{{ item.title }}</h3>
         <p>{{ item.body }}</p>
       </div>
@@ -65,7 +66,6 @@ title: Home
   <div class="container">
     <h2>{{ site.data.home.process.heading }}</h2>
     <p class="section-intro">{{ site.data.home.process.intro }}</p>
-    <div style="height:16px"></div>
     <div class="steps">
       {% for step in site.data.home.process.steps %}
       <div class="step">
@@ -104,8 +104,7 @@ title: Home
       {% for item in site.data.home.testimonials.items %}
       <article class="testimonial-card">
         <p class="testimonial-quote">“{{ item.quote }}”</p>
-        <div class="testimonial-author">{{ item.name }}</div>
-        <p class="testimonial-role">{{ item.role }}</p>
+        <p class="testimonial-meta">{{ item.meta }}</p>
       </article>
       {% endfor %}
     </div>

@@ -9,83 +9,82 @@ hero:
   button_href: mailto:hello@example.com?subject=Free%20Consultation
 
 authority:
-  heading: Credentials that support real outcomes
-  intro: Clear standards, practical coaching, and communication training aligned with real professional demands.
+  heading: Credibility built for outcomes
+  intro: Clear standards, real communication tasks, and measurable progress.
   items:
     - icon: 🎓
-      title: University Degree
-      benefit: Evidence-based lesson design grounded in formal teaching training.
+    - title: University degree in Teaching English
+      body: Evidence-based lesson design built on formal pedagogy.
     - icon: ✅
-      title: IDP IELTS Certified
-      benefit: Speaking preparation aligned directly with IELTS scoring criteria.
-    - icon: 🏢
-      title: Business & Engineering English
-      benefit: Targeted practice for interviews, meetings, and technical communication.
-    - icon: 🧭
-      title: CLT-Based Method
-      benefit: Real-task speaking drills with feedback you can apply immediately.
+    - title: IDP IELTS certified
+      body: Band-focused speaking assessment and targeted correction.
+    - icon: 🧠
+    - title: Several years of experience teaching engineering and business English
+      body: Coaching tailored to technical and corporate communication.
+    - icon: 💬
+    - title: Communicative Language Teaching based approach
+      body: Real-task practice with immediate, actionable feedback.
 
 work:
   heading: What we work on
-  intro: Coaching is built around the situations that shape your career outcomes.
+  intro: High-impact speaking skills for interviews, meetings, and high-stakes exams.
   items:
-    - icon: 💬
-      title: Interview performance
-      body: Build concise, high-impact answers for technical and behavioural interviews.
-    - icon: 📊
-      title: Meetings and presentations
-      body: Deliver updates and proposals with confident, listener-friendly language.
     - icon: 🎯
-      title: IELTS speaking improvement
-      body: Train for stronger fluency, coherence, and lexical control under exam pressure.
+    - title: Interview English and confident answers
+      body: Build concise, high-impact responses to technical and behavioral questions.
+    - icon: 📊
+    - title: Business English for meetings and presentations
+      body: Deliver clear updates and persuasive presentations across teams.
+    - icon: 🧪
+    - title: IELTS Speaking band improvement
+      body: Raise fluency and control with descriptor-aligned speaking drills.
     - icon: 🔊
-      title: Pronunciation and rhythm
-      body: Improve clarity, stress, and intonation for smoother communication.
-    - icon: 🛠️
-      title: Grammar accuracy in speech
-      body: Remove recurring errors with targeted correction and repetition.
+    - title: Pronunciation, intonation, word stress, rhythm
+      body: Improve clarity, rhythm, and listener-friendly delivery.
+    - icon: ✍️
+    - title: Eliminating recurring grammar mistakes
+      body: Remove persistent errors with focused correction and repetition.
 
 process:
-  heading: A clear three-step system
-  intro: Diagnose quickly, practice deliberately, and improve with measurable targets.
+  heading: How it works
+  intro: A focused cycle that turns speaking gaps into measurable improvement.
   steps:
-    - title: Diagnose
-      body: Pinpoint strengths and high-impact speaking gaps from a focused baseline.
-    - title: Practice
-      body: Rehearse realistic interview, meeting, and IELTS speaking scenarios.
-    - title: Improve
-      body: Apply targeted feedback and track progress across each coaching cycle.
+    - title: Diagnose your current speaking patterns
+      body: Rapid assessment to isolate strengths and highest-impact gaps.
+    - title: Practice in realistic professional scenarios
+      body: Role-plays and task drills mapped to your real communication demands.
+    - title: Targeted feedback and structured improvement
+      body: Direct feedback, clear next actions, and trackable weekly goals.
 
 final_cta:
-  heading: Build stronger English for high-stakes moments
-  description: Book a focused 20-minute consultation and leave with a clear improvement plan.
+  heading: Ready to transform your professional English?
+  description: Book a focused, free 20 minute consultation to get a clear plan for fast improvement.
   button_text: Book Your Free 20 Minute Consultation
   button_href: mailto:hello@example.com?subject=Free%2020%20Minute%20Consultation
 
 videos:
   heading: Lesson previews and speaking breakdowns
-  intro: Short clips that show how feedback translates into immediate speaking gains.
+  intro: Watch short coaching clips to see how feedback is delivered and how speaking performance improves over time.
   items:
     - title: Interview answer coaching sample
       embed_url: https://www.youtube.com/embed/dQw4w9WgXcQ
-      description: Response structure and delivery coaching for high-pressure interviews.
+      description: Structure and delivery feedback for high-pressure interview responses.
     - title: IELTS speaking feedback sample
       embed_url: https://www.youtube.com/embed/oHg5SJYRHA0
-      description: Band-aligned corrections for fluency, coherence, and pronunciation.
+      description: Band-focused corrections for fluency, coherence, and pronunciation.
 
 testimonials:
-  heading: Client results in their own words
-  intro: Feedback from professionals who needed clearer, stronger spoken English.
+  heading: Client feedback themes
+  intro: Typical outcomes reported after focused coaching cycles.
   items:
-    - quote: My interview answers became sharper within a few sessions, and I felt in control during the real panel.
-      name: Arjun K.
-      role: Mechanical Engineer
-    - quote: The meeting practice was exactly what I needed. My updates are now concise, direct, and easier for global teams to follow.
-      name: Linh T.
-      role: Product Analyst
-    - quote: IELTS speaking finally felt structured. I stopped guessing and started improving each week with clear targets.
-      name: Mariam S.
-      role: Graduate Applicant
+    - quote: I became much clearer in meetings and no longer lose my point mid-sentence.
+      meta: Engineering manager
+    - quote: My interview answers became structured and confident instead of improvised.
+      meta: Software engineer
+    - quote: Pronunciation feedback was specific, practical, and immediately usable.
+      meta: Product analyst
+    - quote: IELTS speaking practice felt realistic and helped me stay fluent under pressure.
+      meta: IELTS candidate
 
 qualifications_page:
   heading: Qualifications and professional background
