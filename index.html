@@ -66,6 +66,41 @@ title: Home
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <h2>{{ site.data.home.videos.heading }}</h2>
+    <p class="section-intro">{{ site.data.home.videos.intro }}</p>
+    <div class="video-grid">
+      {% for item in site.data.home.videos.items %}
+      <div class="video-card">
+        <h3>{{ item.title }}</h3>
+        <iframe class="video-frame" src="{{ item.embed_url }}" title="{{ item.title }}" allowfullscreen loading="lazy"></iframe>
+        <p>{{ item.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2>{{ site.data.home.metrics.heading }}</h2>
+    <p class="section-intro">{{ site.data.home.metrics.intro }}</p>
+    <div class="metrics-grid">
+      {% for item in site.data.home.metrics.items %}
+      <article class="metric-card">
+        <div class="metric-header">
+          <h3>{{ item.label }}</h3>
+          <span class="metric-value">{{ item.value }}%</span>
+        </div>
+        <progress class="metric-progress" max="100" value="{{ item.value }}"></progress>
+        <p>{{ item.note }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
 <section class="section cta-final">
   <div class="container final-cta-inner">
     <h2>{{ site.data.home.final_cta.heading }}</h2>

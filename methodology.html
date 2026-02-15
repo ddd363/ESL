@@ -1,0 +1,42 @@
+---
+layout: default
+title: Methodology
+---
+
+<section class="page-hero">
+  <div class="container">
+    <h1>{{ site.data.home.methodology_page.heading }}</h1>
+    <p>{{ site.data.home.methodology_page.description }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>Core principles</h2>
+    <div class="page-grid">
+      {% for item in site.data.home.methodology_page.principles %}
+      <article class="page-card">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.body }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2>Session flow</h2>
+    <div class="steps">
+      {% for step in site.data.home.methodology_page.session_flow %}
+      <div class="step">
+        <div class="step-badge">{{ forloop.index }}</div>
+        <div>
+          <h3>{{ step.title }}</h3>
+          <p>{{ step.body }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

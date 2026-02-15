@@ -1,5 +1,11 @@
-<footer style="border-top:1px solid rgba(229,231,235,0.8);">
-  <div style="max-width:1100px;margin:0 auto;padding:28px 24px;color:#475569;font-size:14px;">
-    © {{ 'now' | date: "%Y" }} {{ site.data.home.site.brand }}
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div>© {{ 'now' | date: "%Y" }} {{ site.data.home.site.brand }}</div>
+    <div class="footer-links">
+      <a class="footer-link" href="{{ '/' | relative_url }}">Home</a>
+      <a class="footer-link" href="{{ '/qualifications/' | relative_url }}">Qualifications</a>
+      <a class="footer-link" href="{{ '/methodology/' | relative_url }}">Methodology</a>
+      <a class="footer-link" href="mailto:{{ site.data.home.site.email }}">{{ site.data.home.site.email }}</a>
+    </div>
   </div>
 </footer>

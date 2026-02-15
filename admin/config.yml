@@ -81,3 +81,63 @@ collections:
               - { label: Description, name: description, widget: text }
               - { label: Button Text, name: button_text, widget: string }
               - { label: Button Link, name: button_href, widget: string }
+
+          - label: Video Section
+            name: videos
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - label: Video Items
+                name: items
+                widget: list
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Embed URL (YouTube iframe URL), name: embed_url, widget: string }
+                  - { label: Description, name: description, widget: text }
+
+          - label: Metrics Section
+            name: metrics
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - label: Metrics Items
+                name: items
+                widget: list
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Value (0-100), name: value, widget: number, min: 0, max: 100, value_type: int }
+                  - { label: Note, name: note, widget: text }
+
+          - label: Qualifications Page
+            name: qualifications_page
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Description, name: description, widget: text }
+              - label: Highlight Cards
+                name: highlights
+                widget: list
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Description, name: body, widget: text }
+
+          - label: Methodology Page
+            name: methodology_page
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Description, name: description, widget: text }
+              - label: Principles
+                name: principles
+                widget: list
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Description, name: body, widget: text }
+              - label: Session Flow
+                name: session_flow
+                widget: list
+                fields:
+                  - { label: Step Title, name: title, widget: string }
+                  - { label: Step Description, name: body, widget: text }

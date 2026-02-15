@@ -50,3 +50,62 @@ final_cta:
   description: Book a focused, free 20 minute consultation to get a clear plan for fast improvement.
   button_text: Book Your Free 20 Minute Consultation
   button_href: mailto:hello@example.com?subject=Free%2020%20Minute%20Consultation
+
+videos:
+  heading: Lesson previews and speaking breakdowns
+  intro: Watch short coaching clips to see how feedback is delivered and how speaking performance improves over time.
+  items:
+    - title: Interview answer coaching sample
+      embed_url: https://www.youtube.com/embed/dQw4w9WgXcQ
+      description: Structure and delivery feedback for high-pressure interview responses.
+    - title: IELTS speaking feedback sample
+      embed_url: https://www.youtube.com/embed/oHg5SJYRHA0
+      description: Band-focused corrections for fluency, coherence, and pronunciation.
+
+metrics:
+  heading: What clients typically improve
+  intro: Progress targets are reviewed every cycle so your speaking outcomes are measurable and practical.
+  items:
+    - label: Clarity in meetings
+      value: 88
+      note: Better sentence control and concise updates in real work meetings.
+    - label: Interview confidence
+      value: 84
+      note: Stronger answer structure and reduced hesitation during mock interviews.
+    - label: Pronunciation consistency
+      value: 79
+      note: Improved stress, rhythm, and sound control for listener-friendly speech.
+    - label: IELTS speaking readiness
+      value: 82
+      note: Better task responses and language control aligned with band descriptors.
+
+qualifications_page:
+  heading: Qualifications and professional background
+  description: A clear overview of training, certifications, and practical ESL teaching experience for professionals.
+  highlights:
+    - title: Academic foundation
+      body: University degree in Teaching English with a focus on communicative outcomes and learner progression.
+    - title: IELTS expertise
+      body: IDP IELTS certification with assessment-driven preparation and speaking band improvement strategies.
+    - title: Professional learner focus
+      body: Several years coaching engineers and business professionals for interviews, workplace communication, and exam performance.
+    - title: Structured delivery
+      body: Communicative Language Teaching framework with diagnostic sessions, targeted drills, and measurable feedback loops.
+
+methodology_page:
+  heading: Teaching methodology
+  description: The coaching framework is practical, data-informed, and built around real communication tasks.
+  principles:
+    - title: Diagnose before training
+      body: Identify recurring patterns in grammar, pronunciation, and response structure before designing practice.
+    - title: Practice in context
+      body: Train with realistic interview, workplace, and IELTS speaking scenarios rather than isolated drills.
+    - title: Feedback you can apply immediately
+      body: Each session ends with targeted corrections and clear next actions for measurable progress.
+  session_flow:
+    - title: Baseline check
+      body: Short speaking sample to identify strengths, breakdowns, and immediate opportunities.
+    - title: Guided practice
+      body: Controlled-to-free speaking tasks that mirror your real communication demands.
+    - title: Performance review
+      body: Corrections, progress notes, and focused home practice priorities for the next session.
