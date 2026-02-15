@@ -10,32 +10,13 @@ This repo now includes a full static-site stack:
 
 ### GUI editor (WordPress-like)
 
-- Open: `https://ddd363.github.io/ESL/admin/`
-- Sign in with GitHub
-- Edit **Site Content → Home Page**
-- Save and publish
+- Local-first workflow (no OAuth required):
+	1. Run the local web server and local Decap backend.
+	2. Open `http://127.0.0.1:8000/admin/`.
+	3. Edit **Site Content → Home Page**.
+	4. Publish in CMS, then commit/push with Git.
 
-This updates `_data/home.yml` and triggers a new Pages deployment.
-
-## Netlify OAuth setup (express)
-
-This repo is prewired for Netlify OAuth in `admin/config.yml`.
-
-You only need to replace:
-
-- `site_domain: YOUR-NETLIFY-SITE.netlify.app`
-
-with your real Netlify site domain.
-
-Then complete these account-side steps:
-
-1. Create a Netlify site (any deployment type is fine; this is used as auth provider metadata).
-2. In that Netlify site, enable the GitHub authentication provider for OAuth access (UI labels can vary by Netlify version).
-3. Ensure the provider is configured for the GitHub repo `ddd363/ESL`.
-4. Commit the updated `site_domain` in `admin/config.yml`.
-5. Open `https://ddd363.github.io/ESL/admin/` and click **Login with GitHub**.
-
-If Netlify asks for callback/redirect URLs, use the values Netlify shows in its provider UI for your site.
+This updates `_data/home.yml` and, after `git push`, GitHub Pages redeploys automatically.
 
 ### Code editor
 
@@ -73,12 +54,27 @@ With `local_backend: true`, you can run Decap locally and edit content without h
 
 ```bash
 cd "/Users/spc/PYTHON NOTEBOOKS/ESL"
+python3 -m http.server 8000
+```
+
+```bash
+cd "/Users/spc/PYTHON NOTEBOOKS/ESL"
 npx decap-server
 ```
 
-Then open `http://127.0.0.1:4000/ESL/admin/` while Jekyll is running.
+Then open `http://127.0.0.1:8000/admin/`.
+
+After editing, publish your changes and push to GitHub:
+
+```bash
+cd "/Users/spc/PYTHON NOTEBOOKS/ESL"
+git add -A
+git commit -m "CMS: update website content"
+git push origin main
+```
 
 ## Notes
 
 - `baseurl` is set to `/ESL` for GitHub project pages.
 - Local bead tracking files are ignored via `.gitignore` (`.beads/`).
+- Hosted `/admin` login via OAuth proxy is optional and only needed for remote browser-only editing.

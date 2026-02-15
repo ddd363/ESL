@@ -2,10 +2,6 @@ backend:
   name: github
   repo: ddd363/ESL
   branch: main
-  # If using a Cloudflare/Vercel/other OAuth proxy, set its base URL here
-  base_url: https://YOUR-OAUTH-PROXY.example.com
-  auth_endpoint: auth
-  site_domain: YOUR-OAUTH-PROXY.example.com
 
 local_backend: true
 
