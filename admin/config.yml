@@ -1,0 +1,38 @@
+backend:
+  name: github
+  repo: ddd363/ESL
+  branch: main
+
+media_folder: assets/uploads
+public_folder: /ESL/assets/uploads
+
+site_url: https://ddd363.github.io/ESL
+logo_url: https://ddd363.github.io/ESL/favicon.ico
+
+collections:
+  - name: site
+    label: Site Content
+    files:
+      - label: Home Page
+        name: home
+        file: _data/home.yml
+        format: yml
+        fields:
+          - { label: Tag, name: tag, widget: string }
+          - { label: Hero Title, name: title, widget: string }
+          - { label: Hero Description, name: description, widget: text }
+          - { label: Primary Button Text, name: primary_button_text, widget: string }
+          - { label: Primary Button URL, name: primary_button_href, widget: string }
+          - { label: Secondary Button Text, name: secondary_button_text, widget: string }
+          - { label: Secondary Button URL, name: secondary_button_href, widget: string }
+          - label: Feature Cards
+            name: cards
+            widget: list
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - { label: Contact Title, name: contact_title, widget: string }
+          - { label: Contact Body Prefix, name: contact_body, widget: string }
+          - { label: Contact Email, name: contact_email, widget: string }
+          - { label: Contact Suffix, name: contact_suffix, widget: string }
+          - { label: Footer Text, name: footer_text, widget: text }

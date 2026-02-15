@@ -1,0 +1,17 @@
+title: ESL Speech Analysis
+description: ESL speech analysis website
+baseurl: "/ESL"
+url: "https://ddd363.github.io"
+markdown: kramdown
+plugins: []
+exclude:
+  - .beads
+  - .conda
+  - __pycache__
+  - ESL_Speech_Analysis.ipynb
+  - ESL_Speech_Analysis_LOCAL.ipynb
+  - audio
+  - outputs
+  - components
+  - app.py
+  - requirements.txt
