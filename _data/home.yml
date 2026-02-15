@@ -1,21 +1,20 @@
-tag: ESL Speech Analysis
-title: Turn speaking practice into crisp, confident feedback.
-description: >-
-  A lightweight workspace for capturing ESL audio, segmenting speech, and
-  surfacing actionable insights for learners and educators.
-primary_button_text: View the demo
-primary_button_href: /
-secondary_button_text: See the repo
-secondary_button_href: https://github.com/ddd363/ESL
+tag: Professional English Coaching
+title: Speak English with confidence in interviews, meetings, and IELTS exams
+description: Professional English coaching for engineers and working adults who
+  want precise, actionable feedback.
+primary_button_text: Book a Free Consultation
+primary_button_href: mailto:hello@example.com?subject=Free%20Consultation
+secondary_button_text: Contact by Email
+secondary_button_href: mailto:hello@example.com
 cards:
-  - title: Record in the browser
-    body: Capture clean audio clips with a focused, distraction-free recorder.
-  - title: Surface key moments
-    body: Track pauses, pacing, and clarity to spotlight coaching opportunities.
-  - title: Export fast
-    body: Keep transcripts and segments tidy with one-click exports.
-contact_title: Say hello
-contact_body: Want to collaborate or request a feature? Email
+  - title: Interview English
+    body: Build confident, structured interview answers for technical and leadership roles.
+  - title: Business English
+    body: Improve clarity and confidence for meetings, updates, and presentations.
+  - title: IELTS Speaking
+    body: Target speaking weaknesses with practical drills and band-focused feedback.
+contact_title: Start with a free consultation
+contact_body: Email
 contact_email: hello@example.com
-contact_suffix: and we will get back to you.
-footer_text: Built for ESL educators, language coaches, and learners who want feedback that feels human.
+contact_suffix: to schedule your 20 minute consultation.
+footer_text: Coaching for working professionals and engineers who want measurable speaking progress.

@@ -6,17 +6,19 @@ layout: none
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ site.data.home.tag }}</title>
+    <title>Sam | Professional English Coaching</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Work+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
       :root {
-        --ink: #0f1a2b;
-        --paper: #f7f3ec;
-        --accent: #ff6b4a;
-        --accent-dark: #c9442d;
-        --sea: #4bb5b1;
+        --primary: #0F172A;
+        --accent: #3B82F6;
+        --accent-hover: #2563EB;
+        --secondary-accent: #14B8A6;
+        --text: #111827;
+        --section-bg: #F8FAFC;
+        --border: #E5E7EB;
       }
 
       * {
@@ -25,161 +27,187 @@ layout: none
 
       body {
         margin: 0;
-        font-family: "Work Sans", "Helvetica Neue", Arial, sans-serif;
-        color: var(--ink);
-        background: radial-gradient(circle at top right, rgba(255, 107, 74, 0.2), transparent 55%),
-          radial-gradient(circle at 15% 40%, rgba(75, 181, 177, 0.25), transparent 55%),
-          var(--paper);
-        min-height: 100vh;
+        font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+        color: var(--text);
+        background: #fff;
+        line-height: 1.6;
       }
 
       main {
-        max-width: 980px;
+        max-width: 960px;
         margin: 0 auto;
-        padding: 80px 24px 64px;
+        padding: 72px 24px 88px;
       }
 
-      header {
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        align-items: flex-start;
+      section {
+        padding: 52px 0;
+        border-bottom: 1px solid var(--border);
       }
 
-      .tag {
-        font-size: 0.95rem;
-        letter-spacing: 0.25rem;
-        text-transform: uppercase;
-        font-weight: 600;
-        color: var(--accent-dark);
+      section:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
       }
 
       h1 {
-        font-family: "Abril Fatface", "Times New Roman", serif;
-        font-size: clamp(2.8rem, 6vw, 5rem);
+        font-size: clamp(2rem, 5.4vw, 3.4rem);
         margin: 0;
-        line-height: 1.05;
+        line-height: 1.15;
+        color: var(--primary);
+        letter-spacing: -0.02em;
+        font-weight: 800;
+      }
+
+      h2 {
+        margin: 0 0 18px;
+        font-size: clamp(1.35rem, 2.4vw, 1.9rem);
+        font-weight: 700;
+        color: var(--primary);
       }
 
       p {
-        font-size: clamp(1.05rem, 2vw, 1.25rem);
-        line-height: 1.7;
         margin: 0;
-        max-width: 640px;
-      }
-
-      .hero-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        margin-top: 12px;
+        font-size: 1.05rem;
+        max-width: 760px;
       }
 
       .button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 14px 26px;
-        border-radius: 999px;
+        padding: 14px 24px;
+        border-radius: 10px;
         text-decoration: none;
-        font-weight: 600;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-      }
-
-      .button.primary {
+        font-weight: 700;
+        font-size: 1rem;
+        transition: background-color 0.2s ease;
         background: var(--accent);
-        color: white;
-        box-shadow: 0 16px 30px rgba(255, 107, 74, 0.25);
-      }
-
-      .button.secondary {
-        border: 2px solid var(--ink);
-        color: var(--ink);
-        background: transparent;
+        color: #fff;
       }
 
       .button:hover {
-        transform: translateY(-2px);
+        background: var(--accent-hover);
       }
 
-      .grid {
-        margin-top: 64px;
+      .hero {
+        padding-top: 12px;
+      }
+
+      .hero p {
+        margin-top: 20px;
+        font-size: 1.15rem;
+      }
+
+      .hero .button {
+        margin-top: 26px;
+      }
+
+      .authority {
+        background: var(--section-bg);
+        margin: 0 -24px;
+        padding: 52px 24px;
+      }
+
+      .authority-list,
+      .focus-list,
+      .steps-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 24px;
+        gap: 14px;
       }
 
-      .card {
-        padding: 24px;
-        border-radius: 24px;
-        background: white;
-        box-shadow: 0 18px 40px rgba(15, 26, 43, 0.08);
+      .authority-list li,
+      .focus-list li,
+      .steps-list li {
+        padding-left: 18px;
+        position: relative;
       }
 
-      .card h2 {
-        margin: 0 0 12px;
-        font-size: 1.25rem;
+      .authority-list li::before,
+      .focus-list li::before,
+      .steps-list li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.68em;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--secondary-accent);
       }
 
-      .contact {
-        margin-top: 56px;
-        padding: 28px;
-        border-radius: 20px;
-        background: rgba(15, 26, 43, 0.06);
+      .authority p {
+        margin-top: 22px;
       }
 
-      footer {
-        margin-top: 56px;
-        font-size: 0.95rem;
-        color: rgba(15, 26, 43, 0.7);
+      .final-cta {
+        text-align: left;
+      }
+
+      .final-cta p {
+        margin-top: 12px;
+      }
+
+      .contact-link {
+        color: var(--primary);
+        font-weight: 600;
+        text-decoration-thickness: 1px;
       }
 
       @media (max-width: 640px) {
         main {
-          padding-top: 56px;
-        }
-
-        .hero-actions {
-          width: 100%;
-          flex-direction: column;
-          align-items: stretch;
+          padding-top: 44px;
+          padding-bottom: 56px;
         }
       }
     </style>
   </head>
   <body>
     <main>
-      <header>
-        <span class="tag">{{ site.data.home.tag }}</span>
-        <h1>{{ site.data.home.title }}</h1>
-        <p>{{ site.data.home.description }}</p>
-        <div class="hero-actions">
-          <a class="button primary" href="{{ site.data.home.primary_button_href | relative_url }}">{{ site.data.home.primary_button_text }}</a>
-          <a class="button secondary" href="{{ site.data.home.secondary_button_href }}">{{ site.data.home.secondary_button_text }}</a>
-        </div>
-      </header>
-
-      <section class="grid">
-        {% for card in site.data.home.cards %}
-        <article class="card">
-          <h2>{{ card.title }}</h2>
-          <p>{{ card.body }}</p>
-        </article>
-        {% endfor %}
+      <section class="hero">
+        <h1>Speak English with confidence in interviews, meetings, and IELTS exams</h1>
+        <p>Professional English coaching for engineers and working adults who want precise, actionable feedback.</p>
+        <a class="button" href="mailto:hello@example.com?subject=Free%20Consultation">Book a Free Consultation</a>
       </section>
 
-      <section class="contact">
-        <h2>{{ site.data.home.contact_title }}</h2>
-        <p>
-          {{ site.data.home.contact_body }}
-          <a href="mailto:{{ site.data.home.contact_email }}">{{ site.data.home.contact_email }}</a>
-          {{ site.data.home.contact_suffix }}
-        </p>
+      <section class="authority">
+        <h2>Professional, structured coaching with clear outcomes</h2>
+        <ul class="authority-list">
+          <li>University degree in Teaching English</li>
+          <li>IDP IELTS certified</li>
+          <li>Several years of experience teaching engineering and business English</li>
+          <li>Communicative Language Teaching based approach</li>
+        </ul>
+        <p>Sam delivers focused, practical coaching for professionals who need measurable speaking improvement. Every session follows a clear structure so you know exactly what to improve and how to perform under pressure in real situations.</p>
       </section>
 
-      <footer>
-        {{ site.data.home.footer_text }}
-      </footer>
+      <section>
+        <h2>What we work on</h2>
+        <ul class="focus-list">
+          <li>Interview English and confident answers</li>
+          <li>Business English for meetings and presentations</li>
+          <li>IELTS Speaking band improvement</li>
+          <li>Pronunciation, intonation, word stress, rhythm</li>
+          <li>Eliminating recurring grammar mistakes</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>How it works</h2>
+        <ul class="steps-list">
+          <li>Step 1: Diagnose your current speaking patterns</li>
+          <li>Step 2: Practice in realistic professional scenarios</li>
+          <li>Step 3: Targeted feedback and structured improvement</li>
+        </ul>
+      </section>
+
+      <section class="final-cta">
+        <h2>Ready to improve your English for real professional results?</h2>
+        <a class="button" href="mailto:hello@example.com?subject=Free%2020%20Minute%20Consultation">Book Your Free 20 Minute Consultation</a>
+        <p>Email: <a class="contact-link" href="mailto:hello@example.com">hello@example.com</a></p>
+      </section>
     </main>
   </body>
 </html>
