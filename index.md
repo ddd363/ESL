@@ -1,0 +1,76 @@
+---
+layout: default
+title: Home
+---
+
+<section class="section hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-copy">
+        <h1>{{ site.data.home.hero.title }}</h1>
+        <div class="hero-accent" aria-hidden></div>
+        <p>{{ site.data.home.hero.description }}</p>
+      </div>
+      <div>
+        <a class="btn-primary" href="{{ site.data.home.hero.button_href }}">{{ site.data.home.hero.button_text }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2>{{ site.data.home.authority.heading }}</h2>
+    <div class="authority-grid" style="margin-top:18px;">
+      {% for item in site.data.home.authority.items %}
+      <div class="auth-card">
+        <strong>{{ item.title }}</strong>
+        <p>{{ item.body }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    <p style="margin-top:20px; color:#475569;">{{ site.data.home.authority.intro }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2>{{ site.data.home.work.heading }}</h2>
+    <hr style="border:none;border-bottom:1px solid var(--border);margin:16px 0 22px;" />
+    <div class="work-grid">
+      {% for item in site.data.home.work.items %}
+      <div class="work-item">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.body }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <h2>{{ site.data.home.process.heading }}</h2>
+    <div style="height:16px"></div>
+    <div class="steps">
+      {% for step in site.data.home.process.steps %}
+      <div class="step">
+        <div class="step-badge">{{ forloop.index }}</div>
+        <div>
+          <h4>{{ step.title }}</h4>
+          <p>{{ step.body }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section cta-final">
+  <div class="container final-cta-inner">
+    <h2>{{ site.data.home.final_cta.heading }}</h2>
+    <p>{{ site.data.home.final_cta.description }}</p>
+    <a class="btn-primary" href="{{ site.data.home.final_cta.button_href }}">{{ site.data.home.final_cta.button_text }}</a>
+    <p style="margin-top:18px; color:rgba(230,238,249,0.9);">Email: <a style="color:#DDEEFF; font-weight:600; text-decoration:none;" href="mailto:{{ site.data.home.site.email }}">{{ site.data.home.site.email }}</a></p>
+  </div>
+</section>

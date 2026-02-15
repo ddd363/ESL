@@ -1,5 +1,33 @@
 # ESL Website (Jekyll + Decap CMS)
 
+## Easiest way (free + GUI)
+
+If you just want to edit text with a GUI and not touch code, use the admin editor:
+
+1. Start the site locally:
+
+```bash
+cd "/Users/spc/PYTHON NOTEBOOKS/ESL"
+python3 -m http.server 8000
+```
+
+2. In a second terminal, start the local CMS backend:
+
+```bash
+cd "/Users/spc/PYTHON NOTEBOOKS/ESL"
+npx decap-server
+```
+
+3. Open this in your browser:
+
+`http://127.0.0.1:8000/admin/`
+
+4. Click **Site Content → Home Page** and edit fields (headline, sections, buttons, email).
+5. Click **Publish** in the CMS.
+6. Commit and push to GitHub to publish to your live site.
+
+This setup is truly free. No paid plan required.
+
 This repo now includes a full static-site stack:
 
 - **Jekyll** for templating and data-driven pages
@@ -41,12 +69,17 @@ Open `http://localhost:8000`
 Requires Ruby and Bundler.
 
 ```bash
+# from the repo root
 cd "/Users/spc/PYTHON NOTEBOOKS/ESL"
+# install bundler if you don't have it
+gem install bundler --no-document
+# install gems from the included Gemfile
 bundle install
-bundle exec jekyll serve
+# run Jekyll. If your `_config.yml` sets `baseurl: "/ESL"`, add `--baseurl ""` to preview at root
+bundle exec jekyll serve --livereload --incremental --drafts --future --watch --baseurl ""
 ```
 
-Open `http://127.0.0.1:4000/ESL/`
+Open `http://127.0.0.1:4000/`
 
 ### Local CMS mode (no OAuth needed)
 

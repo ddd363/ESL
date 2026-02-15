@@ -1,20 +1,52 @@
-tag: Professional English Coaching
-title: Speak English with confidence in interviews, meetings, and IELTS exams
-description: Professional English coaching for engineers and working adults who
-  want precise, actionable feedback.
-primary_button_text: Book a Free Consultation
-primary_button_href: mailto:hello@example.com?subject=Free%20Consultation
-secondary_button_text: Contact by Email
-secondary_button_href: mailto:hello@example.com
-cards:
-  - title: Interview English
-    body: Build confident, structured interview answers for technical and leadership roles.
-  - title: Business English
-    body: Improve clarity and confidence for meetings, updates, and presentations.
-  - title: IELTS Speaking
-    body: Target speaking weaknesses with practical drills and band-focused feedback.
-contact_title: Start with a free consultation
-contact_body: Email
-contact_email: hello@example.com
-contact_suffix: to schedule your 20 minute consultation.
-footer_text: Coaching for working professionals and engineers who want measurable speaking progress.
+site:
+  brand: Sam — English Coaching
+  email: hello@example.com
+
+hero:
+  title: Speak English with confidence in interviews, meetings, and IELTS exams
+  description: Professional English coaching for engineers and working adults who want precise, actionable feedback.
+  button_text: Book a Free Consultation
+  button_href: mailto:hello@example.com?subject=Free%20Consultation
+
+authority:
+  heading: Professional, structured coaching with clear outcomes
+  intro: Sam delivers focused, practical coaching for professionals who need measurable speaking improvement. Every session follows a clear structure so you know exactly what to improve and how to perform under pressure in real situations.
+  items:
+    - title: University degree in Teaching English
+      body: Formal training that informs a principled, evidence-based approach to lesson design.
+    - title: IDP IELTS certified
+      body: Certified understanding of IELTS assessment criteria focused specifically on speaking.
+    - title: Several years of experience teaching engineering and business English
+      body: Practical classroom and one-to-one experience with technical professionals and corporate learners.
+    - title: Communicative Language Teaching based approach
+      body: Focus on meaningful practice, real scenarios, and immediate, usable feedback.
+
+work:
+  heading: What we work on
+  items:
+    - title: Interview English and confident answers
+      body: Develop concise, structured answers to technical and behavioural questions so you stand out in interviews.
+    - title: Business English for meetings and presentations
+      body: Practice clear updates and persuasive presentations for meetings, stand-ups, and stakeholder conversations.
+    - title: IELTS Speaking band improvement
+      body: Targeted practice aligned to band descriptors to raise fluency, coherence, and lexical resource.
+    - title: Pronunciation, intonation, word stress, rhythm
+      body: Refine speech patterns for clearer, more natural delivery that reduces misunderstandings.
+    - title: Eliminating recurring grammar mistakes
+      body: Focused drills and corrective feedback to remove persistent errors and increase accuracy under pressure.
+
+process:
+  heading: How it works
+  steps:
+    - title: Diagnose your current speaking patterns
+      body: Short assessment to identify strengths and specific areas for improvement.
+    - title: Practice in realistic professional scenarios
+      body: Role-plays and task-based practice designed around your work and interview needs.
+    - title: Targeted feedback and structured improvement
+      body: Actionable feedback, practice plans, and measurable goals for each session.
+
+final_cta:
+  heading: Ready to transform your professional English?
+  description: Book a focused, free 20 minute consultation to get a clear plan for fast improvement.
+  button_text: Book Your Free 20 Minute Consultation
+  button_href: mailto:hello@example.com?subject=Free%2020%20Minute%20Consultation

@@ -20,21 +20,64 @@ collections:
         file: _data/home.yml
         format: yml
         fields:
-          - { label: Tag, name: tag, widget: string }
-          - { label: Hero Title, name: title, widget: string }
-          - { label: Hero Description, name: description, widget: text }
-          - { label: Primary Button Text, name: primary_button_text, widget: string }
-          - { label: Primary Button URL, name: primary_button_href, widget: string }
-          - { label: Secondary Button Text, name: secondary_button_text, widget: string }
-          - { label: Secondary Button URL, name: secondary_button_href, widget: string }
-          - label: Feature Cards
-            name: cards
-            widget: list
+          - label: Site
+            name: site
+            widget: object
             fields:
-              - { label: Title, name: title, widget: string }
-              - { label: Body, name: body, widget: text }
-          - { label: Contact Title, name: contact_title, widget: string }
-          - { label: Contact Body Prefix, name: contact_body, widget: string }
-          - { label: Contact Email, name: contact_email, widget: string }
-          - { label: Contact Suffix, name: contact_suffix, widget: string }
-          - { label: Footer Text, name: footer_text, widget: text }
+              - { label: Brand Name, name: brand, widget: string }
+              - { label: Contact Email, name: email, widget: string }
+
+          - label: Hero Section
+            name: hero
+            widget: object
+            fields:
+              - { label: Headline, name: title, widget: string }
+              - { label: Subheading, name: description, widget: text }
+              - { label: Button Text, name: button_text, widget: string }
+              - { label: Button Link, name: button_href, widget: string }
+
+          - label: Authority Section
+            name: authority
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Intro Paragraph, name: intro, widget: text }
+              - label: Credential Cards
+                name: items
+                widget: list
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Description, name: body, widget: text }
+
+          - label: What We Work On
+            name: work
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Service Items
+                name: items
+                widget: list
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - { label: Description, name: body, widget: text }
+
+          - label: How It Works
+            name: process
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - label: Steps
+                name: steps
+                widget: list
+                fields:
+                  - { label: Step Title, name: title, widget: string }
+                  - { label: Step Description, name: body, widget: text }
+
+          - label: Final CTA
+            name: final_cta
+            widget: object
+            fields:
+              - { label: Heading, name: heading, widget: string }
+              - { label: Description, name: description, widget: text }
+              - { label: Button Text, name: button_text, widget: string }
+              - { label: Button Link, name: button_href, widget: string }
