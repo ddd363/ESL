@@ -3,16 +3,27 @@ layout: default
 title: Home
 ---
 
-<section class="section hero">
+<section class="section hero site-bg-noise">
   <div class="container">
     <div class="hero-inner">
       <div class="hero-copy">
         <h1>{{ site.data.home.hero.title }}</h1>
         <div class="hero-accent" aria-hidden></div>
         <p>{{ site.data.home.hero.description }}</p>
+        <div style="height:18px"></div>
+        <div style="display:flex;gap:14px;align-items:center">
+          <a class="btn-primary" href="{{ site.data.home.hero.button_href }}">{{ site.data.home.hero.button_text }}</a>
+          <a class="btn-ghost" href="{{ '/methodology/' | relative_url }}">View Method</a>
+        </div>
       </div>
       <div>
-        <a class="btn-primary" href="{{ site.data.home.hero.button_href }}">{{ site.data.home.hero.button_text }}</a>
+        <div class="hero-visual" role="img" aria-label="Professional portrait placeholder">
+          <!-- replace with portrait image: use site.data.home.hero.image when available -->
+          <div style="text-align:center; padding:20px;">
+            <div style="width:120px;height:120px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.02));margin:0 auto;box-shadow:0 10px 30px rgba(0,0,0,0.35)"></div>
+            <div style="margin-top:12px;color:var(--text-muted);font-weight:600">Sam — English Coaching</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
