@@ -3,79 +3,89 @@ site:
   email: hello@example.com
 
 hero:
-  title: Professional English for Engineers and Ambitious Professionals
-  description: Structured coaching with measurable speaking improvements for interviews, meetings, and IELTS.
+  title: English Coaching for Engineers and STEM Professionals
+  description: Data-driven speaking improvement for interviews, business communication and IELTS.
+  positioning_line: For working professionals and university-educated learners.
   button_text: Book a Free Consultation
   button_href: mailto:hello@example.com?subject=Free%20Consultation
 
 authority:
-  heading: Credibility built for outcomes
-  intro: Clear standards, real communication tasks, and measurable progress.
+  heading: Engineering background. Certified instruction.
+  intro: Former electronics engineer with seven years in design. Graduate diploma in TESOL. Certified by IDP IELTS Australia. Coaching is built for STEM and business professionals who need precise, performance-focused speaking improvement.
   items:
+    - icon: ⚙️
+      title: Engineering foundation
+      body: Professional technical background, then transition to language coaching.
     - icon: 🎓
-    - title: University degree in Teaching English
-      body: Evidence-based lesson design built on formal pedagogy.
+      title: TESOL qualification
+      body: Graduate diploma training for applied language instruction.
     - icon: ✅
-    - title: IDP IELTS certified
-      body: Band-focused speaking assessment and targeted correction.
-    - icon: 🧠
-    - title: Several years of experience teaching engineering and business English
-      body: Coaching tailored to technical and corporate communication.
-    - icon: 💬
-    - title: Communicative Language Teaching based approach
-      body: Real-task practice with immediate, actionable feedback.
+      title: IELTS certification
+      body: IDP IELTS Australia certified for score-focused speaking preparation.
+
+videos:
+  heading: IELTS session previews
+  intro: See how IELTS speaking sessions are structured.
+  items:
+    - title: IELTS Part 1 response coaching sample
+      embed_url: https://www.youtube.com/embed/xlOjvHWKun8
+    - title: IELTS Part 2 and Part 3 feedback sample
+      embed_url: https://www.youtube.com/embed/INZqQwQUPJ4
+
+method:
+  heading: Evidence-based, data-driven coaching
+  intro: Lessons use communicative simulation, targeted correction, and error-pattern tracking to focus each session on highest-impact gains.
+  items:
+    - icon: 🧪
+      title: Diagnostic baseline
+      body: Identify high-impact breakdowns before practice.
+    - icon: 📈
+      title: Pattern tracking
+      body: Log recurring errors and monitor progress over time.
+    - icon: 🎯
+      title: Targeted intervention
+      body: Prioritize drills that improve performance fastest.
 
 work:
   heading: What we work on
-  intro: High-impact speaking skills for interviews, meetings, and high-stakes exams.
+  intro: Priority speaking outcomes for interviews, workplace communication, and IELTS.
   items:
     - icon: 🎯
-    - title: Interview English and confident answers
-      body: Build concise, high-impact responses to technical and behavioral questions.
+      title: Interview English
+      body: Structured, concise, high-confidence answers.
     - icon: 📊
-    - title: Business English for meetings and presentations
-      body: Deliver clear updates and persuasive presentations across teams.
+      title: Business Communication
+      body: Clear updates, persuasive meetings, effective delivery.
     - icon: 🧪
-    - title: IELTS Speaking band improvement
-      body: Raise fluency and control with descriptor-aligned speaking drills.
+      title: IELTS Speaking
+      body: Band-focused scoring criteria and targeted drills.
     - icon: 🔊
-    - title: Pronunciation, intonation, word stress, rhythm
-      body: Improve clarity, rhythm, and listener-friendly delivery.
+      title: Pronunciation
+      body: Intonation, rhythm and stress for professional delivery.
     - icon: ✍️
-    - title: Eliminating recurring grammar mistakes
-      body: Remove persistent errors with focused correction and repetition.
+      title: Grammar Correction
+      body: Eliminate persistent performance-limiting errors.
 
 process:
   heading: How it works
-  intro: A focused cycle that turns speaking gaps into measurable improvement.
+  intro: A focused three-step system for steady speaking improvement.
   steps:
-    - title: Diagnose your current speaking patterns
-      body: Rapid assessment to isolate strengths and highest-impact gaps.
-    - title: Practice in realistic professional scenarios
-      body: Role-plays and task drills mapped to your real communication demands.
-    - title: Targeted feedback and structured improvement
-      body: Direct feedback, clear next actions, and trackable weekly goals.
+    - title: Diagnose current performance
+      body: Map strengths and priority gaps quickly.
+    - title: Practice in real scenarios
+      body: Train with interview, meeting, and IELTS simulations.
+    - title: Apply targeted corrections
+      body: Use direct feedback with clear next actions.
 
 final_cta:
-  heading: Ready to transform your professional English?
-  description: Book a focused, free 20 minute consultation to get a clear plan for fast improvement.
+  heading: Book a free 20 minute consultation.
+  description: Get a clear plan for your next speaking improvement cycle.
   button_text: Book Your Free 20 Minute Consultation
   button_href: mailto:hello@example.com?subject=Free%2020%20Minute%20Consultation
 
-videos:
-  heading: Lesson previews and speaking breakdowns
-  intro: Watch short coaching clips to see how feedback is delivered and how speaking performance improves over time.
-  items:
-    - title: Interview answer coaching sample
-      embed_url: https://www.youtube.com/embed/dQw4w9WgXcQ
-      description: Structure and delivery feedback for high-pressure interview responses.
-    - title: IELTS speaking feedback sample
-      embed_url: https://www.youtube.com/embed/oHg5SJYRHA0
-      description: Band-focused corrections for fluency, coherence, and pronunciation.
-
 testimonials:
   heading: Client feedback themes
-  intro: Typical outcomes reported after focused coaching cycles.
+  intro: Reported outcomes from professional learners.
   items:
     - quote: I became much clearer in meetings and no longer lose my point mid-sentence.
       meta: Engineering manager
@@ -88,31 +98,31 @@ testimonials:
 
 qualifications_page:
   heading: Qualifications and professional background
-  description: A clear overview of training, certifications, and practical ESL teaching experience for professionals.
+  description: Credentials and experience for professional speaking coaching.
   highlights:
-    - title: Academic foundation
-      body: University degree in Teaching English with a focus on communicative outcomes and learner progression.
-    - title: IELTS expertise
-      body: IDP IELTS certification with assessment-driven preparation and speaking band improvement strategies.
-    - title: Professional learner focus
-      body: Several years coaching engineers and business professionals for interviews, workplace communication, and exam performance.
-    - title: Structured delivery
-      body: Communicative Language Teaching framework with diagnostic sessions, targeted drills, and measurable feedback loops.
+    - title: Engineering foundation
+      body: Former electronics engineer with seven years in design.
+    - title: TESOL training
+      body: Graduate diploma in TESOL focused on adult professional learners.
+    - title: IELTS certification
+      body: Certified by IDP IELTS Australia for band-focused speaking preparation.
+    - title: Professional coaching focus
+      body: Structured coaching for engineers and business professionals in interviews, meetings, and IELTS speaking.
 
 methodology_page:
   heading: Teaching methodology
-  description: The coaching framework is practical, data-informed, and built around real communication tasks.
+  description: A clear framework for controlled speaking improvement.
   principles:
-    - title: Diagnose before training
-      body: Identify recurring patterns in grammar, pronunciation, and response structure before designing practice.
-    - title: Practice in context
-      body: Train with realistic interview, workplace, and IELTS speaking scenarios rather than isolated drills.
-    - title: Feedback you can apply immediately
-      body: Each session ends with targeted corrections and clear next actions for measurable progress.
+    - title: Diagnose before practice
+      body: Identify recurring errors in grammar, pronunciation, and response structure first.
+    - title: Train in real scenarios
+      body: Use interview, workplace, and IELTS speaking simulations instead of isolated drills.
+    - title: Track and apply feedback
+      body: Convert corrections into clear next actions and measurable session targets.
   session_flow:
     - title: Baseline check
-      body: Short speaking sample to identify strengths, breakdowns, and immediate opportunities.
+      body: Capture a short sample to map strengths and high-impact gaps.
     - title: Guided practice
-      body: Controlled-to-free speaking tasks that mirror your real communication demands.
+      body: Complete controlled and open speaking tasks aligned to your goals.
     - title: Performance review
-      body: Corrections, progress notes, and focused home practice priorities for the next session.
+      body: Review corrections, log progress, and set focused practice priorities.

@@ -1,0 +1,21 @@
+{
+  "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.conda/**": true,
+    "**/vendor/**": true,
+    "**/.bundle/**": true,
+    "**/.jekyll-cache/**": true,
+    "**/.ipynb_checkpoints/**": true,
+    "**/audio/**": true,
+    "**/outputs/**": true,
+    "**/__pycache__/**": true
+  },
+  "search.exclude": {
+    "**/.conda/**": true,
+    "**/vendor/**": true,
+    "**/.bundle/**": true,
+    "**/.jekyll-cache/**": true,
+    "**/audio/**": true,
+    "**/outputs/**": true
+  }
+}

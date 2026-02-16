@@ -7,11 +7,17 @@ plugins: []
 exclude:
   - .beads
   - .conda
+  - .git
+  - .github
+  - .hf_cache
+  - .ipynb_checkpoints
   - __pycache__
   - ESL_Speech_Analysis.ipynb
   - ESL_Speech_Analysis_LOCAL.ipynb
   - audio
   - outputs
   - components
+  - vendor
+  - vendor/bundle
   - app.py
   - requirements.txt
