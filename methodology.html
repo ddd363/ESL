@@ -12,10 +12,8 @@ permalink: /methodology/
     </div>
   </div>
 </section>
-
 <section class="section section-light">
   <div class="container">
-    <h2>Core principles</h2>
     <div class="page-grid">
       {% for item in site.data.home.methodology_page.principles %}
       <article class="page-card">
@@ -29,16 +27,15 @@ permalink: /methodology/
 
 <section class="section section-contrast">
   <div class="container">
-    <h2>Session flow</h2>
-    <div class="steps">
-      {% for step in site.data.home.methodology_page.session_flow %}
-      <div class="step">
-        <div class="step-badge">{{ forloop.index }}</div>
-        <div>
-          <h3>{{ step.title }}</h3>
-          <p>{{ step.body }}</p>
-        </div>
-      </div>
+    <h2>{{ site.data.home.authority.heading }}</h2>
+    <p class="section-intro">{{ site.data.home.authority.intro }}</p>
+    <div class="credibility-grid" style="margin-top:18px;">
+      {% for item in site.data.home.authority.items %}
+      <article class="credibility-card">
+        <div class="icon-chip" aria-hidden="true">{{ item.icon }}</div>
+        <strong>{{ item.title }}</strong>
+        <p>{{ item.body }}</p>
+      </article>
       {% endfor %}
     </div>
   </div>
