@@ -180,6 +180,13 @@ p{margin:0;font-size:clamp(17px,1.2vw,18px);font-weight:400;color:var(--text-bod
 .page-hero-shell h1{font-size:clamp(44px,5vw,48px);max-width:20ch;line-height:1.2}
 .page-hero-shell p{margin-top:10px;max-width:48ch;color:#D9F0F1}
 
+/* Keep long page titles contained in the hero shell */
+.page-hero-shell h1{
+	overflow-wrap:anywhere;
+	word-break:normal;
+	hyphens:auto;
+}
+
 .site-footer{border-top:1px solid rgba(255,255,255,0.04);background:var(--topbar)}
 .site-footer-inner{max-width:var(--max-width);margin:0 auto;padding:44px 24px;color:var(--footer-body);font-size:14px;display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:20px;align-items:start}
 .footer-block-title{font-size:12px;letter-spacing:1px;font-weight:700;color:var(--hero-heading);opacity:0.95;text-transform:uppercase;margin-bottom:8px}
@@ -219,6 +226,8 @@ p{margin:0;font-size:clamp(17px,1.2vw,18px);font-weight:400;color:var(--text-bod
 	.hero-actions .btn-primary,.hero-actions .btn-ghost{width:100%;text-align:center}
 	.hero-visual{height:220px}
 	.page-hero-shell{padding:24px}
+	.page-hero-shell h1{font-size:clamp(28px,8vw,34px);line-height:1.2;max-width:100%}
+	.page-hero-shell p{max-width:100%}
 
 	/* Mobile card adjustments: full width, padding, wrapping, stacked spacing */
 	.credibility-grid,.work-grid,.video-grid,.testimonials-grid,.page-grid{grid-template-columns:1fr;gap:20px}
