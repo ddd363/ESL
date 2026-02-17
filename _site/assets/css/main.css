@@ -116,6 +116,18 @@ p{margin:0;font-size:clamp(17px,1.2vw,18px);font-weight:400;color:var(--text-bod
 .credibility-card h3,.work-item h3,.video-card h3,.testimonial-card h3,.page-card h3,.credibility-card strong,.work-item strong,.video-card strong,.testimonial-card strong,.page-card strong{color:var(--hero-heading)}
 .credibility-card p,.work-item p,.video-card p,.testimonial-card p{margin-top:12px;color:var(--card-text-secondary)}
 .page-card p{margin-top:12px;color:var(--light-body)}
+
+/* Card overflow / wrapping safety */
+.credibility-card,.work-item,.video-card,.testimonial-card,.page-card{
+	box-sizing:border-box;
+	overflow:hidden;
+	word-wrap:break-word;
+	overflow-wrap:break-word;
+	hyphens:auto;
+}
+.credibility-card *,.work-item *,.video-card *,.testimonial-card *,.page-card *{
+	white-space:normal !important;
+}
 .icon-chip{width:38px;height:38px;border-radius:9px;background:linear-gradient(150deg, rgba(20,93,113,0.22), rgba(22,111,134,0.18));display:inline-flex;align-items:center;justify-content:center;font-size:18px;border:1px solid rgba(199,220,224,0.35);margin-bottom:10px;color:var(--icon-accent)}
 
 .section-light h2,
@@ -207,6 +219,13 @@ p{margin:0;font-size:clamp(17px,1.2vw,18px);font-weight:400;color:var(--text-bod
 	.hero-actions .btn-primary,.hero-actions .btn-ghost{width:100%;text-align:center}
 	.hero-visual{height:220px}
 	.page-hero-shell{padding:24px}
+
+	/* Mobile card adjustments: full width, padding, wrapping, stacked spacing */
+	.credibility-grid,.work-grid,.video-grid,.testimonials-grid,.page-grid{grid-template-columns:1fr;gap:20px}
+	.credibility-card,.work-item,.video-card,.testimonial-card,.page-card{width:100%;padding:18px 16px;margin:0 0 20px 0}
+	.credibility-card h3,.work-item h3,.video-card h3,.testimonial-card h3,.page-card h3{font-size:18px}
+	.credibility-card p,.work-item p,.video-card p,.testimonial-card p,.page-card p{font-size:16px;line-height:1.6}
+	.step{padding:20px}
 }
 
 /* small UI niceties */
