@@ -2,7 +2,6 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <script src="https://unpkg.com/streamlit-component-lib@1.6.0/dist/streamlit-component-lib.js"></script>
     <style>
       body {
         margin: 0;
@@ -40,6 +39,37 @@
       <div id="error"></div>
     </div>
     <script>
+      const streamlitBridge = (() => {
+        if (window.Streamlit) {
+          return window.Streamlit;
+        }
+
+        const post = (type, payload = {}) => {
+          window.parent.postMessage(
+            {
+              isStreamlitMessage: true,
+              type,
+              ...payload,
+            },
+            "*"
+          );
+        };
+
+        return {
+          setComponentReady() {
+            post("streamlit:componentReady", { apiVersion: 1 });
+          },
+          setFrameHeight(height) {
+            post("streamlit:setFrameHeight", {
+              height: height || document.documentElement.scrollHeight || 220,
+            });
+          },
+          setComponentValue(value) {
+            post("streamlit:setComponentValue", { value });
+          },
+        };
+      })();
+
       const startBtn = document.getElementById("start");
       const stopBtn = document.getElementById("stop");
       const statusEl = document.getElementById("status");
@@ -57,9 +87,49 @@
       let micInitPromise = null;
       let recording = false;
       let buffers = [];
+      let recordingStartMs = null;
+      let timerIntervalId = null;
+
+      function emitEvent(eventName, extra = {}) {
+        try {
+          streamlitBridge.setComponentValue({
+            event: eventName,
+            t: Date.now(),
+            ...extra,
+          });
+        } catch (err) {
+          // ignore event emission failures
+        }
+      }
 
       function setStatus(text) {
         statusEl.textContent = text;
+      }
+
+      function formatElapsed(totalSeconds) {
+        const m = Math.floor(totalSeconds / 60);
+        const s = totalSeconds % 60;
+        return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+      }
+
+      function startTimer() {
+        stopTimer();
+        recordingStartMs = Date.now();
+        timerIntervalId = setInterval(() => {
+          if (!recording || !recordingStartMs) {
+            return;
+          }
+          const elapsed = Math.max(0, Math.floor((Date.now() - recordingStartMs) / 1000));
+          setStatus(`Recording... ${formatElapsed(elapsed)}`);
+        }, 250);
+      }
+
+      function stopTimer() {
+        if (timerIntervalId) {
+          clearInterval(timerIntervalId);
+          timerIntervalId = null;
+        }
+        recordingStartMs = null;
       }
 
       function clearWaveform() {
@@ -108,7 +178,7 @@
         errorEl.textContent = "";
         micInitPromise = (async () => {
           try {
-            setStatus("Initializing mic...");
+            setStatus("Requesting mic access...");
             mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             if (audioContext.state === "suspended") {
@@ -130,9 +200,12 @@
             processor.connect(audioContext.destination);
             micReady = true;
             setStatus("Ready");
+            emitEvent("mic_ready", { sample_rate: audioContext.sampleRate });
           } catch (err) {
             errorEl.textContent = "Microphone access denied or unavailable.";
             setStatus("Not recording");
+            emitEvent("mic_error", { message: String(err) });
+            micInitPromise = null;
           }
         })();
         return micInitPromise;
@@ -199,6 +272,7 @@
         }
         buffers = [];
         errorEl.textContent = "";
+        emitEvent("start_clicked");
         try {
           await initMic();
           if (audioContext && audioContext.state === "suspended") {
@@ -207,13 +281,16 @@
           recording = true;
           startBtn.disabled = true;
           stopBtn.disabled = false;
-          setStatus("Recording...");
+          setStatus("Recording... 00:00");
+          startTimer();
           drawWaveform();
+          emitEvent("recording_started");
         } catch (err) {
           errorEl.textContent = "Microphone access denied or unavailable.";
           setStatus("Not recording");
           startBtn.disabled = false;
           stopBtn.disabled = true;
+          emitEvent("recording_start_error", { message: String(err) });
         }
       }
 
@@ -221,8 +298,10 @@
         if (!recording) {
           return;
         }
+        emitEvent("stop_clicked", { buffers: buffers.length });
         recording = false;
-        startBtn.disabled = fßalse;
+        stopTimer();
+        startBtn.disabled = false;
         stopBtn.disabled = true;
         setStatus("Recording complete");
         if (animationId) {
@@ -237,15 +316,17 @@
         const merged = mergeBuffers(buffers);
         const wavBytes = encodeWav(merged, sampleRate);
         const wavBase64 = uint8ToBase64(wavBytes);
-        Streamlit.setComponentValue({ wav_base64: wavBase64 });
+        streamlitBridge.setComponentValue({ wav_base64: wavBase64, event: "recording_complete", t: Date.now() });
       }
 
       startBtn.addEventListener("click", startRecording);
       stopBtn.addEventListener("click", stopRecording);
-      Streamlit.setComponentReady();
-      Streamlit.setFrameHeight(200);
-      initMic();
+      streamlitBridge.setComponentReady();
+      streamlitBridge.setFrameHeight(200);
+      emitEvent("component_ready");
+      setStatus("Ready to start");
       clearWaveform();
+      setTimeout(() => streamlitBridge.setFrameHeight(220), 250);
     </script>
   </body>
 </html>
