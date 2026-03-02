@@ -15,6 +15,16 @@
         gap: 8px;
         align-items: center;
       }
+      #deviceRow {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-top: 8px;
+      }
+      #microphone {
+        min-width: 240px;
+        max-width: 100%;
+      }
       #waveform {
         width: 100%;
         max-width: 520px;
@@ -34,6 +44,12 @@
         <button id="start" style="padding: 6px 12px;">START</button>
         <button id="stop" style="padding: 6px 12px;" disabled>STOP</button>
         <span id="status">Not recording</span>
+      </div>
+      <div id="deviceRow">
+        <label for="microphone">Microphone</label>
+        <select id="microphone">
+          <option value="">Default microphone</option>
+        </select>
       </div>
       <canvas id="waveform" width="520" height="70"></canvas>
       <div id="error"></div>
@@ -74,6 +90,7 @@
       const stopBtn = document.getElementById("stop");
       const statusEl = document.getElementById("status");
       const errorEl = document.getElementById("error");
+      const microphoneSelect = document.getElementById("microphone");
       const canvas = document.getElementById("waveform");
       const ctx = canvas.getContext("2d");
 
@@ -89,6 +106,11 @@
       let buffers = [];
       let recordingStartMs = null;
       let timerIntervalId = null;
+      let selectedDeviceId = "";
+
+      function setRecordingUiState() {
+        microphoneSelect.disabled = recording;
+      }
 
       function emitEvent(eventName, extra = {}) {
         try {
@@ -137,6 +159,94 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
 
+      function cleanupMic() {
+        if (animationId) {
+          cancelAnimationFrame(animationId);
+          animationId = null;
+        }
+        if (processor) {
+          try {
+            processor.disconnect();
+          } catch (err) {
+            // ignore
+          }
+          processor = null;
+        }
+        if (analyser) {
+          try {
+            analyser.disconnect();
+          } catch (err) {
+            // ignore
+          }
+          analyser = null;
+        }
+        if (input) {
+          try {
+            input.disconnect();
+          } catch (err) {
+            // ignore
+          }
+          input = null;
+        }
+        if (mediaStream) {
+          mediaStream.getTracks().forEach((track) => {
+            try {
+              track.stop();
+            } catch (err) {
+              // ignore
+            }
+          });
+          mediaStream = null;
+        }
+        if (audioContext) {
+          try {
+            audioContext.close();
+          } catch (err) {
+            // ignore
+          }
+          audioContext = null;
+        }
+        micReady = false;
+        micInitPromise = null;
+      }
+
+      function setMicOptions(devices) {
+        const previousValue = selectedDeviceId || microphoneSelect.value || "";
+        microphoneSelect.innerHTML = "";
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.textContent = "Default microphone";
+        microphoneSelect.appendChild(defaultOption);
+
+        devices.forEach((device, idx) => {
+          const option = document.createElement("option");
+          option.value = device.deviceId;
+          option.textContent = device.label || `Microphone ${idx + 1}`;
+          microphoneSelect.appendChild(option);
+        });
+
+        const hasPrevious = devices.some((device) => device.deviceId === previousValue);
+        selectedDeviceId = hasPrevious ? previousValue : "";
+        microphoneSelect.value = selectedDeviceId;
+      }
+
+      async function refreshMicrophones() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+          return;
+        }
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          const microphones = devices.filter((device) => device.kind === "audioinput");
+          setMicOptions(microphones);
+          emitEvent("microphones_listed", {
+            count: microphones.length,
+            selected_device_id: selectedDeviceId || null,
+          });
+        } catch (err) {
+          emitEvent("microphones_list_error", { message: String(err) });
+        }
+      }
+
       function drawWaveform() {
         if (!analyser) {
           return;
@@ -179,7 +289,10 @@
         micInitPromise = (async () => {
           try {
             setStatus("Requesting mic access...");
-            mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const constraints = selectedDeviceId
+              ? { audio: { deviceId: { exact: selectedDeviceId } } }
+              : { audio: true };
+            mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
             if (audioContext.state === "suspended") {
               await audioContext.resume();
@@ -200,6 +313,7 @@
             processor.connect(audioContext.destination);
             micReady = true;
             setStatus("Ready");
+            await refreshMicrophones();
             emitEvent("mic_ready", { sample_rate: audioContext.sampleRate });
           } catch (err) {
             errorEl.textContent = "Microphone access denied or unavailable.";
@@ -281,6 +395,7 @@
           recording = true;
           startBtn.disabled = true;
           stopBtn.disabled = false;
+          setRecordingUiState();
           setStatus("Recording... 00:00");
           startTimer();
           drawWaveform();
@@ -290,6 +405,7 @@
           setStatus("Not recording");
           startBtn.disabled = false;
           stopBtn.disabled = true;
+          setRecordingUiState();
           emitEvent("recording_start_error", { message: String(err) });
         }
       }
@@ -303,6 +419,7 @@
         stopTimer();
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        setRecordingUiState();
         setStatus("Recording complete");
         if (animationId) {
           cancelAnimationFrame(animationId);
@@ -319,14 +436,31 @@
         streamlitBridge.setComponentValue({ wav_base64: wavBase64, event: "recording_complete", t: Date.now() });
       }
 
+      microphoneSelect.addEventListener("change", async (event) => {
+        if (recording) {
+          return;
+        }
+        selectedDeviceId = event.target.value || "";
+        cleanupMic();
+        emitEvent("microphone_selected", {
+          selected_device_id: selectedDeviceId || null,
+        });
+        setStatus("Ready to start");
+        errorEl.textContent = "";
+        await refreshMicrophones();
+      });
+
       startBtn.addEventListener("click", startRecording);
       stopBtn.addEventListener("click", stopRecording);
+      navigator.mediaDevices?.addEventListener?.("devicechange", refreshMicrophones);
       streamlitBridge.setComponentReady();
       streamlitBridge.setFrameHeight(200);
       emitEvent("component_ready");
       setStatus("Ready to start");
+      setRecordingUiState();
       clearWaveform();
-      setTimeout(() => streamlitBridge.setFrameHeight(220), 250);
+      refreshMicrophones();
+      setTimeout(() => streamlitBridge.setFrameHeight(250), 250);
     </script>
   </body>
 </html>

@@ -7,6 +7,7 @@ import os
 import re
 import sys
 from datetime import datetime, timedelta, timezone
+from time import perf_counter
 
 import replicate
 import requests
@@ -17,8 +18,60 @@ from pydub import AudioSegment
 
 OPENAI_MODEL = "gpt-5.2"
 STRICT_OPENAI_FEEDBACK = True
+DEFAULT_OPENAI_SYSTEM_PROMPT = """
+You are an ESL grammar and fluency analyst focused on IELTS Speaking assessment.
+
+Input: a transcript with multiple speakers labeled [SPEAKER_00], [SPEAKER_01], etc.
+
+TASK
+1) Identify the second speaker in order of first appearance.
+2) Analyze ONLY that speaker’s speech.
+3) Produce a teacher-facing feedback TABLE that groups common errors and prioritizes them by IELTS impact.
+
+NON-NEGOTIABLE RULES
+- Use ONLY errors that explicitly appear in the transcript.
+- Quote the student’s exact words for every example.
+- Do NOT invent, generalize, or paraphrase student language.
+- Group similar errors together under a clear error category.
+- Explanations must reflect the REAL grammatical or lexical issue.
+- Do NOT mention grammar forms that are not used in the correction.
+- Prioritize reoccuring errors that most affect IELTS bands (Coherence, Lexical Resource, Grammar).
+- DO NOT prioritise fillers or repetition
+
+
+OUTPUT FORMAT (STRICT TABLE)
+
+Title: On-the-Fly Feedback Table (Speaker 00)
+
+Table columns (exactly these, in this order):
+1) Error Group (sorted from highest to lowest IELTS impact)
+2) Student Examples (exact phrases from transcript)
+3) Better Versions
+4) Explanation (clear, teacher-ready, 1–2 short lines)
+
+STUDENT EXAMPLES COLUMN (IMPORTANT)
+- For each row, include:
+    (a) the exact problematic phrase in quotes, AND
+    (b) a short verbatim context snippet
+- Both must be exact transcript text (no cleanup, no paraphrase).
+
+SORTING RULE
+- Order rows by highest IELTS impact first:
+    1) Coherence / clause structure / logic
+    2) Collocation and word choice
+    3) Fixed phrases / prepositions
+    4) Verb forms and agreement
+    5) Pronouns, fillers, repetition
+
+STYLE CONSTRAINTS
+- Concise but clear explanations
+- No paragraphs outside the table
+- No teaching activities or advice
+- Teacher-facing language suitable for quick explanation in class
+""".strip()
 AUDIO_DIR = "audio"
 APP_EVENT_LOG = "/tmp/esl_app_events.log"
+OPENAI_PROMPT_PATH = os.path.join("outputs", "openai_system_prompt.txt")
 SUPPORTED_EXTS = {".wav", ".m4a"}
 RECORDER_COMPONENT_DIR = os.path.join(
     os.path.dirname(__file__), "components", "audio_recorder"
@@ -26,6 +79,11 @@ RECORDER_COMPONENT_DIR = os.path.join(
 audio_recorder_component = components.declare_component(
     "audio_recorder", path=RECORDER_COMPONENT_DIR
 )
+OPENAI_HTTP = requests.Session()
+
+
+def _fmt_seconds(value):
+    return f"{float(value):.2f}s"
 
 
 def log_event(event, **fields):
@@ -50,6 +108,31 @@ def read_recent_events(limit=20):
         return [line.strip() for line in lines[-limit:] if line.strip()]
     except Exception:
         return []
+
+
+def load_persisted_openai_prompt():
+    try:
+        if os.path.exists(OPENAI_PROMPT_PATH):
+            with open(OPENAI_PROMPT_PATH, "r", encoding="utf-8") as f:
+                saved_prompt = f.read().strip()
+            if saved_prompt:
+                return saved_prompt
+    except Exception as e:
+        log_event("openai_prompt_load_error", error=str(e), path=OPENAI_PROMPT_PATH)
+    return DEFAULT_OPENAI_SYSTEM_PROMPT
+
+
+def persist_openai_prompt():
+    prompt = (st.session_state.get("openai_system_prompt") or "").strip()
+    if not prompt:
+        prompt = DEFAULT_OPENAI_SYSTEM_PROMPT
+    try:
+        os.makedirs(os.path.dirname(OPENAI_PROMPT_PATH), exist_ok=True)
+        with open(OPENAI_PROMPT_PATH, "w", encoding="utf-8") as f:
+            f.write(prompt)
+        log_event("openai_prompt_saved", path=OPENAI_PROMPT_PATH, chars=len(prompt))
+    except Exception as e:
+        log_event("openai_prompt_save_error", error=str(e), path=OPENAI_PROMPT_PATH)
 
 
 def masked_key_prefix(value):
@@ -127,6 +210,16 @@ def init_session_state():
         st.session_state.recording_started_at = None
     if "active_audio_signature" not in st.session_state:
         st.session_state.active_audio_signature = None
+    if "openai_system_prompt" not in st.session_state:
+        st.session_state.openai_system_prompt = load_persisted_openai_prompt()
+    if "analysis_timing" not in st.session_state:
+        st.session_state.analysis_timing = {
+            "started_at": None,
+            "audio_prep_s": None,
+            "transcription_s": None,
+            "openai_s": None,
+            "total_s": None,
+        }
 
 
 def render_audio_recorder():
@@ -404,6 +497,42 @@ def _pretty_print_replicate(output):
     return "\n".join(lines)
 
 
+def _extract_replicate_segments(output):
+    if isinstance(output, dict):
+        segments = output.get("segments")
+        if isinstance(segments, list):
+            return segments
+    elif isinstance(output, list):
+        return output
+    return []
+
+
+def _build_clean_diarized_transcript(output):
+    segments = _extract_replicate_segments(output)
+    merged = _merge_segments(segments)
+    if not merged:
+        return ""
+
+    speaker_map = {}
+    next_index = 0
+    lines = []
+
+    for seg in merged:
+        text = (seg.get("text") or "").strip()
+        if not text:
+            continue
+
+        raw_speaker = (seg.get("speaker") or "UNKNOWN").strip() or "UNKNOWN"
+        if raw_speaker not in speaker_map:
+            speaker_map[raw_speaker] = f"SPEAKER_{next_index:02d}"
+            next_index += 1
+
+        speaker_label = speaker_map[raw_speaker]
+        lines.append(f"[{speaker_label}]: {text}")
+
+    return "\n".join(lines).strip()
+
+
 def run_local_transcription(wav_path):
     from faster_whisper import WhisperModel
 
@@ -460,7 +589,7 @@ def run_transcription(wav_path):
         raise RuntimeError("REPLICATE_API_TOKEN not set. Add it in this cell and re-run.")
 
     # Replicate diarization settings
-    num_speakers = 2  # set to None to autodetect
+    num_speakers = None  # autodetect speaker count
     group_segments = True  # merge short same-speaker segments
 
     # Run diarization on Replicate (pin to a model version)
@@ -480,7 +609,7 @@ def run_transcription(wav_path):
                 "output": "json",
                 "group_segments": group_segments,
             }
-            if num_speakers:
+            if num_speakers is not None:
                 input_payload["num_speakers"] = num_speakers
             replicate_output = replicate.run(
                 model_id,
@@ -490,7 +619,12 @@ def run_transcription(wav_path):
             "replicate_call_result",
             inferred_http_status=200,
             response_type=type(replicate_output).__name__,
-            response=replicate_output,
+            top_level_keys=list(replicate_output.keys()) if isinstance(replicate_output, dict) else [],
+            segments_count=(
+                len(replicate_output.get("segments", []))
+                if isinstance(replicate_output, dict) and isinstance(replicate_output.get("segments"), list)
+                else 0
+            ),
         )
     except Exception as e:
         message = str(e)
@@ -507,26 +641,11 @@ def run_transcription(wav_path):
             ) from e
         raise RuntimeError(f"Replicate diarization failed: {message}") from e
 
-    transcript = _extract_transcript_from_replicate(replicate_output)
+    transcript = _build_clean_diarized_transcript(replicate_output)
+    if not transcript:
+        raise RuntimeError("Replicate diarization returned no usable segments for transcript formatting.")
     diarization_text = _pretty_print_replicate(replicate_output)
     return replicate_output, transcript, diarization_text
-
-
-def _extract_transcript_from_replicate(output):
-    if isinstance(output, dict):
-        if "text" in output and isinstance(output["text"], str):
-            return output["text"].strip()
-        segments = output.get("segments")
-        if isinstance(segments, list):
-            parts = []
-            for seg in segments:
-                if isinstance(seg, dict):
-                    t = (seg.get("text") or "").strip()
-                    if t:
-                        parts.append(t)
-            if parts:
-                return " ".join(parts)
-    return None
 
 
 def get_issue_type(match):
@@ -623,7 +742,7 @@ def build_local_feedback_issues(transcript):
     return [{"message": "\n".join(lines)}]
 
 
-def run_error_detection(transcript, emit_ui=True):
+def run_error_detection(transcript, emit_ui=True, system_prompt=None):
     # 2) Call OpenAI (only if we have transcript + key)
     matches = []
     if not transcript:
@@ -665,57 +784,7 @@ def run_error_detection(transcript, emit_ui=True):
         st.session_state["feedback_source"] = "local_rule_based_fallback"
         return build_local_feedback_issues(transcript)
 
-    system_msg = """
-You are an ESL grammar and fluency analyst focused on IELTS Speaking assessment.
-
-Input: a transcript with multiple speakers labeled [SPEAKER_00], [SPEAKER_01], etc.
-
-TASK
-1) Identify the second speaker in order of first appearance.
-2) Analyze ONLY that speaker’s speech.
-3) Produce a teacher-facing feedback TABLE that groups common errors and prioritizes them by IELTS impact.
-
-NON-NEGOTIABLE RULES
-- Use ONLY errors that explicitly appear in the transcript.
-- Quote the student’s exact words for every example.
-- Do NOT invent, generalize, or paraphrase student language.
-- Group similar errors together under a clear error category.
-- Explanations must reflect the REAL grammatical or lexical issue.
-- Do NOT mention grammar forms that are not used in the correction.
-- Prioritize reoccuring errors that most affect IELTS bands (Coherence, Lexical Resource, Grammar).
-- DO NOT prioritise fillers or repetition
-
-
-OUTPUT FORMAT (STRICT TABLE)
-
-Title: On-the-Fly Feedback Table (Speaker 00)
-
-Table columns (exactly these, in this order):
-1) Error Group (sorted from highest to lowest IELTS impact)
-2) Student Examples (exact phrases from transcript)
-3) Better Versions
-4) Explanation (clear, teacher-ready, 1–2 short lines)
-
-STUDENT EXAMPLES COLUMN (IMPORTANT)
-- For each row, include:
-  (a) the exact problematic phrase in quotes, AND
-  (b) a short verbatim context snippet
-- Both must be exact transcript text (no cleanup, no paraphrase).
-
-SORTING RULE
-- Order rows by highest IELTS impact first:
-  1) Coherence / clause structure / logic
-  2) Collocation and word choice
-  3) Fixed phrases / prepositions
-  4) Verb forms and agreement
-  5) Pronouns, fillers, repetition
-
-STYLE CONSTRAINTS
-- Concise but clear explanations
-- No paragraphs outside the table
-- No teaching activities or advice
-- Teacher-facing language suitable for quick explanation in class
-        """
+    system_msg = (system_prompt or DEFAULT_OPENAI_SYSTEM_PROMPT).strip()
     user_msg = f"Transcript:\n{transcript}"
 
     payload = {
@@ -742,7 +811,7 @@ STYLE CONSTRAINTS
                 "response_format": payload.get("response_format"),
             },
         )
-        r = requests.post(
+        r = OPENAI_HTTP.post(
             endpoint,
             headers={
                 "Authorization": f"Bearer {api_key}",
@@ -754,7 +823,11 @@ STYLE CONSTRAINTS
         log_event("openai_call_http_status", status_code=r.status_code)
         r.raise_for_status()
         resp = r.json()
-        log_event("openai_call_response_json", response=resp)
+        log_event(
+            "openai_call_response_json",
+            top_level_keys=list(resp.keys()) if isinstance(resp, dict) else [],
+            choices_count=len(resp.get("choices", [])) if isinstance(resp, dict) else 0,
+        )
 
         if "choices" in resp and len(resp["choices"]) > 0:
             content = resp["choices"][0].get("message", {}).get("content")
@@ -853,22 +926,12 @@ def render_feedback_table(issues):
 
 
 def render_app_styles():
-        # Determine theme base (light/dark) via Streamlit theme option where available
-        try:
-                theme_base = st.get_option("theme.base")
-        except Exception:
-                theme_base = None
-
-        is_dark = False
-        if theme_base:
-                is_dark = str(theme_base).lower() == "dark"
-
-        # Fallback colors (avoid #000000 and #ffffff hardcoding)
-        card_bg = "#1e1e1e" if is_dark else "#ffffff"
-        border_col = "#2b2b2b" if is_dark else "#e6e6e6"
-        text_col = "#e6e6e6" if is_dark else "#1a1a1a"
-        secondary_col = "#b3b3b3" if is_dark else "#555555"
-        json_bg = "#111111" if is_dark else "#f5f5f5"
+        # Use Streamlit theme variables for stable dual-mode behavior
+        card_bg = "var(--secondary-background-color)"
+        border_col = "var(--secondary-background-color)"
+        text_col = "var(--text-color)"
+        secondary_col = "var(--text-color)"
+        json_bg = "var(--secondary-background-color)"
 
         css = f"""
         <style>
@@ -887,24 +950,28 @@ def render_app_styles():
                 margin-bottom: 0.9rem;
                 color: {text_col};
             }}
+            .result-card * {{
+                color: {text_col} !important;
+            }}
             .clean-text-block {{
                 background: transparent;
                 border: 1px solid {border_col};
                 border-radius: 10px;
                 padding: 0.9rem;
                 line-height: 1.55;
-                white-space: pre-wrap;
-                color: {text_col};
+                color: {text_col} !important;
+            }}
+            .clean-text-block * {{
+                color: {text_col} !important;
             }}
             .subtle-file {{
                 color: {secondary_col};
                 font-size: 0.88rem;
                 margin-top: 0.35rem;
             }}
-            /* Tables: ensure transparent bg and proper contrast */
             div[data-testid=\"stMarkdownContainer\"] table,
             table {{
-                background-color: transparent !important;
+                background-color: {card_bg} !important;
                 color: {text_col} !important;
                 border-collapse: collapse;
                 width: 100%;
@@ -916,18 +983,30 @@ def render_app_styles():
             }}
             table th {{
                 font-weight: 600;
-                color: {text_col};
+                color: {text_col} !important;
+            }}
+            table td {{
+                color: {text_col} !important;
             }}
             /* JSON block */
             .json-block {{
                 background: {json_bg};
-                color: {text_col};
+                color: {text_col} !important;
                 padding: 0.8rem;
                 border-radius: 8px;
                 font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, \"Roboto Mono\", \"Courier New\", monospace;
                 max-height: 36vh;
                 overflow: auto;
                 border: 1px solid {border_col};
+            }}
+            div[data-testid="stJson"] {{
+                background: {json_bg} !important;
+                color: {text_col} !important;
+                border: 1px solid {border_col};
+                border-radius: 8px;
+            }}
+            div[data-testid="stJson"] * {{
+                color: {text_col} !important;
             }}
             /* Status badge */
             .status-badge {{
@@ -1187,13 +1266,22 @@ with st.container():
             reset_analysis_state()
 
     st.markdown("**Step 3: Run Analysis**")
+    with st.expander("OpenAI Prompt (Editable)", expanded=False):
+        st.text_area(
+            "System prompt used for feedback generation",
+            key="openai_system_prompt",
+            height=260,
+            on_change=persist_openai_prompt,
+        )
     analysis_clicked = st.button(
         "RUN ANALYSIS",
         type="primary",
         disabled=not st.session_state.audio_ready,
     )
+    transcript_live_placeholder = st.empty()
 
 if analysis_clicked:
+    run_started = perf_counter()
     log_event(
         "run_analysis_clicked",
         audio_source=st.session_state.get("audio_source"),
@@ -1201,53 +1289,89 @@ if analysis_clicked:
         recorded_path=st.session_state.get("recorded_audio_path"),
     )
     with st.status("Running analysis...", expanded=True) as status:
-        status.write("Transcribing audio...")
+        status.write("Run started (T+0.00s)")
+        st.session_state.analysis_complete = False
+        st.session_state.feedback = []
+        timings = {
+            "started_at": datetime.now(timezone.utc).isoformat(),
+            "audio_prep_s": None,
+            "transcription_s": None,
+            "openai_s": None,
+            "total_s": None,
+        }
+        audio_prep_started = perf_counter()
         try:
             audio_path = get_active_audio(uploaded)
             log_event("audio_path_selected", audio_path=audio_path)
+            timings["audio_prep_s"] = perf_counter() - audio_prep_started
+            status.write(
+                f"Audio prepared in {_fmt_seconds(timings['audio_prep_s'])} (T+{_fmt_seconds(perf_counter() - run_started)})"
+            )
         except Exception as e:
             log_event("audio_path_error", error=str(e))
             status.update(label="Analysis failed", state="error")
             st.error(str(e))
             st.stop()
 
+        status.write(f"Transcribing audio... (T+{_fmt_seconds(perf_counter() - run_started)})")
+        transcription_started = perf_counter()
         try:
             replicate_output, transcript, diarization_text = run_transcription(audio_path)
             st.session_state["transcript_source"] = "replicate"
+            timings["transcription_s"] = perf_counter() - transcription_started
             log_event("transcription_replicate_ok", transcript_chars=len(transcript or ""))
+            status.write(
+                f"Transcription finished in {_fmt_seconds(timings['transcription_s'])} (T+{_fmt_seconds(perf_counter() - run_started)})"
+            )
         except Exception as e:
             log_event("transcription_replicate_error", error=str(e))
-            try:
-                replicate_output, transcript, diarization_text = run_local_transcription(
-                    audio_path
-                )
-                st.session_state["transcript_source"] = "local"
-                log_event("transcription_local_ok", transcript_chars=len(transcript or ""))
-            except Exception as fallback_error:
-                log_event("transcription_local_error", error=str(fallback_error))
-                status.update(label="Analysis failed", state="error")
-                st.error(str(fallback_error))
-                st.stop()
-
-        status.write("Generating feedback...")
-        issues = run_error_detection(transcript, emit_ui=False)
-        log_event("feedback_generated", issues_count=len(issues) if isinstance(issues, list) else -1)
+            status.update(label="Analysis failed", state="error")
+            st.error(f"Replicate diarization failed: {e}")
+            st.stop()
 
         st.session_state.transcript = transcript or ""
-        st.session_state.feedback = issues if isinstance(issues, list) else []
         st.session_state.diarization = diarization_text or ""
         st.session_state.replicate_output = replicate_output
+
+        with transcript_live_placeholder.container():
+            st.markdown("## Results Section")
+            st.markdown("### Transcript")
+            st.markdown(
+                f'<div class="clean-text-block">{html.escape(st.session_state.transcript)}</div>',
+                unsafe_allow_html=True,
+            )
+            st.info(
+                f"Transcript ready in {_fmt_seconds(timings['transcription_s'])}. Generating feedback... (T+{_fmt_seconds(perf_counter() - run_started)})"
+            )
+
+        status.write(f"Generating OpenAI feedback... (T+{_fmt_seconds(perf_counter() - run_started)})")
+        openai_started = perf_counter()
+        issues = run_error_detection(
+            transcript,
+            emit_ui=False,
+            system_prompt=st.session_state.get("openai_system_prompt", DEFAULT_OPENAI_SYSTEM_PROMPT),
+        )
+        timings["openai_s"] = perf_counter() - openai_started
+        status.write(
+            f"OpenAI feedback finished in {_fmt_seconds(timings['openai_s'])} (T+{_fmt_seconds(perf_counter() - run_started)})"
+        )
+        log_event("feedback_generated", issues_count=len(issues) if isinstance(issues, list) else -1)
+
+        st.session_state.feedback = issues if isinstance(issues, list) else []
         st.session_state.analysis_complete = True
+        timings["total_s"] = perf_counter() - run_started
+        st.session_state.analysis_timing = timings
+        log_event("analysis_timing", **timings)
 
         status.update(label="Analysis complete ✓", state="complete")
 
-    st.success("Analysis complete ✓")
+    st.success(f"Analysis complete ✓ Total: {_fmt_seconds(st.session_state.analysis_timing.get('total_s') or 0)}")
 
 st.markdown('<div class="section-gap"></div>', unsafe_allow_html=True)
 
 with st.container():
     st.markdown("## Results Section")
-    if st.session_state.analysis_complete:
+    if st.session_state.analysis_complete or bool(st.session_state.get("transcript")):
         st.markdown('<div class="result-card">', unsafe_allow_html=True)
         st.markdown("### Transcript")
         transcript_text = st.session_state.get("transcript") or ""
@@ -1259,12 +1383,31 @@ with st.container():
 
         st.markdown('<div class="result-card">', unsafe_allow_html=True)
         st.markdown("### Feedback Summary")
-        feedback_md = build_sorted_feedback_markdown(st.session_state.get("feedback", []))
-        if feedback_md:
-            st.markdown(feedback_md)
+        if st.session_state.analysis_complete:
+            feedback_md = build_sorted_feedback_markdown(st.session_state.get("feedback", []))
+            if feedback_md:
+                st.markdown(feedback_md)
+            else:
+                st.caption("No feedback available.")
         else:
-            st.caption("No feedback available.")
+            st.caption("Transcript is ready. Feedback is still generating...")
         st.markdown("</div>", unsafe_allow_html=True)
+
+        timing = st.session_state.get("analysis_timing") or {}
+        if timing.get("total_s") is not None:
+            st.markdown('<div class="result-card">', unsafe_allow_html=True)
+            st.markdown("### Processing Time")
+            st.markdown(
+                "\n".join(
+                    [
+                        f"- Total: {_fmt_seconds(timing.get('total_s'))}",
+                        f"- Audio prep: {_fmt_seconds(timing.get('audio_prep_s') or 0)}",
+                        f"- Transcription: {_fmt_seconds(timing.get('transcription_s') or 0)}",
+                        f"- OpenAI feedback: {_fmt_seconds(timing.get('openai_s') or 0)}",
+                    ]
+                )
+            )
+            st.markdown("</div>", unsafe_allow_html=True)
 
         with st.expander("Detailed Output", expanded=False):
             st.markdown("#### Diarization")
@@ -1277,7 +1420,8 @@ with st.container():
             else:
                 st.caption("No diarization output.")
             st.markdown("#### Raw Structured Output")
-            st.json(st.session_state.get("replicate_output", {}))
+            if st.checkbox("Show raw structured JSON", key="show_raw_structured_output"):
+                st.json(st.session_state.get("replicate_output", {}))
     else:
         st.caption("Run analysis to view transcript and feedback.")
 
@@ -1295,6 +1439,7 @@ with st.expander("Advanced Diagnostics", expanded=False):
             "openai_key_present": bool(os.environ.get("OPENAI_API_KEY")),
             "replicate_key_present": bool(os.environ.get("REPLICATE_API_TOKEN")),
             "event_log_path": APP_EVENT_LOG,
+            "analysis_timing": st.session_state.get("analysis_timing", {}),
         }
     )
     recent_events = read_recent_events(limit=12)
