@@ -6,3 +6,5 @@ openai
 replicate
 typing_extensions
 requests
+websocket-client
+deepgram-sdk

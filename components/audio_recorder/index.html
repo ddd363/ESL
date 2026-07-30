@@ -104,9 +104,15 @@
       let micInitPromise = null;
       let recording = false;
       let buffers = [];
+      let liveChunkBuffers = [];
+      let liveChunkSamples = 0;
+      let liveChunkSeq = 0;
       let recordingStartMs = null;
       let timerIntervalId = null;
       let selectedDeviceId = "";
+      // 0.5 s keeps one chunk per Streamlit rerun cycle (rerun ≈ 200-300 ms),
+      // reducing component-value drops that silence the Deepgram audio pipeline.
+      const LIVE_CHUNK_INTERVAL_SECONDS = 0.5;
 
       function setRecordingUiState() {
         microphoneSelect.disabled = recording;
@@ -306,7 +312,11 @@
                 return;
               }
               const channel = event.inputBuffer.getChannelData(0);
-              buffers.push(new Float32Array(channel));
+              const chunk = new Float32Array(channel);
+              buffers.push(chunk);
+              liveChunkBuffers.push(chunk);
+              liveChunkSamples += chunk.length;
+              flushLiveChunk(false);
             };
             input.connect(analyser);
             analyser.connect(processor);
@@ -370,6 +380,15 @@
         return new Uint8Array(buffer);
       }
 
+      function float32ToPcm16Bytes(samples) {
+        const pcm = new Int16Array(samples.length);
+        for (let i = 0; i < samples.length; i += 1) {
+          const s = Math.max(-1, Math.min(1, samples[i]));
+          pcm[i] = s < 0 ? s * 0x8000 : s * 0x7fff;
+        }
+        return new Uint8Array(pcm.buffer);
+      }
+
       function uint8ToBase64(uint8) {
         let binary = "";
         const chunkSize = 0x8000;
@@ -380,11 +399,45 @@
         return btoa(binary);
       }
 
+      function flushLiveChunk(force = false) {
+        if (!audioContext) {
+          return;
+        }
+        const sampleRate = audioContext.sampleRate || 44100;
+        const thresholdSamples = Math.max(1, Math.floor(sampleRate * LIVE_CHUNK_INTERVAL_SECONDS));
+        if (!force && liveChunkSamples < thresholdSamples) {
+          return;
+        }
+        if (!liveChunkBuffers.length) {
+          return;
+        }
+        const merged = mergeBuffers(liveChunkBuffers);
+        const pcm16 = float32ToPcm16Bytes(merged);
+        if (!pcm16.length) {
+          liveChunkBuffers = [];
+          liveChunkSamples = 0;
+          return;
+        }
+        streamlitBridge.setComponentValue({
+          event: "recording_chunk",
+          t: Date.now(),
+          seq: liveChunkSeq,
+          sample_rate: sampleRate,
+          pcm16_base64: uint8ToBase64(pcm16),
+        });
+        liveChunkSeq += 1;
+        liveChunkBuffers = [];
+        liveChunkSamples = 0;
+      }
+
       async function startRecording() {
         if (recording) {
           return;
         }
         buffers = [];
+        liveChunkBuffers = [];
+        liveChunkSamples = 0;
+        liveChunkSeq = 0;
         errorEl.textContent = "";
         emitEvent("start_clicked");
         try {
@@ -399,7 +452,7 @@
           setStatus("Recording... 00:00");
           startTimer();
           drawWaveform();
-          emitEvent("recording_started");
+          emitEvent("recording_started", { sample_rate: audioContext ? audioContext.sampleRate : null });
         } catch (err) {
           errorEl.textContent = "Microphone access denied or unavailable.";
           setStatus("Not recording");
@@ -425,6 +478,7 @@
           cancelAnimationFrame(animationId);
           animationId = null;
         }
+        flushLiveChunk(true);
         clearWaveform();
         const sampleRate = audioContext ? audioContext.sampleRate : 44100;
         if (!buffers.length) {

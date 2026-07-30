@@ -109,5 +109,4 @@ git push origin main
 ## Notes
 
 - `baseurl` is set to `/ESL` for GitHub project pages.
-- Local bead tracking files are ignored via `.gitignore` (`.beads/`).
 - Hosted `/admin` login via OAuth proxy is optional and only needed for remote browser-only editing.

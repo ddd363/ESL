@@ -1,4 +1,4 @@
 *.m4a
 *.wav
 .conda/
-.beads/
+.env.project1.local
