@@ -5,15 +5,52 @@
     <style>
       body {
         margin: 0;
-        font-family: 'Inter', sans-serif;
+        color: #202735;
+        font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
       #recorder {
-        padding: 8px 0;
+        padding: 4px 0 8px;
       }
       #controls {
         display: flex;
         gap: 8px;
         align-items: center;
+        flex-wrap: wrap;
+      }
+      #start, #stop {
+        min-width: 180px;
+        min-height: 40px;
+        border: 0;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+      #start {
+        background: #166e55;
+        color: #ffffff;
+      }
+      #start:hover, #start:focus-visible {
+        background: #0f5743;
+      }
+      #stop {
+        background: #c4321c;
+        color: #ffffff;
+      }
+      #stop:disabled {
+        background: #d8dde5;
+        color: #596273;
+        cursor: not-allowed;
+      }
+      #start:focus-visible, #stop:focus-visible, #microphone:focus-visible {
+        outline: 3px solid #175cd3;
+        outline-offset: 2px;
+      }
+      #status {
+        color: #384152;
+        font-size: 14px;
+        font-weight: 600;
       }
       #deviceRow {
         display: flex;
@@ -22,28 +59,44 @@
         margin-top: 8px;
       }
       #microphone {
-        min-width: 240px;
+        width: min(100%, 240px);
         max-width: 100%;
       }
       #waveform {
         width: 100%;
         max-width: 520px;
         margin-top: 8px;
-        background: #f6f7f8;
+        background: #eef3f2;
         border-radius: 6px;
+      }
+      #recorder:not(.recording) #waveform {
+        display: none;
       }
       #error {
         color: #b00020;
         margin-top: 6px;
+      }
+      body.compact {
+        min-height: 42px;
+        padding: 2px 6px;
+      }
+      body.compact #deviceRow,
+      body.compact #waveform,
+      body.compact #error,
+      body.compact #status {
+        display: none;
+      }
+      body.compact #controls {
+        min-height: 38px;
       }
     </style>
   </head>
   <body>
     <div id="recorder">
       <div id="controls">
-        <button id="start" style="padding: 6px 12px;">START</button>
-        <button id="stop" style="padding: 6px 12px;" disabled>STOP</button>
-        <span id="status">Not recording</span>
+        <button id="start" type="button" aria-keyshortcuts="Space">Start listening</button>
+        <button id="stop" type="button" aria-keyshortcuts="Space" disabled>Stop</button>
+        <span id="status" role="status" aria-live="polite">Ready to start</span>
       </div>
       <div id="deviceRow">
         <label for="microphone">Microphone</label>
@@ -88,11 +141,14 @@
 
       const startBtn = document.getElementById("start");
       const stopBtn = document.getElementById("stop");
+      const recorderEl = document.getElementById("recorder");
       const statusEl = document.getElementById("status");
       const errorEl = document.getElementById("error");
       const microphoneSelect = document.getElementById("microphone");
       const canvas = document.getElementById("waveform");
       const ctx = canvas.getContext("2d");
+      const compactMode = new URLSearchParams(window.location.search).get("compact") === "true";
+      if (compactMode) document.body.classList.add("compact");
 
       let audioContext = null;
       let mediaStream = null;
@@ -116,6 +172,7 @@
 
       function setRecordingUiState() {
         microphoneSelect.disabled = recording;
+        recorderEl.classList.toggle("recording", recording);
       }
 
       function emitEvent(eventName, extra = {}) {
@@ -506,15 +563,32 @@
 
       startBtn.addEventListener("click", startRecording);
       stopBtn.addEventListener("click", stopRecording);
+      document.addEventListener("keydown", (event) => {
+        const target = event.target;
+        if (event.key !== " " || target === microphoneSelect || target === startBtn || target === stopBtn) {
+          return;
+        }
+        event.preventDefault();
+        if (recording) {
+          stopRecording();
+        } else {
+          startRecording();
+        }
+      });
       navigator.mediaDevices?.addEventListener?.("devicechange", refreshMicrophones);
+      function updateFrameHeight() {
+        streamlitBridge.setFrameHeight(document.documentElement.scrollHeight);
+      }
+
       streamlitBridge.setComponentReady();
-      streamlitBridge.setFrameHeight(200);
+      updateFrameHeight();
       emitEvent("component_ready");
       setStatus("Ready to start");
       setRecordingUiState();
       clearWaveform();
       refreshMicrophones();
-      setTimeout(() => streamlitBridge.setFrameHeight(250), 250);
+      new ResizeObserver(updateFrameHeight).observe(document.documentElement);
+      setTimeout(updateFrameHeight, 250);
     </script>
   </body>
 </html>

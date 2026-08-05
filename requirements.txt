@@ -8,3 +8,4 @@ typing_extensions
 requests
 websocket-client
 deepgram-sdk
+rapidfuzz

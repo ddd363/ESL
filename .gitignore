@@ -2,3 +2,7 @@
 *.wav
 .conda/
 .env.project1.local
+evaluation/annotations.csv
+evaluation/manifest.csv
+evaluation/predictions/
+evaluation/results/
