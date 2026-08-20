@@ -17,15 +17,14 @@
         align-items: center;
         flex-wrap: wrap;
       }
-      #start, #stop {
-        min-width: 180px;
+      #start, #pause, #stop {
+        min-width: 140px;
         min-height: 40px;
         border: 0;
         border-radius: 6px;
         cursor: pointer;
         font-size: 14px;
         font-weight: 700;
-        letter-spacing: 0;
       }
       #start {
         background: #166e55;
@@ -34,16 +33,21 @@
       #start:hover, #start:focus-visible {
         background: #0f5743;
       }
+      #pause {
+        background: #b7791f;
+        color: #ffffff;
+      }
       #stop {
         background: #c4321c;
         color: #ffffff;
       }
-      #stop:disabled {
+      #start:disabled, #pause:disabled, #stop:disabled {
         background: #d8dde5;
         color: #596273;
         cursor: not-allowed;
       }
-      #start:focus-visible, #stop:focus-visible, #microphone:focus-visible {
+      #start:focus-visible, #pause:focus-visible, #stop:focus-visible,
+      select:focus-visible, input:focus-visible {
         outline: 3px solid #175cd3;
         outline-offset: 2px;
       }
@@ -52,59 +56,106 @@
         font-size: 14px;
         font-weight: 600;
       }
+      #recorder.paused #status {
+        color: #b7791f;
+      }
       #deviceRow {
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 8px;
-        align-items: center;
         margin-top: 8px;
       }
-      #microphone {
+      .input-party {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+        gap: 6px 8px;
+      }
+      .input-party select {
         width: min(100%, 240px);
         max-width: 100%;
       }
-      #waveform {
-        width: 100%;
-        max-width: 520px;
+      .input-party label[for$="Enabled"] {
+        grid-column: 1 / -1;
+        font-size: 13px;
+      }
+      .loopback-toggle {
+        grid-column: 1 / -1;
+        font-size: 13px;
+      }
+      .mic-mode {
+        grid-column: 1 / -1;
+        font-size: 12px;
+        color: #596273;
+      }
+      .mic-mode.loopback {
+        color: #0f5743;
+        font-weight: 600;
+      }
+      #waveformRow {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
         margin-top: 8px;
+      }
+      .waveform-block {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .waveform-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #384152;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .waveform-block canvas {
+        width: min(100%, 260px);
         background: #eef3f2;
         border-radius: 6px;
       }
-      #recorder:not(.recording) #waveform {
+      #recorder:not(.recording):not(.paused) #waveformRow {
         display: none;
       }
       #error {
         color: #b00020;
         margin-top: 6px;
       }
-      body.compact {
-        min-height: 42px;
-        padding: 2px 6px;
-      }
-      body.compact #deviceRow,
-      body.compact #waveform,
-      body.compact #error,
-      body.compact #status {
-        display: none;
-      }
-      body.compact #controls {
-        min-height: 38px;
-      }
     </style>
   </head>
   <body>
     <div id="recorder">
       <div id="controls">
-        <button id="start" type="button" aria-keyshortcuts="Space">Start listening</button>
-        <button id="stop" type="button" aria-keyshortcuts="Space" disabled>Stop</button>
+        <button id="start" type="button">Start lesson</button>
+        <button id="pause" type="button" aria-keyshortcuts="Space" disabled>Pause</button>
+        <button id="stop" type="button" disabled>End lesson</button>
         <span id="status" role="status" aria-live="polite">Ready to start</span>
       </div>
       <div id="deviceRow">
-        <label for="microphone">Microphone</label>
-        <select id="microphone">
-          <option value="">Default microphone</option>
-        </select>
+        <div class="input-party">
+          <label for="studentMicrophone">Student microphone</label>
+          <select id="studentMicrophone"><option value="">Default microphone</option></select>
+          <label for="studentLoopback" class="loopback-toggle"><input id="studentLoopback" type="checkbox"> System audio (no echo cancellation)</label>
+          <span class="mic-mode" id="studentMode"></span>
+        </div>
+        <div class="input-party">
+          <label for="teacherMicrophone">Teacher microphone</label>
+          <select id="teacherMicrophone"><option value="">Default microphone</option></select>
+          <label for="teacherLoopback" class="loopback-toggle"><input id="teacherLoopback" type="checkbox"> System audio (no echo cancellation)</label>
+          <span class="mic-mode" id="teacherMode"></span>
+        </div>
       </div>
-      <canvas id="waveform" width="520" height="70"></canvas>
+      <div id="waveformRow">
+        <div class="waveform-block">
+          <span class="waveform-label">Student</span>
+          <canvas id="waveformStudent" width="520" height="70"></canvas>
+        </div>
+        <div class="waveform-block">
+          <span class="waveform-label">Teacher</span>
+          <canvas id="waveformTeacher" width="520" height="70"></canvas>
+        </div>
+      </div>
       <div id="error"></div>
     </div>
     <script>
@@ -140,39 +191,78 @@
       })();
 
       const startBtn = document.getElementById("start");
+      const pauseBtn = document.getElementById("pause");
       const stopBtn = document.getElementById("stop");
       const recorderEl = document.getElementById("recorder");
       const statusEl = document.getElementById("status");
       const errorEl = document.getElementById("error");
-      const microphoneSelect = document.getElementById("microphone");
-      const canvas = document.getElementById("waveform");
-      const ctx = canvas.getContext("2d");
-      const compactMode = new URLSearchParams(window.location.search).get("compact") === "true";
-      if (compactMode) document.body.classList.add("compact");
+      const studentMicrophoneSelect = document.getElementById("studentMicrophone");
+      const teacherMicrophoneSelect = document.getElementById("teacherMicrophone");
+      const studentEnabledInput = document.getElementById("studentEnabled");
+      const teacherEnabledInput = document.getElementById("teacherEnabled");
+      const waveforms = {
+        student: document.getElementById("waveformStudent").getContext("2d"),
+        teacher: document.getElementById("waveformTeacher").getContext("2d"),
+      };
 
-      let audioContext = null;
-      let mediaStream = null;
-      let processor = null;
-      let input = null;
-      let analyser = null;
+      const sources = {
+        // "preferred" patterns are tried in order; "avoid" always excludes a device
+        // (e.g. aggregate/multi-output devices, which must never be auto-picked).
+        student: { label: "Student", select: studentMicrophoneSelect, preferred: [/blackhole\s*2\s*ch/i, /blackhole/i], avoid: /aggregate|multi[- ]?output/i, modeEl: document.getElementById("studentMode"), loopbackEl: document.getElementById("studentLoopback") },
+        teacher: { label: "Teacher", select: teacherMicrophoneSelect, preferred: [/macbook air|built-in|internal/i], avoid: /blackhole|aggregate|multi[- ]?output/i, modeEl: document.getElementById("teacherMode"), loopbackEl: document.getElementById("teacherLoopback") },
+      };
+      // Virtual/loopback inputs carry system audio rather than room sound.
+      // Chrome's echo canceller subtracts the browser's OWN playback from the
+      // capture, which silences anything played in this browser and routed back
+      // through the loopback device. Browser processing must be off for these.
+      const LOOPBACK_DEVICE_PATTERN = /blackhole|loopback|soundflower|virtual|aggregate|multi-output|vb-?cable/i;
       let animationId = null;
-      let micReady = false;
-      let micInitPromise = null;
-      let recording = false;
-      let buffers = [];
-      let liveChunkBuffers = [];
-      let liveChunkSamples = 0;
-      let liveChunkSeq = 0;
-      let recordingStartMs = null;
+      // Lesson state machine: idle -> recording <-> paused -> idle (after End).
+      let lessonState = "idle";
       let timerIntervalId = null;
-      let selectedDeviceId = "";
+      // Active (unpaused) lesson time, accumulated across pauses.
+      let activeMs = 0;
+      let lastResumeMs = null;
       // 0.5 s keeps one chunk per Streamlit rerun cycle (rerun ≈ 200-300 ms),
       // reducing component-value drops that silence the Deepgram audio pipeline.
       const LIVE_CHUNK_INTERVAL_SECONDS = 0.5;
+      // MediaRecorder timeslice: hand back compressed chunks regularly so a
+      // whole lesson never sits in one giant buffer.
+      const MEDIA_RECORDER_TIMESLICE_MS = 5000;
 
-      function setRecordingUiState() {
-        microphoneSelect.disabled = recording;
-        recorderEl.classList.toggle("recording", recording);
+      for (const source of Object.values(sources)) {
+        source.selectedDeviceId = "";
+        source.selectedDeviceLabel = "";
+        source.isLoopback = false;
+        source.loopbackTouched = false;
+        source.audioContext = null;
+        source.mediaStream = null;
+        source.processor = null;
+        source.input = null;
+        source.analyser = null;
+        source.ready = false;
+        source.initPromise = null;
+        source.liveChunkBuffers = [];
+        source.liveChunkSamples = 0;
+        source.liveChunkSeq = 0;
+        source.mediaRecorder = null;
+        source.mediaChunks = [];
+        source.mediaMimeType = "";
+      }
+
+      function setUiState() {
+        for (const source of Object.values(sources)) {
+          source.select.disabled = lessonState !== "idle";
+          if (source.loopbackEl) {
+            source.loopbackEl.disabled = lessonState !== "idle";
+          }
+        }
+        recorderEl.classList.toggle("recording", lessonState === "recording");
+        recorderEl.classList.toggle("paused", lessonState === "paused");
+        startBtn.disabled = lessonState !== "idle";
+        pauseBtn.disabled = lessonState !== "recording" && lessonState !== "paused";
+        stopBtn.disabled = lessonState !== "recording" && lessonState !== "paused";
+        pauseBtn.textContent = lessonState === "paused" ? "Resume" : "Pause";
       }
 
       function emitEvent(eventName, extra = {}) {
@@ -192,21 +282,33 @@
       }
 
       function formatElapsed(totalSeconds) {
-        const m = Math.floor(totalSeconds / 60);
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
         const s = totalSeconds % 60;
-        return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        const ms = `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+        return h > 0 ? `${h}:${ms}` : ms;
+      }
+
+      function currentActiveMs() {
+        let total = activeMs;
+        if (lessonState === "recording" && lastResumeMs !== null) {
+          total += Date.now() - lastResumeMs;
+        }
+        return total;
+      }
+
+      function updateTimerStatus() {
+        const elapsed = Math.max(0, Math.floor(currentActiveMs() / 1000));
+        if (lessonState === "recording") {
+          setStatus(`Recording lesson... ${formatElapsed(elapsed)}`);
+        } else if (lessonState === "paused") {
+          setStatus(`Paused at ${formatElapsed(elapsed)}`);
+        }
       }
 
       function startTimer() {
         stopTimer();
-        recordingStartMs = Date.now();
-        timerIntervalId = setInterval(() => {
-          if (!recording || !recordingStartMs) {
-            return;
-          }
-          const elapsed = Math.max(0, Math.floor((Date.now() - recordingStartMs) / 1000));
-          setStatus(`Recording... ${formatElapsed(elapsed)}`);
-        }, 250);
+        timerIntervalId = setInterval(updateTimerStatus, 250);
       }
 
       function stopTimer() {
@@ -214,83 +316,130 @@
           clearInterval(timerIntervalId);
           timerIntervalId = null;
         }
-        recordingStartMs = null;
       }
 
       function clearWaveform() {
-        ctx.fillStyle = "#f6f7f8";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        for (const waveCtx of Object.values(waveforms)) {
+          waveCtx.fillStyle = "#f6f7f8";
+          waveCtx.fillRect(0, 0, waveCtx.canvas.width, waveCtx.canvas.height);
+        }
       }
 
-      function cleanupMic() {
+      function cleanupSource(source) {
         if (animationId) {
           cancelAnimationFrame(animationId);
           animationId = null;
         }
-        if (processor) {
+        if (source.mediaRecorder) {
           try {
-            processor.disconnect();
+            if (source.mediaRecorder.state !== "inactive") {
+              source.mediaRecorder.stop();
+            }
           } catch (err) {
             // ignore
           }
-          processor = null;
+          source.mediaRecorder = null;
         }
-        if (analyser) {
+        if (source.processor) {
           try {
-            analyser.disconnect();
+            source.processor.disconnect();
           } catch (err) {
             // ignore
           }
-          analyser = null;
+          source.processor = null;
         }
-        if (input) {
+        if (source.analyser) {
           try {
-            input.disconnect();
+            source.analyser.disconnect();
           } catch (err) {
             // ignore
           }
-          input = null;
+          source.analyser = null;
         }
-        if (mediaStream) {
-          mediaStream.getTracks().forEach((track) => {
+        if (source.input) {
+          try {
+            source.input.disconnect();
+          } catch (err) {
+            // ignore
+          }
+          source.input = null;
+        }
+        if (source.mediaStream) {
+          source.mediaStream.getTracks().forEach((track) => {
             try {
               track.stop();
             } catch (err) {
               // ignore
             }
           });
-          mediaStream = null;
+          source.mediaStream = null;
         }
-        if (audioContext) {
+        if (source.audioContext) {
           try {
-            audioContext.close();
+            source.audioContext.close();
           } catch (err) {
             // ignore
           }
-          audioContext = null;
+          source.audioContext = null;
         }
-        micReady = false;
-        micInitPromise = null;
+        source.ready = false;
+        source.initPromise = null;
       }
 
-      function setMicOptions(devices) {
-        const previousValue = selectedDeviceId || microphoneSelect.value || "";
-        microphoneSelect.innerHTML = "";
+      function setMicOptions(source, devices) {
+        const previousValue = source.selectedDeviceId || source.select.value || "";
+        source.select.innerHTML = "";
         const defaultOption = document.createElement("option");
         defaultOption.value = "";
         defaultOption.textContent = "Default microphone";
-        microphoneSelect.appendChild(defaultOption);
+        source.select.appendChild(defaultOption);
 
         devices.forEach((device, idx) => {
           const option = document.createElement("option");
           option.value = device.deviceId;
           option.textContent = device.label || `Microphone ${idx + 1}`;
-          microphoneSelect.appendChild(option);
+          source.select.appendChild(option);
         });
 
         const hasPrevious = devices.some((device) => device.deviceId === previousValue);
-        selectedDeviceId = hasPrevious ? previousValue : "";
-        microphoneSelect.value = selectedDeviceId;
+        let nextValue = hasPrevious ? previousValue : "";
+        if (!nextValue && source.preferred) {
+          for (const pattern of source.preferred) {
+            const preferredDevice = devices.find(
+              (device) =>
+                pattern.test(device.label || "")
+                && !(source.avoid && source.avoid.test(device.label || ""))
+            );
+            if (preferredDevice) {
+              nextValue = preferredDevice.deviceId;
+              break;
+            }
+          }
+        }
+        source.selectedDeviceId = nextValue;
+        source.select.value = source.selectedDeviceId;
+        const selectedDevice = devices.find((device) => device.deviceId === nextValue);
+        source.selectedDeviceLabel = selectedDevice ? selectedDevice.label || "" : "";
+        updateModeHint(source);
+      }
+
+      function updateModeHint(source) {
+        // Device labels are blank until mic permission is granted, so auto-detection
+        // can only advise. Never override a choice the user made by hand.
+        if (source.loopbackEl && !source.loopbackTouched) {
+          const detected = LOOPBACK_DEVICE_PATTERN.test(source.selectedDeviceLabel || "");
+          if (detected) {
+            source.loopbackEl.checked = true;
+          }
+        }
+        if (!source.modeEl) {
+          return;
+        }
+        const isLoopback = Boolean(source.loopbackEl && source.loopbackEl.checked);
+        source.modeEl.classList.toggle("loopback", isLoopback);
+        source.modeEl.textContent = isLoopback
+          ? "System audio mode — browser processing off"
+          : "Room mic mode — echo cancellation on";
       }
 
       async function refreshMicrophones() {
@@ -300,10 +449,13 @@
         try {
           const devices = await navigator.mediaDevices.enumerateDevices();
           const microphones = devices.filter((device) => device.kind === "audioinput");
-          setMicOptions(microphones);
+          for (const source of Object.values(sources)) {
+            setMicOptions(source, microphones);
+          }
           emitEvent("microphones_listed", {
             count: microphones.length,
-            selected_device_id: selectedDeviceId || null,
+            student_device_id: sources.student.selectedDeviceId || null,
+            teacher_device_id: sources.teacher.selectedDeviceId || null,
           });
         } catch (err) {
           emitEvent("microphones_list_error", { message: String(err) });
@@ -311,91 +463,138 @@
       }
 
       function drawWaveform() {
-        if (!analyser) {
-          return;
-        }
-        const bufferLength = analyser.fftSize;
-        const dataArray = new Uint8Array(bufferLength);
-        analyser.getByteTimeDomainData(dataArray);
-
-        ctx.fillStyle = "#f6f7f8";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "#2d3a4a";
-        ctx.beginPath();
-
-        const sliceWidth = canvas.width / bufferLength;
-        let x = 0;
-        for (let i = 0; i < bufferLength; i += 1) {
-          const v = dataArray[i] / 128.0;
-          const y = (v * canvas.height) / 2;
-          if (i === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
+        for (const [sourceName, waveCtx] of Object.entries(waveforms)) {
+          const source = sources[sourceName];
+          const waveCanvas = waveCtx.canvas;
+          waveCtx.fillStyle = "#f6f7f8";
+          waveCtx.fillRect(0, 0, waveCanvas.width, waveCanvas.height);
+          if (!source.analyser || !source.ready) {
+            continue;
           }
-          x += sliceWidth;
+          const bufferLength = source.analyser.fftSize;
+          const dataArray = new Uint8Array(bufferLength);
+          source.analyser.getByteTimeDomainData(dataArray);
+
+          waveCtx.lineWidth = 2;
+          waveCtx.strokeStyle = sourceName === "student" ? "#166e55" : "#175cd3";
+          waveCtx.beginPath();
+
+          const sliceWidth = waveCanvas.width / bufferLength;
+          let x = 0;
+          for (let i = 0; i < bufferLength; i += 1) {
+            const v = dataArray[i] / 128.0;
+            const y = (v * waveCanvas.height) / 2;
+            if (i === 0) {
+              waveCtx.moveTo(x, y);
+            } else {
+              waveCtx.lineTo(x, y);
+            }
+            x += sliceWidth;
+          }
+          waveCtx.lineTo(waveCanvas.width, waveCanvas.height / 2);
+          waveCtx.stroke();
         }
-        ctx.lineTo(canvas.width, canvas.height / 2);
-        ctx.stroke();
         animationId = requestAnimationFrame(drawWaveform);
       }
 
-      async function initMic() {
-        if (micReady) {
+      function pickMediaRecorderMime() {
+        if (typeof MediaRecorder === "undefined" || !MediaRecorder.isTypeSupported) {
+          return "";
+        }
+        const candidates = [
+          "audio/webm;codecs=opus",
+          "audio/webm",
+          "audio/mp4",
+          "audio/ogg;codecs=opus",
+        ];
+        return candidates.find((mime) => MediaRecorder.isTypeSupported(mime)) || "";
+      }
+
+      function startMediaRecorder(source) {
+        if (typeof MediaRecorder === "undefined" || !source.mediaStream) {
           return;
         }
-        if (micInitPromise) {
-          return micInitPromise;
+        try {
+          const mime = pickMediaRecorderMime();
+          const options = mime ? { mimeType: mime, audioBitsPerSecond: 64000 } : { audioBitsPerSecond: 64000 };
+          source.mediaChunks = [];
+          source.mediaRecorder = new MediaRecorder(source.mediaStream, options);
+          source.mediaMimeType = source.mediaRecorder.mimeType || mime || "audio/webm";
+          source.mediaRecorder.ondataavailable = (event) => {
+            if (event.data && event.data.size > 0) {
+              source.mediaChunks.push(event.data);
+            }
+          };
+          source.mediaRecorder.start(MEDIA_RECORDER_TIMESLICE_MS);
+        } catch (err) {
+          source.mediaRecorder = null;
+          emitEvent("media_recorder_error", { message: String(err) });
+        }
+      }
+
+      async function initSource(sourceName) {
+        const source = sources[sourceName];
+        if (source.ready) {
+          return;
+        }
+        if (source.initPromise) {
+          return source.initPromise;
         }
         errorEl.textContent = "";
-        micInitPromise = (async () => {
+        source.initPromise = (async () => {
           try {
-            setStatus("Requesting mic access...");
-            const constraints = selectedDeviceId
-              ? { audio: { deviceId: { exact: selectedDeviceId } } }
-              : { audio: true };
-            mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioContext.state === "suspended") {
-              await audioContext.resume();
+            setStatus(`Requesting ${source.label.toLowerCase()} microphone...`);
+            const isLoopback = Boolean(source.loopbackEl && source.loopbackEl.checked);
+            const audioConstraints = {};
+            if (source.selectedDeviceId) {
+              audioConstraints.deviceId = { exact: source.selectedDeviceId };
             }
-            input = audioContext.createMediaStreamSource(mediaStream);
-            analyser = audioContext.createAnalyser();
-            analyser.fftSize = 2048;
-            processor = audioContext.createScriptProcessor(4096, 1, 1);
-            processor.onaudioprocess = (event) => {
-              if (!recording) {
+            if (isLoopback) {
+              // Without these, Chrome cancels out audio this browser is playing.
+              audioConstraints.echoCancellation = false;
+              audioConstraints.noiseSuppression = false;
+              audioConstraints.autoGainControl = false;
+            }
+            source.isLoopback = isLoopback;
+            source.mediaStream = await navigator.mediaDevices.getUserMedia({ audio: audioConstraints });
+            source.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (source.audioContext.state === "suspended") {
+              await source.audioContext.resume();
+            }
+            source.input = source.audioContext.createMediaStreamSource(source.mediaStream);
+            source.analyser = source.audioContext.createAnalyser();
+            source.analyser.fftSize = 2048;
+            source.processor = source.audioContext.createScriptProcessor(4096, 1, 1);
+            source.processor.onaudioprocess = (event) => {
+              if (lessonState !== "recording") {
                 return;
               }
               const channel = event.inputBuffer.getChannelData(0);
               const chunk = new Float32Array(channel);
-              buffers.push(chunk);
-              liveChunkBuffers.push(chunk);
-              liveChunkSamples += chunk.length;
-              flushLiveChunk(false);
+              source.liveChunkBuffers.push(chunk);
+              source.liveChunkSamples += chunk.length;
+              flushLiveChunk(sourceName, false);
             };
-            input.connect(analyser);
-            analyser.connect(processor);
-            processor.connect(audioContext.destination);
-            micReady = true;
+            source.input.connect(source.analyser);
+            source.analyser.connect(source.processor);
+            source.processor.connect(source.audioContext.destination);
+            source.ready = true;
             setStatus("Ready");
             await refreshMicrophones();
-            emitEvent("mic_ready", { sample_rate: audioContext.sampleRate });
+            emitEvent("mic_ready", {
+              source: sourceName,
+              sample_rate: source.audioContext.sampleRate,
+              device_label: source.selectedDeviceLabel || "default",
+              loopback_mode: isLoopback,
+            });
           } catch (err) {
-            errorEl.textContent = "Microphone access denied or unavailable.";
+            errorEl.textContent = `${source.label} microphone access denied or unavailable.`;
             setStatus("Not recording");
-            emitEvent("mic_error", { message: String(err) });
-            micInitPromise = null;
+            emitEvent("mic_error", { source: sourceName, message: String(err) });
+            cleanupSource(source);
           }
         })();
-        return micInitPromise;
-      }
-
-      function writeString(view, offset, text) {
-        for (let i = 0; i < text.length; i += 1) {
-          view.setUint8(offset + i, text.charCodeAt(i));
-        }
+        return source.initPromise;
       }
 
       function mergeBuffers(chunks) {
@@ -410,31 +609,6 @@
           offset += c.length;
         });
         return result;
-      }
-
-      function encodeWav(samples, sampleRate) {
-        const buffer = new ArrayBuffer(44 + samples.length * 2);
-        const view = new DataView(buffer);
-        writeString(view, 0, "RIFF");
-        view.setUint32(4, 36 + samples.length * 2, true);
-        writeString(view, 8, "WAVE");
-        writeString(view, 12, "fmt ");
-        view.setUint32(16, 16, true);
-        view.setUint16(20, 1, true);
-        view.setUint16(22, 1, true);
-        view.setUint32(24, sampleRate, true);
-        view.setUint32(28, sampleRate * 2, true);
-        view.setUint16(32, 2, true);
-        view.setUint16(34, 16, true);
-        writeString(view, 36, "data");
-        view.setUint32(40, samples.length * 2, true);
-        let offset = 44;
-        for (let i = 0; i < samples.length; i += 1) {
-          let s = Math.max(-1, Math.min(1, samples[i]));
-          view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7fff, true);
-          offset += 2;
-        }
-        return new Uint8Array(buffer);
       }
 
       function float32ToPcm16Bytes(samples) {
@@ -456,123 +630,255 @@
         return btoa(binary);
       }
 
-      function flushLiveChunk(force = false) {
-        if (!audioContext) {
+      function flushLiveChunk(sourceName, force = false) {
+        const source = sources[sourceName];
+        if (!source.audioContext) {
           return;
         }
-        const sampleRate = audioContext.sampleRate || 44100;
+        const sampleRate = source.audioContext.sampleRate || 44100;
         const thresholdSamples = Math.max(1, Math.floor(sampleRate * LIVE_CHUNK_INTERVAL_SECONDS));
-        if (!force && liveChunkSamples < thresholdSamples) {
+        if (!force && source.liveChunkSamples < thresholdSamples) {
           return;
         }
-        if (!liveChunkBuffers.length) {
+        if (!source.liveChunkBuffers.length) {
           return;
         }
-        const merged = mergeBuffers(liveChunkBuffers);
+        const merged = mergeBuffers(source.liveChunkBuffers);
         const pcm16 = float32ToPcm16Bytes(merged);
+        source.liveChunkBuffers = [];
+        source.liveChunkSamples = 0;
         if (!pcm16.length) {
-          liveChunkBuffers = [];
-          liveChunkSamples = 0;
           return;
         }
         streamlitBridge.setComponentValue({
           event: "recording_chunk",
           t: Date.now(),
-          seq: liveChunkSeq,
+          source: sourceName,
+          seq: source.liveChunkSeq,
           sample_rate: sampleRate,
           pcm16_base64: uint8ToBase64(pcm16),
         });
-        liveChunkSeq += 1;
-        liveChunkBuffers = [];
-        liveChunkSamples = 0;
+        source.liveChunkSeq += 1;
       }
 
-      async function startRecording() {
-        if (recording) {
+      function blobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = () => reject(reader.error);
+          reader.onload = () => {
+            const result = String(reader.result || "");
+            const commaAt = result.indexOf(",");
+            resolve(commaAt >= 0 ? result.slice(commaAt + 1) : result);
+          };
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      function stopMediaRecorder(source) {
+        return new Promise((resolve) => {
+          const recorder = source.mediaRecorder;
+          if (!recorder || recorder.state === "inactive") {
+            resolve();
+            return;
+          }
+          recorder.onstop = () => resolve();
+          try {
+            recorder.stop();
+          } catch (err) {
+            resolve();
+          }
+        });
+      }
+
+      async function startLesson() {
+        if (lessonState !== "idle") {
           return;
         }
-        buffers = [];
-        liveChunkBuffers = [];
-        liveChunkSamples = 0;
-        liveChunkSeq = 0;
+        // Both microphones always record and transcribe. Who is *shown* in the
+        // on-screen transcript is a display filter in the app, not a capture setting.
+        const allSources = Object.entries(sources);
+        for (const [, source] of allSources) {
+          source.liveChunkBuffers = [];
+          source.liveChunkSamples = 0;
+          source.liveChunkSeq = 0;
+          source.mediaChunks = [];
+        }
         errorEl.textContent = "";
-        emitEvent("start_clicked");
         try {
-          await initMic();
-          if (audioContext && audioContext.state === "suspended") {
-            await audioContext.resume();
+          await Promise.all(allSources.map(([sourceName]) => initSource(sourceName)));
+          const activeSources = allSources.filter(([, source]) => source.ready);
+          if (!activeSources.length) {
+            throw new Error("No microphone could be opened.");
           }
-          recording = true;
-          startBtn.disabled = true;
-          stopBtn.disabled = false;
-          setRecordingUiState();
-          setStatus("Recording... 00:00");
+          // One mic failing must not cost you the whole lesson.
+          const failed = allSources.filter(([, source]) => !source.ready).map(([name]) => sources[name].label);
+          errorEl.textContent = failed.length
+            ? `Recording without the ${failed.join(" and ")} microphone — it could not be opened.`
+            : "";
+          for (const [, source] of activeSources) {
+            if (source.audioContext && source.audioContext.state === "suspended") {
+              await source.audioContext.resume();
+            }
+            startMediaRecorder(source);
+          }
+          lessonState = "recording";
+          activeMs = 0;
+          lastResumeMs = Date.now();
+          setUiState();
+          setStatus("Recording lesson... 00:00");
           startTimer();
           drawWaveform();
-          emitEvent("recording_started", { sample_rate: audioContext ? audioContext.sampleRate : null });
+          emitEvent("lesson_started", {
+            sources: Object.fromEntries(activeSources.map(([sourceName, source]) => [sourceName, source.audioContext.sampleRate])),
+          });
         } catch (err) {
           errorEl.textContent = "Microphone access denied or unavailable.";
           setStatus("Not recording");
-          startBtn.disabled = false;
-          stopBtn.disabled = true;
-          setRecordingUiState();
-          emitEvent("recording_start_error", { message: String(err) });
+          lessonState = "idle";
+          setUiState();
+          emitEvent("lesson_start_error", { message: String(err) });
         }
       }
 
-      function stopRecording() {
-        if (!recording) {
+      function pauseLesson() {
+        if (lessonState !== "recording") {
           return;
         }
-        emitEvent("stop_clicked", { buffers: buffers.length });
-        recording = false;
+        for (const [sourceName, source] of Object.entries(sources)) {
+          if (source.ready) {
+            flushLiveChunk(sourceName, true);
+            if (source.mediaRecorder && source.mediaRecorder.state === "recording") {
+              try {
+                source.mediaRecorder.pause();
+              } catch (err) {
+                // ignore
+              }
+            }
+          }
+        }
+        activeMs = currentActiveMs();
+        lastResumeMs = null;
+        lessonState = "paused";
+        setUiState();
+        updateTimerStatus();
+        emitEvent("lesson_paused", { active_seconds: Math.floor(activeMs / 1000) });
+      }
+
+      function resumeLesson() {
+        if (lessonState !== "paused") {
+          return;
+        }
+        for (const source of Object.values(sources)) {
+          if (source.ready && source.mediaRecorder && source.mediaRecorder.state === "paused") {
+            try {
+              source.mediaRecorder.resume();
+            } catch (err) {
+              // ignore
+            }
+          }
+        }
+        lastResumeMs = Date.now();
+        lessonState = "recording";
+        setUiState();
+        updateTimerStatus();
+        emitEvent("lesson_resumed", { active_seconds: Math.floor(activeMs / 1000) });
+      }
+
+      async function endLesson() {
+        if (lessonState !== "recording" && lessonState !== "paused") {
+          return;
+        }
+        const activeSources = Object.entries(sources).filter(([, source]) => source.ready);
+        const totalActiveSeconds = Math.floor(currentActiveMs() / 1000);
+        lessonState = "idle";
         stopTimer();
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        setRecordingUiState();
-        setStatus("Recording complete");
+        activeMs = 0;
+        lastResumeMs = null;
+        setUiState();
+        setStatus("Saving lesson...");
         if (animationId) {
           cancelAnimationFrame(animationId);
           animationId = null;
         }
-        flushLiveChunk(true);
-        clearWaveform();
-        const sampleRate = audioContext ? audioContext.sampleRate : 44100;
-        if (!buffers.length) {
-          return;
+        for (const [sourceName] of activeSources) {
+          flushLiveChunk(sourceName, true);
         }
-        const merged = mergeBuffers(buffers);
-        const wavBytes = encodeWav(merged, sampleRate);
-        const wavBase64 = uint8ToBase64(wavBytes);
-        streamlitBridge.setComponentValue({ wav_base64: wavBase64, event: "recording_complete", t: Date.now() });
+        clearWaveform();
+
+        const audioPayload = {};
+        for (const [sourceName, source] of activeSources) {
+          await stopMediaRecorder(source);
+          if (source.mediaChunks.length) {
+            const blob = new Blob(source.mediaChunks, { type: source.mediaMimeType || "audio/webm" });
+            try {
+              audioPayload[sourceName] = {
+                b64: await blobToBase64(blob),
+                mime: source.mediaMimeType || "audio/webm",
+                bytes: blob.size,
+              };
+            } catch (err) {
+              emitEvent("lesson_audio_encode_error", { source: sourceName, message: String(err) });
+            }
+          }
+          source.mediaChunks = [];
+        }
+
+        setStatus("Lesson ended");
+        emitEvent("lesson_ended", {
+          active_seconds: totalActiveSeconds,
+          sources: activeSources.map(([sourceName]) => sourceName),
+          audio: audioPayload,
+        });
       }
 
-      microphoneSelect.addEventListener("change", async (event) => {
-        if (recording) {
-          return;
+      for (const [sourceName, source] of Object.entries(sources)) {
+        if (source.loopbackEl) {
+          source.loopbackEl.addEventListener("change", () => {
+            if (lessonState !== "idle") {
+              return;
+            }
+            source.loopbackTouched = true;
+            // The constraint is applied at capture time, so drop any open stream.
+            cleanupSource(source);
+            updateModeHint(source);
+            emitEvent("loopback_mode_changed", {
+              source: sourceName,
+              loopback_mode: source.loopbackEl.checked,
+            });
+          });
         }
-        selectedDeviceId = event.target.value || "";
-        cleanupMic();
-        emitEvent("microphone_selected", {
-          selected_device_id: selectedDeviceId || null,
+        source.select.addEventListener("change", async (event) => {
+          if (lessonState !== "idle") {
+            return;
+          }
+          source.selectedDeviceId = event.target.value || "";
+          cleanupSource(source);
+          emitEvent("microphone_selected", { source: sourceName, selected_device_id: source.selectedDeviceId || null });
+          setStatus("Ready to start");
+          errorEl.textContent = "";
+          await refreshMicrophones();
         });
-        setStatus("Ready to start");
-        errorEl.textContent = "";
-        await refreshMicrophones();
-      });
+      }
 
-      startBtn.addEventListener("click", startRecording);
-      stopBtn.addEventListener("click", stopRecording);
+      startBtn.addEventListener("click", startLesson);
+      pauseBtn.addEventListener("click", () => {
+        if (lessonState === "paused") {
+          resumeLesson();
+        } else {
+          pauseLesson();
+        }
+      });
+      stopBtn.addEventListener("click", endLesson);
       document.addEventListener("keydown", (event) => {
         const target = event.target;
-        if (event.key !== " " || target === microphoneSelect || target === startBtn || target === stopBtn) {
+        if (event.key !== " " || target.matches("select, input, button")) {
           return;
         }
         event.preventDefault();
-        if (recording) {
-          stopRecording();
-        } else {
-          startRecording();
+        if (lessonState === "recording") {
+          pauseLesson();
+        } else if (lessonState === "paused") {
+          resumeLesson();
         }
       });
       navigator.mediaDevices?.addEventListener?.("devicechange", refreshMicrophones);
@@ -584,7 +890,7 @@
       updateFrameHeight();
       emitEvent("component_ready");
       setStatus("Ready to start");
-      setRecordingUiState();
+      setUiState();
       clearWaveform();
       refreshMicrophones();
       new ResizeObserver(updateFrameHeight).observe(document.documentElement);

@@ -64,6 +64,12 @@ class FeedbackAggregatorTests(unittest.TestCase):
         self.assertEqual(strength["polarity"], "strength")
         self.assertEqual(strength["category"], "fluency")
 
+    def test_generic_strengths_are_not_reported(self):
+        summary = aggregate_feedback([
+            result(0, highlights=["His name is Juanes | category: fluency | why: This makes the message easy to follow."])
+        ])
+        self.assertEqual(summary["strengths"], [])
+
     def test_priority_carries_exact_word_level_evidence(self):
         record = result(
             0,

@@ -1,0 +1,7600 @@
+{
+  "language": "en",
+  "num_speakers": 13,
+  "segments": [
+    {
+      "avg_logprob": -0.10356702351648557,
+      "duration": 41.32000000000001,
+      "end": 131.46,
+      "speaker": "SPEAKER_09",
+      "start": 90.14,
+      "text": "hear you properly oh that's okay it's happened again i think oh yeah yeah that's okay great",
+      "words": [
+        {
+          "end": 90.44,
+          "probability": 0.8623046875,
+          "speaker": "SPEAKER_02",
+          "start": 90.14,
+          "word": " hear"
+        },
+        {
+          "end": 90.62,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_02",
+          "start": 90.44,
+          "word": " you"
+        },
+        {
+          "end": 91.24,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_02",
+          "start": 90.62,
+          "word": " properly"
+        },
+        {
+          "end": 91.78,
+          "probability": 0.463623046875,
+          "speaker": "SPEAKER_02",
+          "start": 91.24,
+          "word": " oh"
+        },
+        {
+          "end": 94.91,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 94.59,
+          "word": " that's"
+        },
+        {
+          "end": 95.17,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 94.91,
+          "word": " okay"
+        },
+        {
+          "end": 95.51,
+          "probability": 0.951171875,
+          "speaker": "SPEAKER_09",
+          "start": 95.17,
+          "word": " it's"
+        },
+        {
+          "end": 105.75,
+          "probability": 0.99169921875,
+          "speaker": "SPEAKER_10",
+          "start": 105.45,
+          "word": " happened"
+        },
+        {
+          "end": 106.09,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_10",
+          "start": 105.75,
+          "word": " again"
+        },
+        {
+          "end": 106.35,
+          "probability": 0.82958984375,
+          "speaker": "SPEAKER_10",
+          "start": 106.09,
+          "word": " i"
+        },
+        {
+          "end": 106.63,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_10",
+          "start": 106.35,
+          "word": " think"
+        },
+        {
+          "end": 107.15,
+          "probability": 0.53466796875,
+          "speaker": "SPEAKER_10",
+          "start": 106.63,
+          "word": " oh"
+        },
+        {
+          "end": 115.55,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_08",
+          "start": 115.37,
+          "word": " yeah"
+        },
+        {
+          "end": 115.97,
+          "probability": 0.94091796875,
+          "speaker": "SPEAKER_08",
+          "start": 115.55,
+          "word": " yeah"
+        },
+        {
+          "end": 116.33,
+          "probability": 0.997802734375,
+          "speaker": "SPEAKER_08",
+          "start": 115.97,
+          "word": " that's"
+        },
+        {
+          "end": 116.61,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_08",
+          "start": 116.33,
+          "word": " okay"
+        },
+        {
+          "end": 131.46,
+          "probability": 0.9892578125,
+          "speaker": "SPEAKER_09",
+          "start": 130.9,
+          "word": " great"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.10356702351648557,
+      "duration": 26.399999999999977,
+      "end": 158.26,
+      "speaker": "SPEAKER_09",
+      "start": 131.86,
+      "text": "so how about you uh i'm from sri lanka i'm originally from sri lanka uh i've been uh living",
+      "words": [
+        {
+          "end": 132.24,
+          "probability": 0.923828125,
+          "speaker": "SPEAKER_09",
+          "start": 131.86,
+          "word": " so"
+        },
+        {
+          "end": 132.46,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 132.24,
+          "word": " how"
+        },
+        {
+          "end": 132.74,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 132.46,
+          "word": " about"
+        },
+        {
+          "end": 133,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 132.74,
+          "word": " you"
+        },
+        {
+          "end": 134.38,
+          "probability": 0.66259765625,
+          "speaker": "SPEAKER_09",
+          "start": 133,
+          "word": " uh"
+        },
+        {
+          "end": 152.2,
+          "probability": 0.993896484375,
+          "speaker": "SPEAKER_09",
+          "start": 150.98,
+          "word": " i'm"
+        },
+        {
+          "end": 152.5,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 152.2,
+          "word": " from"
+        },
+        {
+          "end": 152.82,
+          "probability": 0.98095703125,
+          "speaker": "SPEAKER_09",
+          "start": 152.5,
+          "word": " sri"
+        },
+        {
+          "end": 153.28,
+          "probability": 0.993896484375,
+          "speaker": "SPEAKER_09",
+          "start": 152.82,
+          "word": " lanka"
+        },
+        {
+          "end": 153.64,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 153.28,
+          "word": " i'm"
+        },
+        {
+          "end": 154.02,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 153.64,
+          "word": " originally"
+        },
+        {
+          "end": 154.32,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 154.02,
+          "word": " from"
+        },
+        {
+          "end": 154.6,
+          "probability": 0.98974609375,
+          "speaker": "SPEAKER_09",
+          "start": 154.32,
+          "word": " sri"
+        },
+        {
+          "end": 155.04,
+          "probability": 0.998291015625,
+          "speaker": "SPEAKER_09",
+          "start": 154.6,
+          "word": " lanka"
+        },
+        {
+          "end": 156.2,
+          "probability": 0.546875,
+          "speaker": "SPEAKER_09",
+          "start": 155.04,
+          "word": " uh"
+        },
+        {
+          "end": 157.06,
+          "probability": 0.9912109375,
+          "speaker": "SPEAKER_09",
+          "start": 156.2,
+          "word": " i've"
+        },
+        {
+          "end": 157.38,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 157.06,
+          "word": " been"
+        },
+        {
+          "end": 157.8,
+          "probability": 0.74609375,
+          "speaker": "SPEAKER_09",
+          "start": 157.38,
+          "word": " uh"
+        },
+        {
+          "end": 158.26,
+          "probability": 0.986328125,
+          "speaker": "SPEAKER_09",
+          "start": 157.8,
+          "word": " living"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.10356702351648557,
+      "duration": 25.039999999999992,
+      "end": 184.32,
+      "speaker": "SPEAKER_09",
+      "start": 159.28,
+      "text": "in hamilton uh with my family for about eight months so far in here yeah i like so much it's",
+      "words": [
+        {
+          "end": 159.66,
+          "probability": 0.114013671875,
+          "speaker": "SPEAKER_09",
+          "start": 159.28,
+          "word": " in"
+        },
+        {
+          "end": 160.42,
+          "probability": 0.961669921875,
+          "speaker": "SPEAKER_09",
+          "start": 159.66,
+          "word": " hamilton"
+        },
+        {
+          "end": 161.4,
+          "probability": 0.7978515625,
+          "speaker": "SPEAKER_09",
+          "start": 160.42,
+          "word": " uh"
+        },
+        {
+          "end": 162.68,
+          "probability": 0.9873046875,
+          "speaker": "SPEAKER_09",
+          "start": 161.4,
+          "word": " with"
+        },
+        {
+          "end": 162.84,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 162.68,
+          "word": " my"
+        },
+        {
+          "end": 163.3,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 162.84,
+          "word": " family"
+        },
+        {
+          "end": 163.9,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 163.3,
+          "word": " for"
+        },
+        {
+          "end": 164.78,
+          "probability": 0.65966796875,
+          "speaker": "SPEAKER_09",
+          "start": 163.9,
+          "word": " about"
+        },
+        {
+          "end": 165.46,
+          "probability": 0.98779296875,
+          "speaker": "SPEAKER_09",
+          "start": 164.78,
+          "word": " eight"
+        },
+        {
+          "end": 165.92,
+          "probability": 0.9580078125,
+          "speaker": "SPEAKER_09",
+          "start": 165.46,
+          "word": " months"
+        },
+        {
+          "end": 166.42,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 165.92,
+          "word": " so"
+        },
+        {
+          "end": 166.62,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 166.42,
+          "word": " far"
+        },
+        {
+          "end": 166.92,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 166.62,
+          "word": " in"
+        },
+        {
+          "end": 176.32,
+          "probability": 1,
+          "speaker": "SPEAKER_10",
+          "start": 176,
+          "word": " here"
+        },
+        {
+          "end": 177.74,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_10",
+          "start": 176.32,
+          "word": " yeah"
+        },
+        {
+          "end": 182.26,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_10",
+          "start": 181.82,
+          "word": " i"
+        },
+        {
+          "end": 182.64,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_10",
+          "start": 182.26,
+          "word": " like"
+        },
+        {
+          "end": 182.94,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_10",
+          "start": 182.64,
+          "word": " so"
+        },
+        {
+          "end": 183.32,
+          "probability": 1,
+          "speaker": "SPEAKER_10",
+          "start": 182.94,
+          "word": " much"
+        },
+        {
+          "end": 184.32,
+          "probability": 0.995849609375,
+          "speaker": "SPEAKER_10",
+          "start": 183.32,
+          "word": " it's"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.10496794757170555,
+      "duration": 11.120000000000005,
+      "end": 195.8,
+      "speaker": "SPEAKER_10",
+      "start": 184.68,
+      "text": "cool weather and friendly people and beautiful nature surrounding i like",
+      "words": [
+        {
+          "end": 185.22,
+          "probability": 0.640625,
+          "speaker": "SPEAKER_10",
+          "start": 184.68,
+          "word": " cool"
+        },
+        {
+          "end": 185.68,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_10",
+          "start": 185.22,
+          "word": " weather"
+        },
+        {
+          "end": 186.48,
+          "probability": 0.90478515625,
+          "speaker": "SPEAKER_10",
+          "start": 185.68,
+          "word": " and"
+        },
+        {
+          "end": 187.9,
+          "probability": 0.97998046875,
+          "speaker": "SPEAKER_10",
+          "start": 186.48,
+          "word": " friendly"
+        },
+        {
+          "end": 189.16,
+          "probability": 0.978515625,
+          "speaker": "SPEAKER_10",
+          "start": 187.9,
+          "word": " people"
+        },
+        {
+          "end": 189.7,
+          "probability": 0.98291015625,
+          "speaker": "SPEAKER_10",
+          "start": 189.16,
+          "word": " and"
+        },
+        {
+          "end": 191.2,
+          "probability": 0.955078125,
+          "speaker": "SPEAKER_10",
+          "start": 189.7,
+          "word": " beautiful"
+        },
+        {
+          "end": 192.28,
+          "probability": 0.9560546875,
+          "speaker": "SPEAKER_10",
+          "start": 191.2,
+          "word": " nature"
+        },
+        {
+          "end": 192.86,
+          "probability": 0.91015625,
+          "speaker": "SPEAKER_10",
+          "start": 192.28,
+          "word": " surrounding"
+        },
+        {
+          "end": 194.8,
+          "probability": 0.170654296875,
+          "speaker": "SPEAKER_10",
+          "start": 192.86,
+          "word": " i"
+        },
+        {
+          "end": 195.8,
+          "probability": 0.7607421875,
+          "speaker": "SPEAKER_10",
+          "start": 194.8,
+          "word": " like"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.10496794757170555,
+      "duration": 31.22999999999999,
+      "end": 242.35,
+      "speaker": "SPEAKER_09",
+      "start": 211.12,
+      "text": "i hope in the future i worked as a teacher in sri lanka about 10 years but only teaching or studying in my mother language so i hope to uh doing job or studying in the future but currently i'm not working or studying my main goal is improving my english uh yeah i focus uh first",
+      "words": [
+        {
+          "end": 211.66,
+          "probability": 0.8955078125,
+          "speaker": "SPEAKER_09",
+          "start": 211.12,
+          "word": " i"
+        },
+        {
+          "end": 212.08,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 211.66,
+          "word": " hope"
+        },
+        {
+          "end": 212.66,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 212.08,
+          "word": " in"
+        },
+        {
+          "end": 212.78,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 212.66,
+          "word": " the"
+        },
+        {
+          "end": 213.26,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 212.78,
+          "word": " future"
+        },
+        {
+          "end": 213.86,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 213.26,
+          "word": " i"
+        },
+        {
+          "end": 214.24,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 213.86,
+          "word": " worked"
+        },
+        {
+          "end": 214.58,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 214.24,
+          "word": " as"
+        },
+        {
+          "end": 214.7,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 214.58,
+          "word": " a"
+        },
+        {
+          "end": 215.12,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 214.7,
+          "word": " teacher"
+        },
+        {
+          "end": 215.48,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 215.12,
+          "word": " in"
+        },
+        {
+          "end": 215.78,
+          "probability": 0.78271484375,
+          "speaker": "SPEAKER_09",
+          "start": 215.48,
+          "word": " sri"
+        },
+        {
+          "end": 216.32,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_09",
+          "start": 215.78,
+          "word": " lanka"
+        },
+        {
+          "end": 217.42,
+          "probability": 0.92529296875,
+          "speaker": "SPEAKER_09",
+          "start": 216.32,
+          "word": " about"
+        },
+        {
+          "end": 218.78,
+          "probability": 0.94580078125,
+          "speaker": "SPEAKER_09",
+          "start": 217.42,
+          "word": " 10"
+        },
+        {
+          "end": 219.28,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 218.78,
+          "word": " years"
+        },
+        {
+          "end": 220.08,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 219.28,
+          "word": " but"
+        },
+        {
+          "end": 220.44,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 220.08,
+          "word": " only"
+        },
+        {
+          "end": 220.94,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 220.44,
+          "word": " teaching"
+        },
+        {
+          "end": 221.36,
+          "probability": 0.73095703125,
+          "speaker": "SPEAKER_09",
+          "start": 220.94,
+          "word": " or"
+        },
+        {
+          "end": 221.9,
+          "probability": 0.76904296875,
+          "speaker": "SPEAKER_09",
+          "start": 221.36,
+          "word": " studying"
+        },
+        {
+          "end": 222.48,
+          "probability": 0.9736328125,
+          "speaker": "SPEAKER_09",
+          "start": 221.9,
+          "word": " in"
+        },
+        {
+          "end": 222.7,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 222.48,
+          "word": " my"
+        },
+        {
+          "end": 223.02,
+          "probability": 0.99169921875,
+          "speaker": "SPEAKER_09",
+          "start": 222.7,
+          "word": " mother"
+        },
+        {
+          "end": 223.56,
+          "probability": 0.93798828125,
+          "speaker": "SPEAKER_09",
+          "start": 223.02,
+          "word": " language"
+        },
+        {
+          "end": 225.1,
+          "probability": 0.62255859375,
+          "speaker": "SPEAKER_09",
+          "start": 223.56,
+          "word": " so"
+        },
+        {
+          "end": 225.36,
+          "probability": 0.31298828125,
+          "speaker": "SPEAKER_09",
+          "start": 225.1,
+          "word": " i"
+        },
+        {
+          "end": 225.8,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 225.36,
+          "word": " hope"
+        },
+        {
+          "end": 226.88,
+          "probability": 0.85546875,
+          "speaker": "SPEAKER_09",
+          "start": 225.8,
+          "word": " to"
+        },
+        {
+          "end": 227.2,
+          "probability": 0.343994140625,
+          "speaker": "SPEAKER_09",
+          "start": 226.88,
+          "word": " uh"
+        },
+        {
+          "end": 228.58,
+          "probability": 0.97802734375,
+          "speaker": "SPEAKER_09",
+          "start": 227.2,
+          "word": " doing"
+        },
+        {
+          "end": 229.02,
+          "probability": 0.9892578125,
+          "speaker": "SPEAKER_09",
+          "start": 228.58,
+          "word": " job"
+        },
+        {
+          "end": 229.56,
+          "probability": 0.352783203125,
+          "speaker": "SPEAKER_09",
+          "start": 229.02,
+          "word": " or"
+        },
+        {
+          "end": 231.12,
+          "probability": 0.96435546875,
+          "speaker": "SPEAKER_09",
+          "start": 229.56,
+          "word": " studying"
+        },
+        {
+          "end": 231.56,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 231.12,
+          "word": " in"
+        },
+        {
+          "end": 231.68,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 231.56,
+          "word": " the"
+        },
+        {
+          "end": 232.14,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 231.68,
+          "word": " future"
+        },
+        {
+          "end": 232.64,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 232.14,
+          "word": " but"
+        },
+        {
+          "end": 233.06,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 232.64,
+          "word": " currently"
+        },
+        {
+          "end": 233.38,
+          "probability": 0.66455078125,
+          "speaker": "SPEAKER_09",
+          "start": 233.06,
+          "word": " i'm"
+        },
+        {
+          "end": 233.58,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 233.38,
+          "word": " not"
+        },
+        {
+          "end": 233.98,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 233.58,
+          "word": " working"
+        },
+        {
+          "end": 234.22,
+          "probability": 0.6923828125,
+          "speaker": "SPEAKER_09",
+          "start": 233.98,
+          "word": " or"
+        },
+        {
+          "end": 234.74,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 234.22,
+          "word": " studying"
+        },
+        {
+          "end": 235.38,
+          "probability": 0.849609375,
+          "speaker": "SPEAKER_09",
+          "start": 234.74,
+          "word": " my"
+        },
+        {
+          "end": 235.72,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 235.38,
+          "word": " main"
+        },
+        {
+          "end": 236.06,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 235.72,
+          "word": " goal"
+        },
+        {
+          "end": 236.44,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 236.06,
+          "word": " is"
+        },
+        {
+          "end": 237.08,
+          "probability": 0.9580078125,
+          "speaker": "SPEAKER_09",
+          "start": 236.44,
+          "word": " improving"
+        },
+        {
+          "end": 237.36,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 237.08,
+          "word": " my"
+        },
+        {
+          "end": 237.78,
+          "probability": 0.9619140625,
+          "speaker": "SPEAKER_09",
+          "start": 237.36,
+          "word": " english"
+        },
+        {
+          "end": 239.06,
+          "probability": 0.564453125,
+          "speaker": "SPEAKER_09",
+          "start": 237.78,
+          "word": " uh"
+        },
+        {
+          "end": 240.11,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 239.53,
+          "word": " yeah"
+        },
+        {
+          "end": 240.37,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 240.11,
+          "word": " i"
+        },
+        {
+          "end": 241.01,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_09",
+          "start": 240.37,
+          "word": " focus"
+        },
+        {
+          "end": 241.67,
+          "probability": 0.5751953125,
+          "speaker": "SPEAKER_09",
+          "start": 241.01,
+          "word": " uh"
+        },
+        {
+          "end": 242.35,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 241.67,
+          "word": " first"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.16519657546474087,
+      "duration": 9.75,
+      "end": 253.81,
+      "speaker": "SPEAKER_09",
+      "start": 244.06,
+      "text": "yeah i uh after here uh uh uh i struggle so much with english uh i um learn myself",
+      "words": [
+        {
+          "end": 244.53,
+          "probability": 0.990234375,
+          "speaker": "SPEAKER_09",
+          "start": 244.06,
+          "word": " yeah"
+        },
+        {
+          "end": 244.85,
+          "probability": 0.98388671875,
+          "speaker": "SPEAKER_09",
+          "start": 244.53,
+          "word": " i"
+        },
+        {
+          "end": 245.47,
+          "probability": 0.89599609375,
+          "speaker": "SPEAKER_09",
+          "start": 244.85,
+          "word": " uh"
+        },
+        {
+          "end": 245.61,
+          "probability": 0.71875,
+          "speaker": "SPEAKER_09",
+          "start": 245.47,
+          "word": " after"
+        },
+        {
+          "end": 246.71,
+          "probability": 0.442626953125,
+          "speaker": "SPEAKER_09",
+          "start": 245.61,
+          "word": " here"
+        },
+        {
+          "end": 247.27,
+          "probability": 0.80810546875,
+          "speaker": "SPEAKER_09",
+          "start": 246.71,
+          "word": " uh"
+        },
+        {
+          "end": 248.15,
+          "probability": 0.254638671875,
+          "speaker": "SPEAKER_09",
+          "start": 247.27,
+          "word": " uh"
+        },
+        {
+          "end": 249.01,
+          "probability": 0.053375244140625,
+          "speaker": "SPEAKER_09",
+          "start": 248.15,
+          "word": " uh"
+        },
+        {
+          "end": 249.03,
+          "probability": 0.83642578125,
+          "speaker": "SPEAKER_09",
+          "start": 249.01,
+          "word": " i"
+        },
+        {
+          "end": 249.45,
+          "probability": 0.9853515625,
+          "speaker": "SPEAKER_09",
+          "start": 249.03,
+          "word": " struggle"
+        },
+        {
+          "end": 249.75,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 249.45,
+          "word": " so"
+        },
+        {
+          "end": 250.03,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 249.75,
+          "word": " much"
+        },
+        {
+          "end": 250.33,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 250.03,
+          "word": " with"
+        },
+        {
+          "end": 250.71,
+          "probability": 0.98193359375,
+          "speaker": "SPEAKER_09",
+          "start": 250.33,
+          "word": " english"
+        },
+        {
+          "end": 251.29,
+          "probability": 0.07586669921875,
+          "speaker": "SPEAKER_09",
+          "start": 250.71,
+          "word": " uh"
+        },
+        {
+          "end": 251.47,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 251.29,
+          "word": " i"
+        },
+        {
+          "end": 252.01,
+          "probability": 0.7236328125,
+          "speaker": "SPEAKER_09",
+          "start": 251.47,
+          "word": " um"
+        },
+        {
+          "end": 252.57,
+          "probability": 0.54296875,
+          "speaker": "SPEAKER_09",
+          "start": 252.01,
+          "word": " learn"
+        },
+        {
+          "end": 253.81,
+          "probability": 0.90185546875,
+          "speaker": "SPEAKER_09",
+          "start": 252.57,
+          "word": " myself"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.3109375034059797,
+      "duration": 23.00999999999999,
+      "end": 279.2,
+      "speaker": "SPEAKER_10",
+      "start": 256.19,
+      "text": "yeah yeah yeah i hope you can help me for that my improving english speaking communication",
+      "words": [
+        {
+          "end": 257.03,
+          "probability": 0.9853515625,
+          "speaker": "SPEAKER_10",
+          "start": 256.19,
+          "word": " yeah"
+        },
+        {
+          "end": 257.87,
+          "probability": 0.99169921875,
+          "speaker": "SPEAKER_12",
+          "start": 257.03,
+          "word": " yeah"
+        },
+        {
+          "end": 269.06,
+          "probability": 0.52880859375,
+          "speaker": "SPEAKER_10",
+          "start": 268.74,
+          "word": " yeah"
+        },
+        {
+          "end": 269.3,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_10",
+          "start": 269.06,
+          "word": " i"
+        },
+        {
+          "end": 269.7,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_10",
+          "start": 269.3,
+          "word": " hope"
+        },
+        {
+          "end": 270.04,
+          "probability": 1,
+          "speaker": "SPEAKER_10",
+          "start": 269.7,
+          "word": " you"
+        },
+        {
+          "end": 270.34,
+          "probability": 1,
+          "speaker": "SPEAKER_10",
+          "start": 270.04,
+          "word": " can"
+        },
+        {
+          "end": 270.72,
+          "probability": 1,
+          "speaker": "SPEAKER_10",
+          "start": 270.34,
+          "word": " help"
+        },
+        {
+          "end": 271.06,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_10",
+          "start": 270.72,
+          "word": " me"
+        },
+        {
+          "end": 271.4,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_10",
+          "start": 271.06,
+          "word": " for"
+        },
+        {
+          "end": 271.84,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_10",
+          "start": 271.4,
+          "word": " that"
+        },
+        {
+          "end": 272.3,
+          "probability": 0.74267578125,
+          "speaker": "SPEAKER_10",
+          "start": 271.84,
+          "word": " my"
+        },
+        {
+          "end": 272.88,
+          "probability": 0.83154296875,
+          "speaker": "SPEAKER_10",
+          "start": 272.3,
+          "word": " improving"
+        },
+        {
+          "end": 274.64,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_10",
+          "start": 272.88,
+          "word": " english"
+        },
+        {
+          "end": 275.48,
+          "probability": 0.68310546875,
+          "speaker": "SPEAKER_10",
+          "start": 274.64,
+          "word": " speaking"
+        },
+        {
+          "end": 279.2,
+          "probability": 0.73095703125,
+          "speaker": "SPEAKER_10",
+          "start": 277.74,
+          "word": " communication"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.2539062448169874,
+      "duration": 58.460000000000036,
+      "end": 340.3,
+      "speaker": "SPEAKER_09",
+      "start": 281.84,
+      "text": "yeah yeah main thing is uh speaking speaking and uh uh when i speak in whatever i made mistake uh you please correct and uh teach me uh the lessons yeah uh i'm not decided that but i i hope uh",
+      "words": [
+        {
+          "end": 282.88,
+          "probability": 0.3369140625,
+          "speaker": "SPEAKER_10",
+          "start": 281.84,
+          "word": " yeah"
+        },
+        {
+          "end": 288.43,
+          "probability": 0.8349609375,
+          "speaker": "SPEAKER_09",
+          "start": 288.03,
+          "word": " yeah"
+        },
+        {
+          "end": 289.59,
+          "probability": 0.3740234375,
+          "speaker": "SPEAKER_09",
+          "start": 288.43,
+          "word": " main"
+        },
+        {
+          "end": 292.44,
+          "probability": 0.935546875,
+          "speaker": "SPEAKER_09",
+          "start": 292.3,
+          "word": " thing"
+        },
+        {
+          "end": 293.8,
+          "probability": 0.96435546875,
+          "speaker": "SPEAKER_09",
+          "start": 292.44,
+          "word": " is"
+        },
+        {
+          "end": 294.1,
+          "probability": 0.42919921875,
+          "speaker": "SPEAKER_09",
+          "start": 293.8,
+          "word": " uh"
+        },
+        {
+          "end": 294.72,
+          "probability": 0.96484375,
+          "speaker": "SPEAKER_10",
+          "start": 294.1,
+          "word": " speaking"
+        },
+        {
+          "end": 295.94,
+          "probability": 0.59912109375,
+          "speaker": "SPEAKER_09",
+          "start": 294.72,
+          "word": " speaking"
+        },
+        {
+          "end": 296.62,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 295.94,
+          "word": " and"
+        },
+        {
+          "end": 297.14,
+          "probability": 0.80712890625,
+          "speaker": "SPEAKER_09",
+          "start": 296.62,
+          "word": " uh"
+        },
+        {
+          "end": 298.2,
+          "probability": 0.4833984375,
+          "speaker": "SPEAKER_09",
+          "start": 297.14,
+          "word": " uh"
+        },
+        {
+          "end": 298.48,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 298.2,
+          "word": " when"
+        },
+        {
+          "end": 298.64,
+          "probability": 0.94384765625,
+          "speaker": "SPEAKER_09",
+          "start": 298.48,
+          "word": " i"
+        },
+        {
+          "end": 299.02,
+          "probability": 0.81787109375,
+          "speaker": "SPEAKER_09",
+          "start": 298.64,
+          "word": " speak"
+        },
+        {
+          "end": 299.24,
+          "probability": 0.9794921875,
+          "speaker": "SPEAKER_09",
+          "start": 299.02,
+          "word": " in"
+        },
+        {
+          "end": 300.3,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 299.24,
+          "word": " whatever"
+        },
+        {
+          "end": 300.8,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 300.3,
+          "word": " i"
+        },
+        {
+          "end": 301.32,
+          "probability": 0.98681640625,
+          "speaker": "SPEAKER_09",
+          "start": 300.8,
+          "word": " made"
+        },
+        {
+          "end": 301.88,
+          "probability": 0.96728515625,
+          "speaker": "SPEAKER_09",
+          "start": 301.32,
+          "word": " mistake"
+        },
+        {
+          "end": 302.44,
+          "probability": 0.0030956268310546875,
+          "speaker": "SPEAKER_09",
+          "start": 301.88,
+          "word": " uh"
+        },
+        {
+          "end": 302.92,
+          "probability": 0.62744140625,
+          "speaker": "SPEAKER_09",
+          "start": 302.44,
+          "word": " you"
+        },
+        {
+          "end": 304.1,
+          "probability": 0.458984375,
+          "speaker": "SPEAKER_09",
+          "start": 302.92,
+          "word": " please"
+        },
+        {
+          "end": 304.42,
+          "probability": 0.767578125,
+          "speaker": "SPEAKER_09",
+          "start": 304.1,
+          "word": " correct"
+        },
+        {
+          "end": 304.78,
+          "probability": 0.9560546875,
+          "speaker": "SPEAKER_09",
+          "start": 304.42,
+          "word": " and"
+        },
+        {
+          "end": 305.1,
+          "probability": 0.279052734375,
+          "speaker": "SPEAKER_09",
+          "start": 304.78,
+          "word": " uh"
+        },
+        {
+          "end": 305.82,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 305.1,
+          "word": " teach"
+        },
+        {
+          "end": 306.12,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 305.82,
+          "word": " me"
+        },
+        {
+          "end": 306.56,
+          "probability": 0.75390625,
+          "speaker": "SPEAKER_09",
+          "start": 306.12,
+          "word": " uh"
+        },
+        {
+          "end": 306.92,
+          "probability": 0.931640625,
+          "speaker": "SPEAKER_09",
+          "start": 306.56,
+          "word": " the"
+        },
+        {
+          "end": 308.1,
+          "probability": 0.8232421875,
+          "speaker": "SPEAKER_09",
+          "start": 306.92,
+          "word": " lessons"
+        },
+        {
+          "end": 310.56,
+          "probability": 0.9375,
+          "speaker": "SPEAKER_09",
+          "start": 308.1,
+          "word": " yeah"
+        },
+        {
+          "end": 335.4,
+          "probability": 0.533203125,
+          "speaker": "SPEAKER_09",
+          "start": 334.58,
+          "word": " uh"
+        },
+        {
+          "end": 337.1,
+          "probability": 0.94921875,
+          "speaker": "SPEAKER_09",
+          "start": 335.4,
+          "word": " i'm"
+        },
+        {
+          "end": 337.32,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 337.1,
+          "word": " not"
+        },
+        {
+          "end": 337.92,
+          "probability": 0.98779296875,
+          "speaker": "SPEAKER_09",
+          "start": 337.32,
+          "word": " decided"
+        },
+        {
+          "end": 338.34,
+          "probability": 0.66845703125,
+          "speaker": "SPEAKER_09",
+          "start": 337.92,
+          "word": " that"
+        },
+        {
+          "end": 338.76,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 338.34,
+          "word": " but"
+        },
+        {
+          "end": 339.02,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 338.76,
+          "word": " i"
+        },
+        {
+          "end": 339.34,
+          "probability": 0.9912109375,
+          "speaker": "SPEAKER_09",
+          "start": 339.02,
+          "word": " i"
+        },
+        {
+          "end": 339.84,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 339.34,
+          "word": " hope"
+        },
+        {
+          "end": 340.3,
+          "probability": 0.63623046875,
+          "speaker": "SPEAKER_09",
+          "start": 339.84,
+          "word": " uh"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.24384015024854586,
+      "duration": 20.599999999999966,
+      "end": 360.9,
+      "speaker": "SPEAKER_09",
+      "start": 340.3,
+      "text": "complete uh i completed my bachelor in sri lanka uh i uh doing some diploma i think uh being teacher uh uh have to complete some diploma or uh anything but first i focus uh english",
+      "words": [
+        {
+          "end": 341.2,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 340.3,
+          "word": " complete"
+        },
+        {
+          "end": 341.64,
+          "probability": 0.89990234375,
+          "speaker": "SPEAKER_09",
+          "start": 341.2,
+          "word": " uh"
+        },
+        {
+          "end": 342.54,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 341.64,
+          "word": " i"
+        },
+        {
+          "end": 343.14,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 342.54,
+          "word": " completed"
+        },
+        {
+          "end": 343.46,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 343.14,
+          "word": " my"
+        },
+        {
+          "end": 343.88,
+          "probability": 0.9892578125,
+          "speaker": "SPEAKER_09",
+          "start": 343.46,
+          "word": " bachelor"
+        },
+        {
+          "end": 344.2,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 343.88,
+          "word": " in"
+        },
+        {
+          "end": 344.42,
+          "probability": 0.51226806640625,
+          "speaker": "SPEAKER_09",
+          "start": 344.2,
+          "word": " sri"
+        },
+        {
+          "end": 344.86,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_09",
+          "start": 344.42,
+          "word": " lanka"
+        },
+        {
+          "end": 346.14,
+          "probability": 0.286376953125,
+          "speaker": "SPEAKER_09",
+          "start": 344.86,
+          "word": " uh"
+        },
+        {
+          "end": 346.24,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_09",
+          "start": 346.14,
+          "word": " i"
+        },
+        {
+          "end": 347.24,
+          "probability": 0.7548828125,
+          "speaker": "SPEAKER_09",
+          "start": 346.24,
+          "word": " uh"
+        },
+        {
+          "end": 347.6,
+          "probability": 0.341796875,
+          "speaker": "SPEAKER_09",
+          "start": 347.24,
+          "word": " doing"
+        },
+        {
+          "end": 348,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 347.6,
+          "word": " some"
+        },
+        {
+          "end": 348.74,
+          "probability": 0.9716796875,
+          "speaker": "SPEAKER_09",
+          "start": 348,
+          "word": " diploma"
+        },
+        {
+          "end": 349.44,
+          "probability": 0.6162109375,
+          "speaker": "SPEAKER_09",
+          "start": 348.74,
+          "word": " i"
+        },
+        {
+          "end": 349.78,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 349.44,
+          "word": " think"
+        },
+        {
+          "end": 350.24,
+          "probability": 0.9326171875,
+          "speaker": "SPEAKER_09",
+          "start": 349.78,
+          "word": " uh"
+        },
+        {
+          "end": 351.26,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_09",
+          "start": 350.24,
+          "word": " being"
+        },
+        {
+          "end": 351.78,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 351.26,
+          "word": " teacher"
+        },
+        {
+          "end": 352.22,
+          "probability": 0.9580078125,
+          "speaker": "SPEAKER_09",
+          "start": 351.78,
+          "word": " uh"
+        },
+        {
+          "end": 352.22,
+          "probability": 0.004589080810546875,
+          "speaker": "SPEAKER_09",
+          "start": 352.22,
+          "word": " uh"
+        },
+        {
+          "end": 352.78,
+          "probability": 0.22119140625,
+          "speaker": "SPEAKER_09",
+          "start": 352.22,
+          "word": " have"
+        },
+        {
+          "end": 352.94,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 352.78,
+          "word": " to"
+        },
+        {
+          "end": 353.48,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 352.94,
+          "word": " complete"
+        },
+        {
+          "end": 353.88,
+          "probability": 0.99072265625,
+          "speaker": "SPEAKER_09",
+          "start": 353.48,
+          "word": " some"
+        },
+        {
+          "end": 354.76,
+          "probability": 0.91357421875,
+          "speaker": "SPEAKER_09",
+          "start": 353.88,
+          "word": " diploma"
+        },
+        {
+          "end": 355.46,
+          "probability": 0.8583984375,
+          "speaker": "SPEAKER_09",
+          "start": 354.76,
+          "word": " or"
+        },
+        {
+          "end": 356.12,
+          "probability": 0.154296875,
+          "speaker": "SPEAKER_09",
+          "start": 355.46,
+          "word": " uh"
+        },
+        {
+          "end": 357.36,
+          "probability": 0.98095703125,
+          "speaker": "SPEAKER_09",
+          "start": 356.12,
+          "word": " anything"
+        },
+        {
+          "end": 357.84,
+          "probability": 0.94482421875,
+          "speaker": "SPEAKER_09",
+          "start": 357.36,
+          "word": " but"
+        },
+        {
+          "end": 359.26,
+          "probability": 0.9638671875,
+          "speaker": "SPEAKER_09",
+          "start": 357.84,
+          "word": " first"
+        },
+        {
+          "end": 359.56,
+          "probability": 0.67724609375,
+          "speaker": "SPEAKER_09",
+          "start": 359.26,
+          "word": " i"
+        },
+        {
+          "end": 360.18,
+          "probability": 0.95068359375,
+          "speaker": "SPEAKER_09",
+          "start": 359.56,
+          "word": " focus"
+        },
+        {
+          "end": 360.5,
+          "probability": 0.52880859375,
+          "speaker": "SPEAKER_10",
+          "start": 360.18,
+          "word": " uh"
+        },
+        {
+          "end": 360.9,
+          "probability": 0.91552734375,
+          "speaker": "SPEAKER_10",
+          "start": 360.5,
+          "word": " english"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.31229440946328013,
+      "duration": 13.680000000000007,
+      "end": 424.66,
+      "speaker": "SPEAKER_09",
+      "start": 410.98,
+      "text": "yeah yeah yeah yeah i live with my husband and two kids uh i have two kids yes my older son goes to high school and my younger daughter goes to primary school",
+      "words": [
+        {
+          "end": 411.82,
+          "probability": 0.896484375,
+          "speaker": "SPEAKER_09",
+          "start": 410.98,
+          "word": " yeah"
+        },
+        {
+          "end": 412.66,
+          "probability": 0.89892578125,
+          "speaker": "SPEAKER_09",
+          "start": 411.82,
+          "word": " yeah"
+        },
+        {
+          "end": 412.76,
+          "probability": 0.2315673828125,
+          "speaker": "SPEAKER_09",
+          "start": 412.66,
+          "word": " yeah"
+        },
+        {
+          "end": 413.06,
+          "probability": 0.01194000244140625,
+          "speaker": "SPEAKER_09",
+          "start": 412.76,
+          "word": " yeah"
+        },
+        {
+          "end": 413.06,
+          "probability": 0.9736328125,
+          "speaker": "SPEAKER_09",
+          "start": 413.06,
+          "word": " i"
+        },
+        {
+          "end": 413.74,
+          "probability": 0.859375,
+          "speaker": "SPEAKER_09",
+          "start": 413.06,
+          "word": " live"
+        },
+        {
+          "end": 413.92,
+          "probability": 0.99072265625,
+          "speaker": "SPEAKER_09",
+          "start": 413.74,
+          "word": " with"
+        },
+        {
+          "end": 414.14,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 413.92,
+          "word": " my"
+        },
+        {
+          "end": 414.58,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 414.14,
+          "word": " husband"
+        },
+        {
+          "end": 414.94,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 414.58,
+          "word": " and"
+        },
+        {
+          "end": 415.16,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 414.94,
+          "word": " two"
+        },
+        {
+          "end": 415.62,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 415.16,
+          "word": " kids"
+        },
+        {
+          "end": 416.22,
+          "probability": 0.3330078125,
+          "speaker": "SPEAKER_09",
+          "start": 415.62,
+          "word": " uh"
+        },
+        {
+          "end": 416.56,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 416.22,
+          "word": " i"
+        },
+        {
+          "end": 416.86,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 416.56,
+          "word": " have"
+        },
+        {
+          "end": 417.08,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 416.86,
+          "word": " two"
+        },
+        {
+          "end": 417.46,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 417.08,
+          "word": " kids"
+        },
+        {
+          "end": 417.56,
+          "probability": 0.0130615234375,
+          "speaker": "SPEAKER_09",
+          "start": 417.46,
+          "word": " yes"
+        },
+        {
+          "end": 418.8,
+          "probability": 0.7021484375,
+          "speaker": "SPEAKER_09",
+          "start": 417.56,
+          "word": " my"
+        },
+        {
+          "end": 419.16,
+          "probability": 0.7587890625,
+          "speaker": "SPEAKER_09",
+          "start": 418.8,
+          "word": " older"
+        },
+        {
+          "end": 419.56,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 419.16,
+          "word": " son"
+        },
+        {
+          "end": 420.32,
+          "probability": 0.97900390625,
+          "speaker": "SPEAKER_09",
+          "start": 419.56,
+          "word": " goes"
+        },
+        {
+          "end": 420.64,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 420.32,
+          "word": " to"
+        },
+        {
+          "end": 421.14,
+          "probability": 0.900390625,
+          "speaker": "SPEAKER_09",
+          "start": 420.64,
+          "word": " high"
+        },
+        {
+          "end": 421.6,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 421.14,
+          "word": " school"
+        },
+        {
+          "end": 422.16,
+          "probability": 0.9892578125,
+          "speaker": "SPEAKER_09",
+          "start": 421.6,
+          "word": " and"
+        },
+        {
+          "end": 422.4,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 422.16,
+          "word": " my"
+        },
+        {
+          "end": 422.8,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 422.4,
+          "word": " younger"
+        },
+        {
+          "end": 423.2,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 422.8,
+          "word": " daughter"
+        },
+        {
+          "end": 423.54,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_09",
+          "start": 423.2,
+          "word": " goes"
+        },
+        {
+          "end": 423.72,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 423.54,
+          "word": " to"
+        },
+        {
+          "end": 424.08,
+          "probability": 0.99169921875,
+          "speaker": "SPEAKER_09",
+          "start": 423.72,
+          "word": " primary"
+        },
+        {
+          "end": 424.66,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 424.08,
+          "word": " school"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.1684170033110947,
+      "duration": 31.650000000000034,
+      "end": 457.93,
+      "speaker": "SPEAKER_09",
+      "start": 426.28,
+      "text": "the beginning uh my son sometimes struggle but now that's okay uh however they uh went to uh they learn english medium in sri lanka so i think it's not a big deal",
+      "words": [
+        {
+          "end": 426.72,
+          "probability": 0.369140625,
+          "speaker": "SPEAKER_09",
+          "start": 426.28,
+          "word": " the"
+        },
+        {
+          "end": 434.46,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 433.98,
+          "word": " beginning"
+        },
+        {
+          "end": 435.34,
+          "probability": 0.275634765625,
+          "speaker": "SPEAKER_09",
+          "start": 434.46,
+          "word": " uh"
+        },
+        {
+          "end": 440.02,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 439.24,
+          "word": " my"
+        },
+        {
+          "end": 440.34,
+          "probability": 0.787109375,
+          "speaker": "SPEAKER_09",
+          "start": 440.02,
+          "word": " son"
+        },
+        {
+          "end": 441.16,
+          "probability": 0.8955078125,
+          "speaker": "SPEAKER_09",
+          "start": 440.34,
+          "word": " sometimes"
+        },
+        {
+          "end": 441.66,
+          "probability": 0.86962890625,
+          "speaker": "SPEAKER_09",
+          "start": 441.16,
+          "word": " struggle"
+        },
+        {
+          "end": 442.02,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 441.66,
+          "word": " but"
+        },
+        {
+          "end": 442.76,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 442.02,
+          "word": " now"
+        },
+        {
+          "end": 443.26,
+          "probability": 0.998291015625,
+          "speaker": "SPEAKER_09",
+          "start": 442.76,
+          "word": " that's"
+        },
+        {
+          "end": 443.6,
+          "probability": 0.99169921875,
+          "speaker": "SPEAKER_09",
+          "start": 443.26,
+          "word": " okay"
+        },
+        {
+          "end": 444.48,
+          "probability": 0.37353515625,
+          "speaker": "SPEAKER_09",
+          "start": 443.6,
+          "word": " uh"
+        },
+        {
+          "end": 445.36,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 444.48,
+          "word": " however"
+        },
+        {
+          "end": 446.14,
+          "probability": 0.9853515625,
+          "speaker": "SPEAKER_09",
+          "start": 445.36,
+          "word": " they"
+        },
+        {
+          "end": 446.72,
+          "probability": 0.48974609375,
+          "speaker": "SPEAKER_09",
+          "start": 446.14,
+          "word": " uh"
+        },
+        {
+          "end": 447.9,
+          "probability": 0.86181640625,
+          "speaker": "SPEAKER_09",
+          "start": 447.46,
+          "word": " went"
+        },
+        {
+          "end": 448.2,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 447.9,
+          "word": " to"
+        },
+        {
+          "end": 448.54,
+          "probability": 0.80078125,
+          "speaker": "SPEAKER_09",
+          "start": 448.2,
+          "word": " uh"
+        },
+        {
+          "end": 449.8,
+          "probability": 0.99072265625,
+          "speaker": "SPEAKER_09",
+          "start": 448.54,
+          "word": " they"
+        },
+        {
+          "end": 450.14,
+          "probability": 0.78466796875,
+          "speaker": "SPEAKER_09",
+          "start": 449.8,
+          "word": " learn"
+        },
+        {
+          "end": 450.46,
+          "probability": 0.93310546875,
+          "speaker": "SPEAKER_09",
+          "start": 450.14,
+          "word": " english"
+        },
+        {
+          "end": 450.96,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_09",
+          "start": 450.46,
+          "word": " medium"
+        },
+        {
+          "end": 451.58,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 450.96,
+          "word": " in"
+        },
+        {
+          "end": 451.82,
+          "probability": 0.935546875,
+          "speaker": "SPEAKER_09",
+          "start": 451.58,
+          "word": " sri"
+        },
+        {
+          "end": 452.2,
+          "probability": 0.9873046875,
+          "speaker": "SPEAKER_09",
+          "start": 451.82,
+          "word": " lanka"
+        },
+        {
+          "end": 452.54,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 452.2,
+          "word": " so"
+        },
+        {
+          "end": 452.76,
+          "probability": 0.98583984375,
+          "speaker": "SPEAKER_09",
+          "start": 452.54,
+          "word": " i"
+        },
+        {
+          "end": 453.14,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 452.76,
+          "word": " think"
+        },
+        {
+          "end": 454.34,
+          "probability": 0.927001953125,
+          "speaker": "SPEAKER_09",
+          "start": 453.14,
+          "word": " it's"
+        },
+        {
+          "end": 454.66,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 454.34,
+          "word": " not"
+        },
+        {
+          "end": 455.1,
+          "probability": 0.9638671875,
+          "speaker": "SPEAKER_09",
+          "start": 454.66,
+          "word": " a"
+        },
+        {
+          "end": 457.49,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 457.07,
+          "word": " big"
+        },
+        {
+          "end": 457.93,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 457.49,
+          "word": " deal"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.20754076216531836,
+      "duration": 88.14000000000004,
+      "end": 546.07,
+      "speaker": "SPEAKER_04",
+      "start": 457.93,
+      "text": "they think it's a big deal for me yeah at first i struggle a lot but i watch",
+      "words": [
+        {
+          "end": 459.79,
+          "probability": 0.12139892578125,
+          "speaker": "SPEAKER_09",
+          "start": 457.93,
+          "word": " they"
+        },
+        {
+          "end": 460.53,
+          "probability": 0.25146484375,
+          "speaker": "SPEAKER_09",
+          "start": 459.79,
+          "word": " think"
+        },
+        {
+          "end": 479.64,
+          "probability": 0.94580078125,
+          "speaker": "SPEAKER_04",
+          "start": 476.84,
+          "word": " it's"
+        },
+        {
+          "end": 480.08,
+          "probability": 0.8271484375,
+          "speaker": "SPEAKER_04",
+          "start": 479.64,
+          "word": " a"
+        },
+        {
+          "end": 480.22,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_04",
+          "start": 480.08,
+          "word": " big"
+        },
+        {
+          "end": 480.52,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_04",
+          "start": 480.22,
+          "word": " deal"
+        },
+        {
+          "end": 480.76,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_04",
+          "start": 480.52,
+          "word": " for"
+        },
+        {
+          "end": 481.04,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_04",
+          "start": 480.76,
+          "word": " me"
+        },
+        {
+          "end": 490.49,
+          "probability": 0.7099609375,
+          "speaker": "SPEAKER_08",
+          "start": 489.99,
+          "word": " yeah"
+        },
+        {
+          "end": 533.5,
+          "probability": 0.974609375,
+          "speaker": "SPEAKER_11",
+          "start": 532.3,
+          "word": " at"
+        },
+        {
+          "end": 542.35,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 541.85,
+          "word": " first"
+        },
+        {
+          "end": 543.03,
+          "probability": 0.60791015625,
+          "speaker": "SPEAKER_09",
+          "start": 542.35,
+          "word": " i"
+        },
+        {
+          "end": 543.55,
+          "probability": 0.9052734375,
+          "speaker": "SPEAKER_09",
+          "start": 543.03,
+          "word": " struggle"
+        },
+        {
+          "end": 544.37,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 543.55,
+          "word": " a"
+        },
+        {
+          "end": 544.61,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 544.37,
+          "word": " lot"
+        },
+        {
+          "end": 545.03,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 544.61,
+          "word": " but"
+        },
+        {
+          "end": 545.63,
+          "probability": 0.75927734375,
+          "speaker": "SPEAKER_09",
+          "start": 545.03,
+          "word": " i"
+        },
+        {
+          "end": 546.07,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 545.63,
+          "word": " watch"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.20754076216531836,
+      "duration": 9.960000000000036,
+      "end": 556.97,
+      "speaker": "SPEAKER_09",
+      "start": 547.01,
+      "text": "lots of movies in new zealand on netflix so i yeah i little bit family getting familiar i think",
+      "words": [
+        {
+          "end": 547.51,
+          "probability": 0.7626953125,
+          "speaker": "SPEAKER_09",
+          "start": 547.01,
+          "word": " lots"
+        },
+        {
+          "end": 547.77,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 547.51,
+          "word": " of"
+        },
+        {
+          "end": 548.31,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 547.77,
+          "word": " movies"
+        },
+        {
+          "end": 548.71,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 548.31,
+          "word": " in"
+        },
+        {
+          "end": 548.85,
+          "probability": 0.88623046875,
+          "speaker": "SPEAKER_09",
+          "start": 548.71,
+          "word": " new"
+        },
+        {
+          "end": 549.45,
+          "probability": 0.96728515625,
+          "speaker": "SPEAKER_09",
+          "start": 548.85,
+          "word": " zealand"
+        },
+        {
+          "end": 549.77,
+          "probability": 0.9345703125,
+          "speaker": "SPEAKER_09",
+          "start": 549.45,
+          "word": " on"
+        },
+        {
+          "end": 550.35,
+          "probability": 0.992919921875,
+          "speaker": "SPEAKER_09",
+          "start": 549.77,
+          "word": " netflix"
+        },
+        {
+          "end": 551.67,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 550.35,
+          "word": " so"
+        },
+        {
+          "end": 552.11,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 551.67,
+          "word": " i"
+        },
+        {
+          "end": 553.13,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_10",
+          "start": 552.11,
+          "word": " yeah"
+        },
+        {
+          "end": 553.39,
+          "probability": 0.7626953125,
+          "speaker": "SPEAKER_10",
+          "start": 553.13,
+          "word": " i"
+        },
+        {
+          "end": 553.69,
+          "probability": 0.8359375,
+          "speaker": "SPEAKER_10",
+          "start": 553.39,
+          "word": " little"
+        },
+        {
+          "end": 554.23,
+          "probability": 0.5205078125,
+          "speaker": "SPEAKER_10",
+          "start": 553.69,
+          "word": " bit"
+        },
+        {
+          "end": 554.75,
+          "probability": 0.97900390625,
+          "speaker": "SPEAKER_10",
+          "start": 554.23,
+          "word": " family"
+        },
+        {
+          "end": 555.13,
+          "probability": 0.94140625,
+          "speaker": "SPEAKER_10",
+          "start": 554.75,
+          "word": " getting"
+        },
+        {
+          "end": 555.71,
+          "probability": 0.72802734375,
+          "speaker": "SPEAKER_10",
+          "start": 555.13,
+          "word": " familiar"
+        },
+        {
+          "end": 556.69,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_10",
+          "start": 555.71,
+          "word": " i"
+        },
+        {
+          "end": 556.97,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_10",
+          "start": 556.69,
+          "word": " think"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.31085526315789475,
+      "duration": 56.90999999999997,
+      "end": 613.88,
+      "speaker": "SPEAKER_01",
+      "start": 556.97,
+      "text": "yeah just currently we have the hawk which kahu the new zealand falcon and the little owls or the little",
+      "words": [
+        {
+          "end": 558.67,
+          "probability": 0.07049560546875,
+          "speaker": "SPEAKER_10",
+          "start": 556.97,
+          "word": " yeah"
+        },
+        {
+          "end": 606.34,
+          "probability": 0.23046875,
+          "speaker": "SPEAKER_00",
+          "start": 604.9,
+          "word": " just"
+        },
+        {
+          "end": 606.78,
+          "probability": 0.97705078125,
+          "speaker": "SPEAKER_01",
+          "start": 606.34,
+          "word": " currently"
+        },
+        {
+          "end": 607.16,
+          "probability": 0.99072265625,
+          "speaker": "SPEAKER_01",
+          "start": 606.78,
+          "word": " we"
+        },
+        {
+          "end": 607.64,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 607.16,
+          "word": " have"
+        },
+        {
+          "end": 608.06,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_01",
+          "start": 607.64,
+          "word": " the"
+        },
+        {
+          "end": 608.6,
+          "probability": 0.86767578125,
+          "speaker": "SPEAKER_01",
+          "start": 608.06,
+          "word": " hawk"
+        },
+        {
+          "end": 608.98,
+          "probability": 0.21923828125,
+          "speaker": "SPEAKER_01",
+          "start": 608.6,
+          "word": " which"
+        },
+        {
+          "end": 609.48,
+          "probability": 0.6214599609375,
+          "speaker": "SPEAKER_01",
+          "start": 608.98,
+          "word": " kahu"
+        },
+        {
+          "end": 610.24,
+          "probability": 0.96142578125,
+          "speaker": "SPEAKER_01",
+          "start": 609.48,
+          "word": " the"
+        },
+        {
+          "end": 610.72,
+          "probability": 0.712890625,
+          "speaker": "SPEAKER_01",
+          "start": 610.24,
+          "word": " new"
+        },
+        {
+          "end": 611,
+          "probability": 0.9912109375,
+          "speaker": "SPEAKER_01",
+          "start": 610.72,
+          "word": " zealand"
+        },
+        {
+          "end": 611.52,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_01",
+          "start": 611,
+          "word": " falcon"
+        },
+        {
+          "end": 611.96,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_01",
+          "start": 611.52,
+          "word": " and"
+        },
+        {
+          "end": 612.34,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 611.96,
+          "word": " the"
+        },
+        {
+          "end": 612.68,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 612.34,
+          "word": " little"
+        },
+        {
+          "end": 613.34,
+          "probability": 0.9267578125,
+          "speaker": "SPEAKER_01",
+          "start": 612.68,
+          "word": " owls"
+        },
+        {
+          "end": 613.52,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_01",
+          "start": 613.34,
+          "word": " or"
+        },
+        {
+          "end": 613.62,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 613.52,
+          "word": " the"
+        },
+        {
+          "end": 613.88,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 613.62,
+          "word": " little"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.31085526315789475,
+      "duration": 22.31000000000006,
+      "end": 636.19,
+      "speaker": "SPEAKER_09",
+      "start": 613.88,
+      "text": "german owls most of these birds in uh i can understand i think yeah i think uh she's uh uh some uh in a",
+      "words": [
+        {
+          "end": 614.24,
+          "probability": 0.98876953125,
+          "speaker": "SPEAKER_01",
+          "start": 613.88,
+          "word": " german"
+        },
+        {
+          "end": 614.76,
+          "probability": 0.849853515625,
+          "speaker": "SPEAKER_01",
+          "start": 614.24,
+          "word": " owls"
+        },
+        {
+          "end": 615.24,
+          "probability": 0.47265625,
+          "speaker": "SPEAKER_05",
+          "start": 614.76,
+          "word": " most"
+        },
+        {
+          "end": 615.44,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_05",
+          "start": 615.24,
+          "word": " of"
+        },
+        {
+          "end": 615.56,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_05",
+          "start": 615.44,
+          "word": " these"
+        },
+        {
+          "end": 615.86,
+          "probability": 0.73779296875,
+          "speaker": "SPEAKER_05",
+          "start": 615.56,
+          "word": " birds"
+        },
+        {
+          "end": 616.02,
+          "probability": 0.4716796875,
+          "speaker": "SPEAKER_05",
+          "start": 615.86,
+          "word": " in"
+        },
+        {
+          "end": 623.53,
+          "probability": 0.22021484375,
+          "speaker": "SPEAKER_09",
+          "start": 623.31,
+          "word": " uh"
+        },
+        {
+          "end": 624.09,
+          "probability": 0.9599609375,
+          "speaker": "SPEAKER_09",
+          "start": 623.53,
+          "word": " i"
+        },
+        {
+          "end": 626.57,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 626.35,
+          "word": " can"
+        },
+        {
+          "end": 627.33,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 626.57,
+          "word": " understand"
+        },
+        {
+          "end": 629.41,
+          "probability": 0.5166015625,
+          "speaker": "SPEAKER_09",
+          "start": 627.33,
+          "word": " i"
+        },
+        {
+          "end": 630.01,
+          "probability": 0.89990234375,
+          "speaker": "SPEAKER_09",
+          "start": 629.41,
+          "word": " think"
+        },
+        {
+          "end": 630.63,
+          "probability": 0.984375,
+          "speaker": "SPEAKER_09",
+          "start": 630.01,
+          "word": " yeah"
+        },
+        {
+          "end": 630.87,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 630.63,
+          "word": " i"
+        },
+        {
+          "end": 631.21,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 630.87,
+          "word": " think"
+        },
+        {
+          "end": 631.73,
+          "probability": 0.56298828125,
+          "speaker": "SPEAKER_09",
+          "start": 631.21,
+          "word": " uh"
+        },
+        {
+          "end": 632.05,
+          "probability": 0.988525390625,
+          "speaker": "SPEAKER_09",
+          "start": 631.73,
+          "word": " she's"
+        },
+        {
+          "end": 632.69,
+          "probability": 0.9404296875,
+          "speaker": "SPEAKER_09",
+          "start": 632.05,
+          "word": " uh"
+        },
+        {
+          "end": 634.51,
+          "probability": 0.65283203125,
+          "speaker": "SPEAKER_09",
+          "start": 632.69,
+          "word": " uh"
+        },
+        {
+          "end": 634.65,
+          "probability": 0.8583984375,
+          "speaker": "SPEAKER_09",
+          "start": 634.51,
+          "word": " some"
+        },
+        {
+          "end": 635.11,
+          "probability": 0.92333984375,
+          "speaker": "SPEAKER_09",
+          "start": 634.65,
+          "word": " uh"
+        },
+        {
+          "end": 636.09,
+          "probability": 0.56884765625,
+          "speaker": "SPEAKER_09",
+          "start": 635.11,
+          "word": " in"
+        },
+        {
+          "end": 636.19,
+          "probability": 0.68603515625,
+          "speaker": "SPEAKER_09",
+          "start": 636.09,
+          "word": " a"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.1225385265807583,
+      "duration": 41.719999999999914,
+      "end": 677.91,
+      "speaker": "SPEAKER_01",
+      "start": 636.19,
+      "text": "so uh like some place and uh just currently we have the hawk which kahu the new zealand falcon",
+      "words": [
+        {
+          "end": 636.35,
+          "probability": 0.02630615234375,
+          "speaker": "SPEAKER_09",
+          "start": 636.19,
+          "word": " so"
+        },
+        {
+          "end": 637.13,
+          "probability": 0.0084686279296875,
+          "speaker": "SPEAKER_09",
+          "start": 636.35,
+          "word": " uh"
+        },
+        {
+          "end": 638.39,
+          "probability": 0.7548828125,
+          "speaker": "SPEAKER_09",
+          "start": 637.13,
+          "word": " like"
+        },
+        {
+          "end": 638.67,
+          "probability": 0.44921875,
+          "speaker": "SPEAKER_09",
+          "start": 638.39,
+          "word": " some"
+        },
+        {
+          "end": 639.15,
+          "probability": 0.97900390625,
+          "speaker": "SPEAKER_09",
+          "start": 638.67,
+          "word": " place"
+        },
+        {
+          "end": 639.53,
+          "probability": 0.6513671875,
+          "speaker": "SPEAKER_09",
+          "start": 639.15,
+          "word": " and"
+        },
+        {
+          "end": 639.97,
+          "probability": 0.759765625,
+          "speaker": "SPEAKER_09",
+          "start": 639.53,
+          "word": " uh"
+        },
+        {
+          "end": 672.73,
+          "probability": 0.2437744140625,
+          "speaker": "SPEAKER_00",
+          "start": 671.23,
+          "word": " just"
+        },
+        {
+          "end": 673.13,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_01",
+          "start": 672.73,
+          "word": " currently"
+        },
+        {
+          "end": 673.57,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_01",
+          "start": 673.13,
+          "word": " we"
+        },
+        {
+          "end": 674.09,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 673.57,
+          "word": " have"
+        },
+        {
+          "end": 674.45,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_01",
+          "start": 674.09,
+          "word": " the"
+        },
+        {
+          "end": 675.01,
+          "probability": 0.944091796875,
+          "speaker": "SPEAKER_01",
+          "start": 674.45,
+          "word": " hawk"
+        },
+        {
+          "end": 675.39,
+          "probability": 0.26318359375,
+          "speaker": "SPEAKER_01",
+          "start": 675.01,
+          "word": " which"
+        },
+        {
+          "end": 675.87,
+          "probability": 0.693115234375,
+          "speaker": "SPEAKER_01",
+          "start": 675.39,
+          "word": " kahu"
+        },
+        {
+          "end": 676.63,
+          "probability": 0.9716796875,
+          "speaker": "SPEAKER_01",
+          "start": 675.87,
+          "word": " the"
+        },
+        {
+          "end": 677.13,
+          "probability": 0.7451171875,
+          "speaker": "SPEAKER_01",
+          "start": 676.63,
+          "word": " new"
+        },
+        {
+          "end": 677.39,
+          "probability": 0.98974609375,
+          "speaker": "SPEAKER_01",
+          "start": 677.13,
+          "word": " zealand"
+        },
+        {
+          "end": 677.91,
+          "probability": 0.997314453125,
+          "speaker": "SPEAKER_01",
+          "start": 677.39,
+          "word": " falcon"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.1225385265807583,
+      "duration": 26.33000000000004,
+      "end": 704.24,
+      "speaker": "SPEAKER_06",
+      "start": 677.91,
+      "text": "and the little owls or the little german owls most of these birds in here have had breaks of their wings or their legs you can tell the ones that have had breaks in their wings because the wing never completely feels as it was much like a person when you've come this close yeah she told uh um",
+      "words": [
+        {
+          "end": 678.41,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_01",
+          "start": 677.91,
+          "word": " and"
+        },
+        {
+          "end": 678.75,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 678.41,
+          "word": " the"
+        },
+        {
+          "end": 679.09,
+          "probability": 1,
+          "speaker": "SPEAKER_01",
+          "start": 678.75,
+          "word": " little"
+        },
+        {
+          "end": 679.75,
+          "probability": 0.9716796875,
+          "speaker": "SPEAKER_01",
+          "start": 679.09,
+          "word": " owls"
+        },
+        {
+          "end": 679.91,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_01",
+          "start": 679.75,
+          "word": " or"
+        },
+        {
+          "end": 680.03,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_01",
+          "start": 679.91,
+          "word": " the"
+        },
+        {
+          "end": 680.29,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 680.03,
+          "word": " little"
+        },
+        {
+          "end": 680.63,
+          "probability": 0.96875,
+          "speaker": "SPEAKER_01",
+          "start": 680.29,
+          "word": " german"
+        },
+        {
+          "end": 681.17,
+          "probability": 0.923583984375,
+          "speaker": "SPEAKER_01",
+          "start": 680.63,
+          "word": " owls"
+        },
+        {
+          "end": 681.65,
+          "probability": 0.81298828125,
+          "speaker": "SPEAKER_06",
+          "start": 681.17,
+          "word": " most"
+        },
+        {
+          "end": 681.87,
+          "probability": 0.98291015625,
+          "speaker": "SPEAKER_06",
+          "start": 681.65,
+          "word": " of"
+        },
+        {
+          "end": 681.95,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_06",
+          "start": 681.87,
+          "word": " these"
+        },
+        {
+          "end": 682.23,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 681.95,
+          "word": " birds"
+        },
+        {
+          "end": 682.41,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 682.23,
+          "word": " in"
+        },
+        {
+          "end": 682.61,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 682.41,
+          "word": " here"
+        },
+        {
+          "end": 682.83,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 682.61,
+          "word": " have"
+        },
+        {
+          "end": 683.11,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 682.83,
+          "word": " had"
+        },
+        {
+          "end": 684.09,
+          "probability": 0.9814453125,
+          "speaker": "SPEAKER_06",
+          "start": 683.11,
+          "word": " breaks"
+        },
+        {
+          "end": 684.57,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 684.09,
+          "word": " of"
+        },
+        {
+          "end": 684.79,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 684.57,
+          "word": " their"
+        },
+        {
+          "end": 685.15,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 684.79,
+          "word": " wings"
+        },
+        {
+          "end": 685.55,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 685.15,
+          "word": " or"
+        },
+        {
+          "end": 685.81,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 685.55,
+          "word": " their"
+        },
+        {
+          "end": 686.31,
+          "probability": 0.94921875,
+          "speaker": "SPEAKER_06",
+          "start": 685.81,
+          "word": " legs"
+        },
+        {
+          "end": 686.75,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_06",
+          "start": 686.31,
+          "word": " you"
+        },
+        {
+          "end": 686.93,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 686.75,
+          "word": " can"
+        },
+        {
+          "end": 687.23,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 686.93,
+          "word": " tell"
+        },
+        {
+          "end": 687.35,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 687.23,
+          "word": " the"
+        },
+        {
+          "end": 687.59,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 687.35,
+          "word": " ones"
+        },
+        {
+          "end": 687.77,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 687.59,
+          "word": " that"
+        },
+        {
+          "end": 687.89,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 687.77,
+          "word": " have"
+        },
+        {
+          "end": 688.05,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 687.89,
+          "word": " had"
+        },
+        {
+          "end": 688.37,
+          "probability": 0.9921875,
+          "speaker": "SPEAKER_06",
+          "start": 688.05,
+          "word": " breaks"
+        },
+        {
+          "end": 688.57,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 688.37,
+          "word": " in"
+        },
+        {
+          "end": 688.71,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_06",
+          "start": 688.57,
+          "word": " their"
+        },
+        {
+          "end": 688.97,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 688.71,
+          "word": " wings"
+        },
+        {
+          "end": 689.37,
+          "probability": 1,
+          "speaker": "SPEAKER_06",
+          "start": 688.97,
+          "word": " because"
+        },
+        {
+          "end": 689.67,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 689.37,
+          "word": " the"
+        },
+        {
+          "end": 689.85,
+          "probability": 0.9873046875,
+          "speaker": "SPEAKER_06",
+          "start": 689.67,
+          "word": " wing"
+        },
+        {
+          "end": 690.11,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 689.85,
+          "word": " never"
+        },
+        {
+          "end": 690.83,
+          "probability": 0.31201171875,
+          "speaker": "SPEAKER_06",
+          "start": 690.11,
+          "word": " completely"
+        },
+        {
+          "end": 691.45,
+          "probability": 0.50927734375,
+          "speaker": "SPEAKER_06",
+          "start": 690.83,
+          "word": " feels"
+        },
+        {
+          "end": 691.77,
+          "probability": 0.98046875,
+          "speaker": "SPEAKER_06",
+          "start": 691.45,
+          "word": " as"
+        },
+        {
+          "end": 691.89,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_06",
+          "start": 691.77,
+          "word": " it"
+        },
+        {
+          "end": 692.25,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 691.89,
+          "word": " was"
+        },
+        {
+          "end": 692.89,
+          "probability": 0.442626953125,
+          "speaker": "SPEAKER_06",
+          "start": 692.25,
+          "word": " much"
+        },
+        {
+          "end": 693.11,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_06",
+          "start": 692.89,
+          "word": " like"
+        },
+        {
+          "end": 693.23,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_06",
+          "start": 693.11,
+          "word": " a"
+        },
+        {
+          "end": 693.69,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 693.23,
+          "word": " person"
+        },
+        {
+          "end": 693.99,
+          "probability": 0.14453125,
+          "speaker": "SPEAKER_06",
+          "start": 693.69,
+          "word": " when"
+        },
+        {
+          "end": 694.13,
+          "probability": 0.995361328125,
+          "speaker": "SPEAKER_00",
+          "start": 693.99,
+          "word": " you've"
+        },
+        {
+          "end": 694.31,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_00",
+          "start": 694.13,
+          "word": " come"
+        },
+        {
+          "end": 694.55,
+          "probability": 0.974609375,
+          "speaker": "SPEAKER_00",
+          "start": 694.31,
+          "word": " this"
+        },
+        {
+          "end": 694.83,
+          "probability": 0.97998046875,
+          "speaker": "SPEAKER_00",
+          "start": 694.55,
+          "word": " close"
+        },
+        {
+          "end": 695.31,
+          "probability": 0.9453125,
+          "speaker": "SPEAKER_00",
+          "start": 694.83,
+          "word": " yeah"
+        },
+        {
+          "end": 702.3,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 701.86,
+          "word": " she"
+        },
+        {
+          "end": 702.8,
+          "probability": 0.9599609375,
+          "speaker": "SPEAKER_09",
+          "start": 702.3,
+          "word": " told"
+        },
+        {
+          "end": 703.36,
+          "probability": 0.357421875,
+          "speaker": "SPEAKER_09",
+          "start": 702.8,
+          "word": " uh"
+        },
+        {
+          "end": 704.24,
+          "probability": 0.57666015625,
+          "speaker": "SPEAKER_09",
+          "start": 703.36,
+          "word": " um"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.19238280773990685,
+      "duration": 27.600000000000023,
+      "end": 733.08,
+      "speaker": "SPEAKER_09",
+      "start": 705.48,
+      "text": "that she had uh owls could understand but like i can't remember it's a little",
+      "words": [
+        {
+          "end": 706.2,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_09",
+          "start": 705.48,
+          "word": " that"
+        },
+        {
+          "end": 706.42,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 706.2,
+          "word": " she"
+        },
+        {
+          "end": 706.76,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 706.42,
+          "word": " had"
+        },
+        {
+          "end": 707.28,
+          "probability": 0.6103515625,
+          "speaker": "SPEAKER_09",
+          "start": 706.76,
+          "word": " uh"
+        },
+        {
+          "end": 708.26,
+          "probability": 0.57000732421875,
+          "speaker": "SPEAKER_09",
+          "start": 707.28,
+          "word": " owls"
+        },
+        {
+          "end": 708.6,
+          "probability": 0.56591796875,
+          "speaker": "SPEAKER_09",
+          "start": 708.26,
+          "word": " could"
+        },
+        {
+          "end": 716.12,
+          "probability": 0.986328125,
+          "speaker": "SPEAKER_09",
+          "start": 715.66,
+          "word": " understand"
+        },
+        {
+          "end": 716.44,
+          "probability": 0.8740234375,
+          "speaker": "SPEAKER_09",
+          "start": 716.12,
+          "word": " but"
+        },
+        {
+          "end": 716.76,
+          "probability": 0.59814453125,
+          "speaker": "SPEAKER_09",
+          "start": 716.44,
+          "word": " like"
+        },
+        {
+          "end": 717.66,
+          "probability": 0.92041015625,
+          "speaker": "SPEAKER_09",
+          "start": 716.76,
+          "word": " i"
+        },
+        {
+          "end": 718,
+          "probability": 0.95166015625,
+          "speaker": "SPEAKER_09",
+          "start": 717.66,
+          "word": " can't"
+        },
+        {
+          "end": 718.4,
+          "probability": 0.257080078125,
+          "speaker": "SPEAKER_09",
+          "start": 718,
+          "word": " remember"
+        },
+        {
+          "end": 719.38,
+          "probability": 0.629638671875,
+          "speaker": "SPEAKER_09",
+          "start": 718.4,
+          "word": " it's"
+        },
+        {
+          "end": 731.86,
+          "probability": 0.984375,
+          "speaker": "SPEAKER_08",
+          "start": 731.66,
+          "word": " a"
+        },
+        {
+          "end": 733.08,
+          "probability": 0.95556640625,
+          "speaker": "SPEAKER_08",
+          "start": 731.86,
+          "word": " little"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.19238280773990685,
+      "duration": 35.5,
+      "end": 770.7,
+      "speaker": "SPEAKER_01",
+      "start": 735.2,
+      "text": "it's a leg the new zealand falcon and the little owls or the little german owls most of these birds in",
+      "words": [
+        {
+          "end": 735.92,
+          "probability": 0.561859130859375,
+          "speaker": "SPEAKER_08",
+          "start": 735.2,
+          "word": " it's"
+        },
+        {
+          "end": 736.1,
+          "probability": 0.98291015625,
+          "speaker": "SPEAKER_08",
+          "start": 735.92,
+          "word": " a"
+        },
+        {
+          "end": 736.64,
+          "probability": 0.7275390625,
+          "speaker": "SPEAKER_08",
+          "start": 736.1,
+          "word": " leg"
+        },
+        {
+          "end": 764.78,
+          "probability": 0.316162109375,
+          "speaker": "SPEAKER_01",
+          "start": 763.04,
+          "word": " the"
+        },
+        {
+          "end": 765.4,
+          "probability": 0.91162109375,
+          "speaker": "SPEAKER_01",
+          "start": 764.78,
+          "word": " new"
+        },
+        {
+          "end": 765.66,
+          "probability": 0.987548828125,
+          "speaker": "SPEAKER_01",
+          "start": 765.4,
+          "word": " zealand"
+        },
+        {
+          "end": 766.18,
+          "probability": 0.995849609375,
+          "speaker": "SPEAKER_01",
+          "start": 765.66,
+          "word": " falcon"
+        },
+        {
+          "end": 766.68,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_01",
+          "start": 766.18,
+          "word": " and"
+        },
+        {
+          "end": 767,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 766.68,
+          "word": " the"
+        },
+        {
+          "end": 767.34,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 767,
+          "word": " little"
+        },
+        {
+          "end": 768.02,
+          "probability": 0.960205078125,
+          "speaker": "SPEAKER_01",
+          "start": 767.34,
+          "word": " owls"
+        },
+        {
+          "end": 768.18,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_01",
+          "start": 768.02,
+          "word": " or"
+        },
+        {
+          "end": 768.3,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_01",
+          "start": 768.18,
+          "word": " the"
+        },
+        {
+          "end": 768.52,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_01",
+          "start": 768.3,
+          "word": " little"
+        },
+        {
+          "end": 768.9,
+          "probability": 0.9873046875,
+          "speaker": "SPEAKER_01",
+          "start": 768.52,
+          "word": " german"
+        },
+        {
+          "end": 769.42,
+          "probability": 0.959716796875,
+          "speaker": "SPEAKER_01",
+          "start": 768.9,
+          "word": " owls"
+        },
+        {
+          "end": 769.92,
+          "probability": 0.93310546875,
+          "speaker": "SPEAKER_06",
+          "start": 769.42,
+          "word": " most"
+        },
+        {
+          "end": 770.14,
+          "probability": 0.951171875,
+          "speaker": "SPEAKER_06",
+          "start": 769.92,
+          "word": " of"
+        },
+        {
+          "end": 770.22,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 770.14,
+          "word": " these"
+        },
+        {
+          "end": 770.5,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_06",
+          "start": 770.22,
+          "word": " birds"
+        },
+        {
+          "end": 770.7,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 770.5,
+          "word": " in"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.11361228636765884,
+      "duration": 12.039999999999964,
+      "end": 782.74,
+      "speaker": "SPEAKER_06",
+      "start": 770.7,
+      "text": "here have had breaks of their wings or their legs you can tell the ones that have had breaks in their wings because the wing never completely heals as it was much like a person when you come as close to",
+      "words": [
+        {
+          "end": 770.86,
+          "probability": 0.5478515625,
+          "speaker": "SPEAKER_06",
+          "start": 770.7,
+          "word": " here"
+        },
+        {
+          "end": 771.1,
+          "probability": 0.9462890625,
+          "speaker": "SPEAKER_06",
+          "start": 770.86,
+          "word": " have"
+        },
+        {
+          "end": 771.38,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_06",
+          "start": 771.1,
+          "word": " had"
+        },
+        {
+          "end": 772.36,
+          "probability": 0.97607421875,
+          "speaker": "SPEAKER_06",
+          "start": 771.38,
+          "word": " breaks"
+        },
+        {
+          "end": 772.84,
+          "probability": 0.97021484375,
+          "speaker": "SPEAKER_06",
+          "start": 772.36,
+          "word": " of"
+        },
+        {
+          "end": 773.06,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_06",
+          "start": 772.84,
+          "word": " their"
+        },
+        {
+          "end": 773.4,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_06",
+          "start": 773.06,
+          "word": " wings"
+        },
+        {
+          "end": 773.82,
+          "probability": 0.9609375,
+          "speaker": "SPEAKER_06",
+          "start": 773.4,
+          "word": " or"
+        },
+        {
+          "end": 774.08,
+          "probability": 0.9921875,
+          "speaker": "SPEAKER_06",
+          "start": 773.82,
+          "word": " their"
+        },
+        {
+          "end": 774.6,
+          "probability": 0.98876953125,
+          "speaker": "SPEAKER_06",
+          "start": 774.08,
+          "word": " legs"
+        },
+        {
+          "end": 775.02,
+          "probability": 0.2257080078125,
+          "speaker": "SPEAKER_06",
+          "start": 774.6,
+          "word": " you"
+        },
+        {
+          "end": 775.2,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 775.02,
+          "word": " can"
+        },
+        {
+          "end": 775.5,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_06",
+          "start": 775.2,
+          "word": " tell"
+        },
+        {
+          "end": 775.62,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_06",
+          "start": 775.5,
+          "word": " the"
+        },
+        {
+          "end": 775.84,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_06",
+          "start": 775.62,
+          "word": " ones"
+        },
+        {
+          "end": 776.04,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_06",
+          "start": 775.84,
+          "word": " that"
+        },
+        {
+          "end": 776.16,
+          "probability": 0.96337890625,
+          "speaker": "SPEAKER_06",
+          "start": 776.04,
+          "word": " have"
+        },
+        {
+          "end": 776.32,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_06",
+          "start": 776.16,
+          "word": " had"
+        },
+        {
+          "end": 776.66,
+          "probability": 0.9912109375,
+          "speaker": "SPEAKER_06",
+          "start": 776.32,
+          "word": " breaks"
+        },
+        {
+          "end": 776.84,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_06",
+          "start": 776.66,
+          "word": " in"
+        },
+        {
+          "end": 776.98,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_06",
+          "start": 776.84,
+          "word": " their"
+        },
+        {
+          "end": 777.24,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_06",
+          "start": 776.98,
+          "word": " wings"
+        },
+        {
+          "end": 777.64,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_06",
+          "start": 777.24,
+          "word": " because"
+        },
+        {
+          "end": 777.92,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_06",
+          "start": 777.64,
+          "word": " the"
+        },
+        {
+          "end": 778.12,
+          "probability": 0.98828125,
+          "speaker": "SPEAKER_06",
+          "start": 777.92,
+          "word": " wing"
+        },
+        {
+          "end": 778.38,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_06",
+          "start": 778.12,
+          "word": " never"
+        },
+        {
+          "end": 779.14,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_06",
+          "start": 778.38,
+          "word": " completely"
+        },
+        {
+          "end": 779.68,
+          "probability": 0.69287109375,
+          "speaker": "SPEAKER_06",
+          "start": 779.14,
+          "word": " heals"
+        },
+        {
+          "end": 780.04,
+          "probability": 0.98486328125,
+          "speaker": "SPEAKER_06",
+          "start": 779.68,
+          "word": " as"
+        },
+        {
+          "end": 780.16,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_06",
+          "start": 780.04,
+          "word": " it"
+        },
+        {
+          "end": 780.5,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_06",
+          "start": 780.16,
+          "word": " was"
+        },
+        {
+          "end": 781.16,
+          "probability": 0.79345703125,
+          "speaker": "SPEAKER_06",
+          "start": 780.5,
+          "word": " much"
+        },
+        {
+          "end": 781.38,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_06",
+          "start": 781.16,
+          "word": " like"
+        },
+        {
+          "end": 781.48,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_06",
+          "start": 781.38,
+          "word": " a"
+        },
+        {
+          "end": 781.8,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_06",
+          "start": 781.48,
+          "word": " person"
+        },
+        {
+          "end": 781.98,
+          "probability": 0.1312255859375,
+          "speaker": "SPEAKER_00",
+          "start": 781.8,
+          "word": " when"
+        },
+        {
+          "end": 782.02,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_00",
+          "start": 781.98,
+          "word": " you"
+        },
+        {
+          "end": 782.14,
+          "probability": 0.77685546875,
+          "speaker": "SPEAKER_00",
+          "start": 782.02,
+          "word": " come"
+        },
+        {
+          "end": 782.26,
+          "probability": 0.83740234375,
+          "speaker": "SPEAKER_00",
+          "start": 782.14,
+          "word": " as"
+        },
+        {
+          "end": 782.5,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_00",
+          "start": 782.26,
+          "word": " close"
+        },
+        {
+          "end": 782.74,
+          "probability": 0.9775390625,
+          "speaker": "SPEAKER_00",
+          "start": 782.5,
+          "word": " to"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.11361228636765884,
+      "duration": 62.460000000000036,
+      "end": 845.2,
+      "speaker": "SPEAKER_09",
+      "start": 782.74,
+      "text": "them they said uh about wings uh break something yeah",
+      "words": [
+        {
+          "end": 782.88,
+          "probability": 0.98876953125,
+          "speaker": "SPEAKER_00",
+          "start": 782.74,
+          "word": " them"
+        },
+        {
+          "end": 783.46,
+          "probability": 0.71826171875,
+          "speaker": "SPEAKER_00",
+          "start": 782.88,
+          "word": " they"
+        },
+        {
+          "end": 795.82,
+          "probability": 0.9794921875,
+          "speaker": "SPEAKER_09",
+          "start": 795.38,
+          "word": " said"
+        },
+        {
+          "end": 796.44,
+          "probability": 0.10345458984375,
+          "speaker": "SPEAKER_09",
+          "start": 795.82,
+          "word": " uh"
+        },
+        {
+          "end": 797.16,
+          "probability": 0.72607421875,
+          "speaker": "SPEAKER_09",
+          "start": 796.44,
+          "word": " about"
+        },
+        {
+          "end": 797.8,
+          "probability": 0.98779296875,
+          "speaker": "SPEAKER_09",
+          "start": 797.16,
+          "word": " wings"
+        },
+        {
+          "end": 798.56,
+          "probability": 0.393310546875,
+          "speaker": "SPEAKER_09",
+          "start": 797.8,
+          "word": " uh"
+        },
+        {
+          "end": 799.22,
+          "probability": 0.96142578125,
+          "speaker": "SPEAKER_09",
+          "start": 798.56,
+          "word": " break"
+        },
+        {
+          "end": 799.84,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 799.22,
+          "word": " something"
+        },
+        {
+          "end": 845.2,
+          "probability": 0.8681640625,
+          "speaker": "SPEAKER_09",
+          "start": 843,
+          "word": " yeah"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.21711482696754988,
+      "duration": 19.59999999999991,
+      "end": 864.8,
+      "speaker": "SPEAKER_09",
+      "start": 845.2,
+      "text": "uh sometimes i uh talk with uh my daughter's school parents sometimes i had the chance to talk yeah",
+      "words": [
+        {
+          "end": 845.28,
+          "probability": 0.03631591796875,
+          "speaker": "SPEAKER_09",
+          "start": 845.2,
+          "word": " uh"
+        },
+        {
+          "end": 848.98,
+          "probability": 0.88037109375,
+          "speaker": "SPEAKER_09",
+          "start": 845.28,
+          "word": " sometimes"
+        },
+        {
+          "end": 849.5,
+          "probability": 0.861328125,
+          "speaker": "SPEAKER_09",
+          "start": 848.98,
+          "word": " i"
+        },
+        {
+          "end": 850.04,
+          "probability": 0.7890625,
+          "speaker": "SPEAKER_09",
+          "start": 849.5,
+          "word": " uh"
+        },
+        {
+          "end": 850.5,
+          "probability": 0.5009765625,
+          "speaker": "SPEAKER_09",
+          "start": 850.04,
+          "word": " talk"
+        },
+        {
+          "end": 850.84,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 850.5,
+          "word": " with"
+        },
+        {
+          "end": 851.44,
+          "probability": 0.446044921875,
+          "speaker": "SPEAKER_09",
+          "start": 850.84,
+          "word": " uh"
+        },
+        {
+          "end": 852.7,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 851.44,
+          "word": " my"
+        },
+        {
+          "end": 854.64,
+          "probability": 0.899169921875,
+          "speaker": "SPEAKER_09",
+          "start": 852.7,
+          "word": " daughter's"
+        },
+        {
+          "end": 854.86,
+          "probability": 0.97802734375,
+          "speaker": "SPEAKER_09",
+          "start": 854.64,
+          "word": " school"
+        },
+        {
+          "end": 855.5,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 854.86,
+          "word": " parents"
+        },
+        {
+          "end": 857.48,
+          "probability": 0.9892578125,
+          "speaker": "SPEAKER_09",
+          "start": 855.5,
+          "word": " sometimes"
+        },
+        {
+          "end": 859.98,
+          "probability": 0.98486328125,
+          "speaker": "SPEAKER_09",
+          "start": 857.48,
+          "word": " i"
+        },
+        {
+          "end": 860.22,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 859.98,
+          "word": " had"
+        },
+        {
+          "end": 860.36,
+          "probability": 0.57763671875,
+          "speaker": "SPEAKER_09",
+          "start": 860.22,
+          "word": " the"
+        },
+        {
+          "end": 860.76,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 860.36,
+          "word": " chance"
+        },
+        {
+          "end": 861.16,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 860.76,
+          "word": " to"
+        },
+        {
+          "end": 861.6,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 861.16,
+          "word": " talk"
+        },
+        {
+          "end": 864.8,
+          "probability": 0.97900390625,
+          "speaker": "SPEAKER_08",
+          "start": 864.38,
+          "word": " yeah"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.21711482696754988,
+      "duration": 82.35000000000002,
+      "end": 965.44,
+      "speaker": "SPEAKER_09",
+      "start": 883.09,
+      "text": "dancing yeah uh traditional sri lankan dance and my complete my bachelor in performing arts uh not yet actually i i hope to uh sometimes uh if i can i hope uh complete my master's i had for some job",
+      "words": [
+        {
+          "end": 884.05,
+          "probability": 0.412353515625,
+          "speaker": "SPEAKER_09",
+          "start": 883.09,
+          "word": " dancing"
+        },
+        {
+          "end": 885.01,
+          "probability": 0.98583984375,
+          "speaker": "SPEAKER_09",
+          "start": 884.05,
+          "word": " yeah"
+        },
+        {
+          "end": 889.16,
+          "probability": 0.36669921875,
+          "speaker": "SPEAKER_09",
+          "start": 887.98,
+          "word": " uh"
+        },
+        {
+          "end": 894.48,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_09",
+          "start": 893.6,
+          "word": " traditional"
+        },
+        {
+          "end": 894.84,
+          "probability": 0.92724609375,
+          "speaker": "SPEAKER_09",
+          "start": 894.48,
+          "word": " sri"
+        },
+        {
+          "end": 895.26,
+          "probability": 0.9049479166666666,
+          "speaker": "SPEAKER_09",
+          "start": 894.84,
+          "word": " lankan"
+        },
+        {
+          "end": 895.62,
+          "probability": 0.830078125,
+          "speaker": "SPEAKER_09",
+          "start": 895.26,
+          "word": " dance"
+        },
+        {
+          "end": 896.66,
+          "probability": 0.95849609375,
+          "speaker": "SPEAKER_09",
+          "start": 895.62,
+          "word": " and"
+        },
+        {
+          "end": 900.48,
+          "probability": 0.97802734375,
+          "speaker": "SPEAKER_09",
+          "start": 900.3,
+          "word": " my"
+        },
+        {
+          "end": 901.22,
+          "probability": 0.77880859375,
+          "speaker": "SPEAKER_09",
+          "start": 900.48,
+          "word": " complete"
+        },
+        {
+          "end": 901.66,
+          "probability": 0.990234375,
+          "speaker": "SPEAKER_09",
+          "start": 901.22,
+          "word": " my"
+        },
+        {
+          "end": 902.14,
+          "probability": 0.88720703125,
+          "speaker": "SPEAKER_09",
+          "start": 901.66,
+          "word": " bachelor"
+        },
+        {
+          "end": 902.42,
+          "probability": 0.96435546875,
+          "speaker": "SPEAKER_09",
+          "start": 902.14,
+          "word": " in"
+        },
+        {
+          "end": 902.94,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 902.42,
+          "word": " performing"
+        },
+        {
+          "end": 903.42,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 902.94,
+          "word": " arts"
+        },
+        {
+          "end": 904.04,
+          "probability": 0.0122222900390625,
+          "speaker": "SPEAKER_09",
+          "start": 903.9,
+          "word": " uh"
+        },
+        {
+          "end": 905.32,
+          "probability": 0.61083984375,
+          "speaker": "SPEAKER_09",
+          "start": 904.04,
+          "word": " not"
+        },
+        {
+          "end": 930.85,
+          "probability": 0.625,
+          "speaker": "SPEAKER_09",
+          "start": 930.49,
+          "word": " yet"
+        },
+        {
+          "end": 931.71,
+          "probability": 0.98095703125,
+          "speaker": "SPEAKER_09",
+          "start": 930.85,
+          "word": " actually"
+        },
+        {
+          "end": 933.69,
+          "probability": 0.393798828125,
+          "speaker": "SPEAKER_09",
+          "start": 931.71,
+          "word": " i"
+        },
+        {
+          "end": 939.86,
+          "probability": 0.76416015625,
+          "speaker": "SPEAKER_09",
+          "start": 939.46,
+          "word": " i"
+        },
+        {
+          "end": 945.34,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 944.94,
+          "word": " hope"
+        },
+        {
+          "end": 945.76,
+          "probability": 0.98388671875,
+          "speaker": "SPEAKER_09",
+          "start": 945.34,
+          "word": " to"
+        },
+        {
+          "end": 946.38,
+          "probability": 0.23828125,
+          "speaker": "SPEAKER_09",
+          "start": 945.76,
+          "word": " uh"
+        },
+        {
+          "end": 948.81,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 948.33,
+          "word": " sometimes"
+        },
+        {
+          "end": 949.25,
+          "probability": 0.6142578125,
+          "speaker": "SPEAKER_09",
+          "start": 948.81,
+          "word": " uh"
+        },
+        {
+          "end": 949.69,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 949.25,
+          "word": " if"
+        },
+        {
+          "end": 949.85,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 949.69,
+          "word": " i"
+        },
+        {
+          "end": 950.15,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 949.85,
+          "word": " can"
+        },
+        {
+          "end": 950.41,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 950.15,
+          "word": " i"
+        },
+        {
+          "end": 951.35,
+          "probability": 0.69970703125,
+          "speaker": "SPEAKER_09",
+          "start": 950.41,
+          "word": " hope"
+        },
+        {
+          "end": 951.71,
+          "probability": 0.685546875,
+          "speaker": "SPEAKER_09",
+          "start": 951.35,
+          "word": " uh"
+        },
+        {
+          "end": 952.55,
+          "probability": 0.9892578125,
+          "speaker": "SPEAKER_09",
+          "start": 951.71,
+          "word": " complete"
+        },
+        {
+          "end": 952.81,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 952.55,
+          "word": " my"
+        },
+        {
+          "end": 953.51,
+          "probability": 0.7001953125,
+          "speaker": "SPEAKER_09",
+          "start": 952.81,
+          "word": " master's"
+        },
+        {
+          "end": 953.97,
+          "probability": 0.9853515625,
+          "speaker": "SPEAKER_09",
+          "start": 953.51,
+          "word": " i"
+        },
+        {
+          "end": 964.3,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 963.98,
+          "word": " had"
+        },
+        {
+          "end": 964.78,
+          "probability": 0.8408203125,
+          "speaker": "SPEAKER_09",
+          "start": 964.3,
+          "word": " for"
+        },
+        {
+          "end": 965.06,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 964.78,
+          "word": " some"
+        },
+        {
+          "end": 965.44,
+          "probability": 0.99072265625,
+          "speaker": "SPEAKER_09",
+          "start": 965.06,
+          "word": " job"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.3199313908088498,
+      "duration": 2.0599999999999454,
+      "end": 973.27,
+      "speaker": "SPEAKER_09",
+      "start": 971.21,
+      "text": "doing job uh but",
+      "words": [
+        {
+          "end": 971.65,
+          "probability": 0.382080078125,
+          "speaker": "SPEAKER_09",
+          "start": 971.21,
+          "word": " doing"
+        },
+        {
+          "end": 972.09,
+          "probability": 0.98291015625,
+          "speaker": "SPEAKER_09",
+          "start": 971.65,
+          "word": " job"
+        },
+        {
+          "end": 972.69,
+          "probability": 0.1412353515625,
+          "speaker": "SPEAKER_09",
+          "start": 972.09,
+          "word": " uh"
+        },
+        {
+          "end": 973.27,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 972.69,
+          "word": " but"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.3199313908088498,
+      "duration": 103.55000000000007,
+      "end": 1079.16,
+      "speaker": "SPEAKER_09",
+      "start": 975.61,
+      "text": "before i think um i think uh um i think uh um i would like to uh talk about uh the most favorite uh place uh is hamilton garden",
+      "words": [
+        {
+          "end": 976.49,
+          "probability": 0.8173828125,
+          "speaker": "SPEAKER_09",
+          "start": 975.61,
+          "word": " before"
+        },
+        {
+          "end": 977.01,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 976.49,
+          "word": " i"
+        },
+        {
+          "end": 977.35,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 977.01,
+          "word": " think"
+        },
+        {
+          "end": 978.83,
+          "probability": 0.0171356201171875,
+          "speaker": "SPEAKER_09",
+          "start": 977.35,
+          "word": " um"
+        },
+        {
+          "end": 980.15,
+          "probability": 0.64013671875,
+          "speaker": "SPEAKER_09",
+          "start": 978.83,
+          "word": " i"
+        },
+        {
+          "end": 980.47,
+          "probability": 0.11444091796875,
+          "speaker": "SPEAKER_09",
+          "start": 980.15,
+          "word": " think"
+        },
+        {
+          "end": 980.67,
+          "probability": 0.0899658203125,
+          "speaker": "SPEAKER_09",
+          "start": 980.47,
+          "word": " uh"
+        },
+        {
+          "end": 980.67,
+          "probability": 0.154052734375,
+          "speaker": "SPEAKER_09",
+          "start": 980.67,
+          "word": " um"
+        },
+        {
+          "end": 980.67,
+          "probability": 0.342041015625,
+          "speaker": "SPEAKER_09",
+          "start": 980.67,
+          "word": " i"
+        },
+        {
+          "end": 980.67,
+          "probability": 0.1700439453125,
+          "speaker": "SPEAKER_09",
+          "start": 980.67,
+          "word": " think"
+        },
+        {
+          "end": 982.05,
+          "probability": 0.16455078125,
+          "speaker": "SPEAKER_09",
+          "start": 980.67,
+          "word": " uh"
+        },
+        {
+          "end": 982.05,
+          "probability": 0.1241455078125,
+          "speaker": "SPEAKER_09",
+          "start": 982.05,
+          "word": " um"
+        },
+        {
+          "end": 1071,
+          "probability": 0.251708984375,
+          "speaker": "SPEAKER_09",
+          "start": 1064.2,
+          "word": " i"
+        },
+        {
+          "end": 1071.16,
+          "probability": 0.57958984375,
+          "speaker": "SPEAKER_09",
+          "start": 1071,
+          "word": " would"
+        },
+        {
+          "end": 1071.52,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1071.16,
+          "word": " like"
+        },
+        {
+          "end": 1071.84,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1071.52,
+          "word": " to"
+        },
+        {
+          "end": 1072.1,
+          "probability": 0.896484375,
+          "speaker": "SPEAKER_09",
+          "start": 1071.84,
+          "word": " uh"
+        },
+        {
+          "end": 1072.5,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1072.1,
+          "word": " talk"
+        },
+        {
+          "end": 1073.08,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1072.5,
+          "word": " about"
+        },
+        {
+          "end": 1073.7,
+          "probability": 0.86474609375,
+          "speaker": "SPEAKER_09",
+          "start": 1073.08,
+          "word": " uh"
+        },
+        {
+          "end": 1074.08,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1073.7,
+          "word": " the"
+        },
+        {
+          "end": 1074.48,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1074.08,
+          "word": " most"
+        },
+        {
+          "end": 1075.04,
+          "probability": 0.98583984375,
+          "speaker": "SPEAKER_09",
+          "start": 1074.48,
+          "word": " favorite"
+        },
+        {
+          "end": 1075.62,
+          "probability": 0.71484375,
+          "speaker": "SPEAKER_09",
+          "start": 1075.04,
+          "word": " uh"
+        },
+        {
+          "end": 1076.88,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1075.62,
+          "word": " place"
+        },
+        {
+          "end": 1077.46,
+          "probability": 0.69384765625,
+          "speaker": "SPEAKER_09",
+          "start": 1076.88,
+          "word": " uh"
+        },
+        {
+          "end": 1078.08,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1077.46,
+          "word": " is"
+        },
+        {
+          "end": 1078.58,
+          "probability": 0.98291015625,
+          "speaker": "SPEAKER_09",
+          "start": 1078.08,
+          "word": " hamilton"
+        },
+        {
+          "end": 1079.16,
+          "probability": 0.9931640625,
+          "speaker": "SPEAKER_09",
+          "start": 1078.58,
+          "word": " garden"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.22149884783559376,
+      "duration": 37.929999999999836,
+      "end": 1117.09,
+      "speaker": "SPEAKER_09",
+      "start": 1079.16,
+      "text": "um i guess uh um because uh um after more uh to new zealand i uh visited there uh i uh in hamilton garden i know uh the most uh famous uh in the new zealand i think and uh there are uh many uh structured",
+      "words": [
+        {
+          "end": 1080.64,
+          "probability": 0.0005426406860351562,
+          "speaker": "SPEAKER_09",
+          "start": 1079.16,
+          "word": " um"
+        },
+        {
+          "end": 1080.64,
+          "probability": 0.2261962890625,
+          "speaker": "SPEAKER_09",
+          "start": 1080.64,
+          "word": " i"
+        },
+        {
+          "end": 1080.98,
+          "probability": 0.94580078125,
+          "speaker": "SPEAKER_09",
+          "start": 1080.64,
+          "word": " guess"
+        },
+        {
+          "end": 1081.58,
+          "probability": 0.55517578125,
+          "speaker": "SPEAKER_09",
+          "start": 1080.98,
+          "word": " uh"
+        },
+        {
+          "end": 1082.2,
+          "probability": 0.2159423828125,
+          "speaker": "SPEAKER_09",
+          "start": 1081.58,
+          "word": " um"
+        },
+        {
+          "end": 1082.92,
+          "probability": 0.98095703125,
+          "speaker": "SPEAKER_09",
+          "start": 1082.2,
+          "word": " because"
+        },
+        {
+          "end": 1083.36,
+          "probability": 0.6884765625,
+          "speaker": "SPEAKER_09",
+          "start": 1082.92,
+          "word": " uh"
+        },
+        {
+          "end": 1084.08,
+          "probability": 0.552734375,
+          "speaker": "SPEAKER_09",
+          "start": 1083.36,
+          "word": " um"
+        },
+        {
+          "end": 1085.94,
+          "probability": 0.98779296875,
+          "speaker": "SPEAKER_09",
+          "start": 1084.08,
+          "word": " after"
+        },
+        {
+          "end": 1086.46,
+          "probability": 0.166259765625,
+          "speaker": "SPEAKER_09",
+          "start": 1085.94,
+          "word": " more"
+        },
+        {
+          "end": 1087.3,
+          "probability": 0.442138671875,
+          "speaker": "SPEAKER_09",
+          "start": 1086.46,
+          "word": " uh"
+        },
+        {
+          "end": 1087.4,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 1087.3,
+          "word": " to"
+        },
+        {
+          "end": 1087.56,
+          "probability": 0.822265625,
+          "speaker": "SPEAKER_09",
+          "start": 1087.4,
+          "word": " new"
+        },
+        {
+          "end": 1088.04,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 1087.56,
+          "word": " zealand"
+        },
+        {
+          "end": 1088.44,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 1088.04,
+          "word": " i"
+        },
+        {
+          "end": 1089.04,
+          "probability": 0.8916015625,
+          "speaker": "SPEAKER_09",
+          "start": 1088.44,
+          "word": " uh"
+        },
+        {
+          "end": 1090.04,
+          "probability": 0.97802734375,
+          "speaker": "SPEAKER_09",
+          "start": 1089.04,
+          "word": " visited"
+        },
+        {
+          "end": 1090.46,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 1090.04,
+          "word": " there"
+        },
+        {
+          "end": 1091,
+          "probability": 0.82568359375,
+          "speaker": "SPEAKER_09",
+          "start": 1090.46,
+          "word": " uh"
+        },
+        {
+          "end": 1094.82,
+          "probability": 0.982421875,
+          "speaker": "SPEAKER_09",
+          "start": 1093.94,
+          "word": " i"
+        },
+        {
+          "end": 1095.22,
+          "probability": 0.8447265625,
+          "speaker": "SPEAKER_09",
+          "start": 1094.82,
+          "word": " uh"
+        },
+        {
+          "end": 1096.72,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 1095.22,
+          "word": " in"
+        },
+        {
+          "end": 1097.28,
+          "probability": 0.984619140625,
+          "speaker": "SPEAKER_09",
+          "start": 1096.72,
+          "word": " hamilton"
+        },
+        {
+          "end": 1097.92,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1097.28,
+          "word": " garden"
+        },
+        {
+          "end": 1098.62,
+          "probability": 0.79296875,
+          "speaker": "SPEAKER_09",
+          "start": 1097.92,
+          "word": " i"
+        },
+        {
+          "end": 1101.6,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1100.98,
+          "word": " know"
+        },
+        {
+          "end": 1102.04,
+          "probability": 0.658203125,
+          "speaker": "SPEAKER_09",
+          "start": 1101.6,
+          "word": " uh"
+        },
+        {
+          "end": 1103.3,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1102.04,
+          "word": " the"
+        },
+        {
+          "end": 1103.74,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1103.3,
+          "word": " most"
+        },
+        {
+          "end": 1104.06,
+          "probability": 0.69189453125,
+          "speaker": "SPEAKER_09",
+          "start": 1103.74,
+          "word": " uh"
+        },
+        {
+          "end": 1104.74,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1104.06,
+          "word": " famous"
+        },
+        {
+          "end": 1105.22,
+          "probability": 0.90087890625,
+          "speaker": "SPEAKER_09",
+          "start": 1104.74,
+          "word": " uh"
+        },
+        {
+          "end": 1106.52,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1105.22,
+          "word": " in"
+        },
+        {
+          "end": 1106.64,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 1106.52,
+          "word": " the"
+        },
+        {
+          "end": 1106.82,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 1106.64,
+          "word": " new"
+        },
+        {
+          "end": 1107.42,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 1106.82,
+          "word": " zealand"
+        },
+        {
+          "end": 1108.5,
+          "probability": 0.91162109375,
+          "speaker": "SPEAKER_09",
+          "start": 1107.42,
+          "word": " i"
+        },
+        {
+          "end": 1108.8,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1108.5,
+          "word": " think"
+        },
+        {
+          "end": 1109.3,
+          "probability": 0.958984375,
+          "speaker": "SPEAKER_09",
+          "start": 1108.8,
+          "word": " and"
+        },
+        {
+          "end": 1109.66,
+          "probability": 0.66943359375,
+          "speaker": "SPEAKER_09",
+          "start": 1109.3,
+          "word": " uh"
+        },
+        {
+          "end": 1110.54,
+          "probability": 0.97119140625,
+          "speaker": "SPEAKER_09",
+          "start": 1109.66,
+          "word": " there"
+        },
+        {
+          "end": 1113.95,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1113.63,
+          "word": " are"
+        },
+        {
+          "end": 1114.25,
+          "probability": 0.5966796875,
+          "speaker": "SPEAKER_09",
+          "start": 1113.95,
+          "word": " uh"
+        },
+        {
+          "end": 1114.97,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 1114.25,
+          "word": " many"
+        },
+        {
+          "end": 1115.43,
+          "probability": 0.99169921875,
+          "speaker": "SPEAKER_09",
+          "start": 1114.97,
+          "word": " uh"
+        },
+        {
+          "end": 1117.09,
+          "probability": 0.98095703125,
+          "speaker": "SPEAKER_09",
+          "start": 1115.43,
+          "word": " structured"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.17904974976364446,
+      "duration": 17.36999999999989,
+      "end": 1136.87,
+      "speaker": "SPEAKER_09",
+      "start": 1119.5,
+      "text": "uh based on uh garden uh such as uh chinese uh and italian and indian uh and so on uh actually i like",
+      "words": [
+        {
+          "end": 1120.02,
+          "probability": 0.460693359375,
+          "speaker": "SPEAKER_09",
+          "start": 1119.5,
+          "word": " uh"
+        },
+        {
+          "end": 1121,
+          "probability": 0.951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1120.02,
+          "word": " based"
+        },
+        {
+          "end": 1121.36,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1121,
+          "word": " on"
+        },
+        {
+          "end": 1122.1,
+          "probability": 0.57666015625,
+          "speaker": "SPEAKER_09",
+          "start": 1121.36,
+          "word": " uh"
+        },
+        {
+          "end": 1123.32,
+          "probability": 0.9287109375,
+          "speaker": "SPEAKER_09",
+          "start": 1122.1,
+          "word": " garden"
+        },
+        {
+          "end": 1123.88,
+          "probability": 0.501953125,
+          "speaker": "SPEAKER_09",
+          "start": 1123.32,
+          "word": " uh"
+        },
+        {
+          "end": 1124.62,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1123.88,
+          "word": " such"
+        },
+        {
+          "end": 1124.96,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1124.62,
+          "word": " as"
+        },
+        {
+          "end": 1125.28,
+          "probability": 0.55078125,
+          "speaker": "SPEAKER_09",
+          "start": 1124.96,
+          "word": " uh"
+        },
+        {
+          "end": 1126.12,
+          "probability": 0.83251953125,
+          "speaker": "SPEAKER_09",
+          "start": 1125.28,
+          "word": " chinese"
+        },
+        {
+          "end": 1127,
+          "probability": 0.634765625,
+          "speaker": "SPEAKER_09",
+          "start": 1126.12,
+          "word": " uh"
+        },
+        {
+          "end": 1127.38,
+          "probability": 0.9814453125,
+          "speaker": "SPEAKER_09",
+          "start": 1127,
+          "word": " and"
+        },
+        {
+          "end": 1127.98,
+          "probability": 0.98974609375,
+          "speaker": "SPEAKER_09",
+          "start": 1127.38,
+          "word": " italian"
+        },
+        {
+          "end": 1128.3,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1127.98,
+          "word": " and"
+        },
+        {
+          "end": 1128.9,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1128.3,
+          "word": " indian"
+        },
+        {
+          "end": 1129.26,
+          "probability": 0.609375,
+          "speaker": "SPEAKER_09",
+          "start": 1128.9,
+          "word": " uh"
+        },
+        {
+          "end": 1130.04,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1129.26,
+          "word": " and"
+        },
+        {
+          "end": 1130.24,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1130.04,
+          "word": " so"
+        },
+        {
+          "end": 1130.52,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1130.24,
+          "word": " on"
+        },
+        {
+          "end": 1131.68,
+          "probability": 0.8798828125,
+          "speaker": "SPEAKER_09",
+          "start": 1130.52,
+          "word": " uh"
+        },
+        {
+          "end": 1132.76,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1131.68,
+          "word": " actually"
+        },
+        {
+          "end": 1136.33,
+          "probability": 0.9775390625,
+          "speaker": "SPEAKER_09",
+          "start": 1135.95,
+          "word": " i"
+        },
+        {
+          "end": 1136.87,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1136.33,
+          "word": " like"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.17904974976364446,
+      "duration": 21.660000000000082,
+      "end": 1161.43,
+      "speaker": "SPEAKER_09",
+      "start": 1139.77,
+      "text": "go with again with my uh family uh before i visit uh visited there uh with my cousin uh so uh um so uh if i have a chance uh i would like to uh go with my kids uh i want to uh show there with my kids uh",
+      "words": [
+        {
+          "end": 1140.25,
+          "probability": 0.37451171875,
+          "speaker": "SPEAKER_09",
+          "start": 1139.77,
+          "word": " go"
+        },
+        {
+          "end": 1140.51,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1140.25,
+          "word": " with"
+        },
+        {
+          "end": 1140.91,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1140.51,
+          "word": " again"
+        },
+        {
+          "end": 1141.23,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1140.91,
+          "word": " with"
+        },
+        {
+          "end": 1141.57,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1141.23,
+          "word": " my"
+        },
+        {
+          "end": 1141.91,
+          "probability": 0.306396484375,
+          "speaker": "SPEAKER_09",
+          "start": 1141.57,
+          "word": " uh"
+        },
+        {
+          "end": 1142.57,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1141.91,
+          "word": " family"
+        },
+        {
+          "end": 1143.47,
+          "probability": 0.6826171875,
+          "speaker": "SPEAKER_09",
+          "start": 1142.57,
+          "word": " uh"
+        },
+        {
+          "end": 1143.95,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1143.47,
+          "word": " before"
+        },
+        {
+          "end": 1144.21,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1143.95,
+          "word": " i"
+        },
+        {
+          "end": 1144.69,
+          "probability": 0.8740234375,
+          "speaker": "SPEAKER_09",
+          "start": 1144.21,
+          "word": " visit"
+        },
+        {
+          "end": 1145.01,
+          "probability": 0.6845703125,
+          "speaker": "SPEAKER_09",
+          "start": 1144.69,
+          "word": " uh"
+        },
+        {
+          "end": 1145.45,
+          "probability": 0.9658203125,
+          "speaker": "SPEAKER_09",
+          "start": 1145.01,
+          "word": " visited"
+        },
+        {
+          "end": 1145.95,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1145.45,
+          "word": " there"
+        },
+        {
+          "end": 1146.23,
+          "probability": 0.63525390625,
+          "speaker": "SPEAKER_09",
+          "start": 1145.95,
+          "word": " uh"
+        },
+        {
+          "end": 1146.63,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1146.23,
+          "word": " with"
+        },
+        {
+          "end": 1146.83,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1146.63,
+          "word": " my"
+        },
+        {
+          "end": 1147.31,
+          "probability": 0.9873046875,
+          "speaker": "SPEAKER_09",
+          "start": 1146.83,
+          "word": " cousin"
+        },
+        {
+          "end": 1148.21,
+          "probability": 0.032623291015625,
+          "speaker": "SPEAKER_09",
+          "start": 1147.31,
+          "word": " uh"
+        },
+        {
+          "end": 1149.01,
+          "probability": 0.8994140625,
+          "speaker": "SPEAKER_09",
+          "start": 1148.21,
+          "word": " so"
+        },
+        {
+          "end": 1149.81,
+          "probability": 0.362548828125,
+          "speaker": "SPEAKER_09",
+          "start": 1149.01,
+          "word": " uh"
+        },
+        {
+          "end": 1150.57,
+          "probability": 0.06317138671875,
+          "speaker": "SPEAKER_09",
+          "start": 1149.81,
+          "word": " um"
+        },
+        {
+          "end": 1151.17,
+          "probability": 0.0011873245239257812,
+          "speaker": "SPEAKER_09",
+          "start": 1150.57,
+          "word": " so"
+        },
+        {
+          "end": 1151.17,
+          "probability": 0.281005859375,
+          "speaker": "SPEAKER_09",
+          "start": 1151.17,
+          "word": " uh"
+        },
+        {
+          "end": 1151.17,
+          "probability": 0.759765625,
+          "speaker": "SPEAKER_09",
+          "start": 1151.17,
+          "word": " if"
+        },
+        {
+          "end": 1151.35,
+          "probability": 0.91650390625,
+          "speaker": "SPEAKER_09",
+          "start": 1151.17,
+          "word": " i"
+        },
+        {
+          "end": 1151.77,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1151.35,
+          "word": " have"
+        },
+        {
+          "end": 1151.91,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1151.77,
+          "word": " a"
+        },
+        {
+          "end": 1152.39,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1151.91,
+          "word": " chance"
+        },
+        {
+          "end": 1152.87,
+          "probability": 0.73828125,
+          "speaker": "SPEAKER_09",
+          "start": 1152.39,
+          "word": " uh"
+        },
+        {
+          "end": 1153.57,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1152.87,
+          "word": " i"
+        },
+        {
+          "end": 1153.71,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1153.57,
+          "word": " would"
+        },
+        {
+          "end": 1153.97,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1153.71,
+          "word": " like"
+        },
+        {
+          "end": 1154.23,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1153.97,
+          "word": " to"
+        },
+        {
+          "end": 1154.57,
+          "probability": 0.0780029296875,
+          "speaker": "SPEAKER_09",
+          "start": 1154.23,
+          "word": " uh"
+        },
+        {
+          "end": 1154.63,
+          "probability": 0.97509765625,
+          "speaker": "SPEAKER_09",
+          "start": 1154.57,
+          "word": " go"
+        },
+        {
+          "end": 1154.89,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1154.63,
+          "word": " with"
+        },
+        {
+          "end": 1155.11,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1154.89,
+          "word": " my"
+        },
+        {
+          "end": 1155.55,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1155.11,
+          "word": " kids"
+        },
+        {
+          "end": 1156.13,
+          "probability": 0.206787109375,
+          "speaker": "SPEAKER_09",
+          "start": 1155.55,
+          "word": " uh"
+        },
+        {
+          "end": 1156.21,
+          "probability": 0.990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1156.13,
+          "word": " i"
+        },
+        {
+          "end": 1156.61,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1156.21,
+          "word": " want"
+        },
+        {
+          "end": 1156.89,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1156.61,
+          "word": " to"
+        },
+        {
+          "end": 1157.57,
+          "probability": 0.759765625,
+          "speaker": "SPEAKER_09",
+          "start": 1156.89,
+          "word": " uh"
+        },
+        {
+          "end": 1158.47,
+          "probability": 0.93505859375,
+          "speaker": "SPEAKER_09",
+          "start": 1157.57,
+          "word": " show"
+        },
+        {
+          "end": 1159.33,
+          "probability": 0.58935546875,
+          "speaker": "SPEAKER_09",
+          "start": 1158.87,
+          "word": " there"
+        },
+        {
+          "end": 1159.73,
+          "probability": 0.98291015625,
+          "speaker": "SPEAKER_09",
+          "start": 1159.33,
+          "word": " with"
+        },
+        {
+          "end": 1159.93,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1159.73,
+          "word": " my"
+        },
+        {
+          "end": 1160.35,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1159.93,
+          "word": " kids"
+        },
+        {
+          "end": 1161.43,
+          "probability": 0.8564453125,
+          "speaker": "SPEAKER_09",
+          "start": 1160.35,
+          "word": " uh"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.25967261337098624,
+      "duration": 80.52999999999997,
+      "end": 1243.2,
+      "speaker": "SPEAKER_09",
+      "start": 1162.67,
+      "text": "yeah i uh love uh visit there uh again uh the thing is uh i visited there in uh winter so i love uh visited uh again uh in the summer season because uh i guess uh i can uh see there are lots of flower colorful uh uh environment yeah pardon could you repeat that yeah about two kilometers i guess",
+      "words": [
+        {
+          "end": 1163.13,
+          "probability": 0.98974609375,
+          "speaker": "SPEAKER_09",
+          "start": 1162.67,
+          "word": " yeah"
+        },
+        {
+          "end": 1164.07,
+          "probability": 0.98974609375,
+          "speaker": "SPEAKER_09",
+          "start": 1163.13,
+          "word": " i"
+        },
+        {
+          "end": 1164.55,
+          "probability": 0.80517578125,
+          "speaker": "SPEAKER_09",
+          "start": 1164.07,
+          "word": " uh"
+        },
+        {
+          "end": 1168.83,
+          "probability": 0.2978515625,
+          "speaker": "SPEAKER_09",
+          "start": 1168.19,
+          "word": " love"
+        },
+        {
+          "end": 1169.33,
+          "probability": 0.71337890625,
+          "speaker": "SPEAKER_09",
+          "start": 1168.83,
+          "word": " uh"
+        },
+        {
+          "end": 1169.61,
+          "probability": 0.337646484375,
+          "speaker": "SPEAKER_09",
+          "start": 1169.33,
+          "word": " visit"
+        },
+        {
+          "end": 1170.01,
+          "probability": 0.95947265625,
+          "speaker": "SPEAKER_09",
+          "start": 1169.61,
+          "word": " there"
+        },
+        {
+          "end": 1170.37,
+          "probability": 0.40234375,
+          "speaker": "SPEAKER_09",
+          "start": 1170.01,
+          "word": " uh"
+        },
+        {
+          "end": 1170.97,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1170.37,
+          "word": " again"
+        },
+        {
+          "end": 1171.55,
+          "probability": 0.86279296875,
+          "speaker": "SPEAKER_09",
+          "start": 1170.97,
+          "word": " uh"
+        },
+        {
+          "end": 1172.01,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 1171.55,
+          "word": " the"
+        },
+        {
+          "end": 1172.25,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1172.01,
+          "word": " thing"
+        },
+        {
+          "end": 1172.67,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1172.25,
+          "word": " is"
+        },
+        {
+          "end": 1172.99,
+          "probability": 0.69775390625,
+          "speaker": "SPEAKER_09",
+          "start": 1172.67,
+          "word": " uh"
+        },
+        {
+          "end": 1173.77,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1172.99,
+          "word": " i"
+        },
+        {
+          "end": 1174.23,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1173.77,
+          "word": " visited"
+        },
+        {
+          "end": 1174.67,
+          "probability": 0.97607421875,
+          "speaker": "SPEAKER_09",
+          "start": 1174.23,
+          "word": " there"
+        },
+        {
+          "end": 1175.25,
+          "probability": 0.9951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1174.67,
+          "word": " in"
+        },
+        {
+          "end": 1175.81,
+          "probability": 0.875,
+          "speaker": "SPEAKER_09",
+          "start": 1175.25,
+          "word": " uh"
+        },
+        {
+          "end": 1177.49,
+          "probability": 0.9853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1175.81,
+          "word": " winter"
+        },
+        {
+          "end": 1178.31,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1177.49,
+          "word": " so"
+        },
+        {
+          "end": 1178.71,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1178.31,
+          "word": " i"
+        },
+        {
+          "end": 1179.11,
+          "probability": 0.9580078125,
+          "speaker": "SPEAKER_09",
+          "start": 1178.71,
+          "word": " love"
+        },
+        {
+          "end": 1180.31,
+          "probability": 0.0168304443359375,
+          "speaker": "SPEAKER_09",
+          "start": 1179.11,
+          "word": " uh"
+        },
+        {
+          "end": 1180.31,
+          "probability": 0.08514404296875,
+          "speaker": "SPEAKER_09",
+          "start": 1180.31,
+          "word": " visited"
+        },
+        {
+          "end": 1180.95,
+          "probability": 0.54443359375,
+          "speaker": "SPEAKER_09",
+          "start": 1180.31,
+          "word": " uh"
+        },
+        {
+          "end": 1181.39,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1180.95,
+          "word": " again"
+        },
+        {
+          "end": 1181.79,
+          "probability": 0.88330078125,
+          "speaker": "SPEAKER_09",
+          "start": 1181.39,
+          "word": " uh"
+        },
+        {
+          "end": 1182.97,
+          "probability": 0.52978515625,
+          "speaker": "SPEAKER_09",
+          "start": 1181.79,
+          "word": " in"
+        },
+        {
+          "end": 1183.03,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1182.97,
+          "word": " the"
+        },
+        {
+          "end": 1183.39,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1183.03,
+          "word": " summer"
+        },
+        {
+          "end": 1183.81,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1183.39,
+          "word": " season"
+        },
+        {
+          "end": 1184.37,
+          "probability": 0.98828125,
+          "speaker": "SPEAKER_09",
+          "start": 1183.81,
+          "word": " because"
+        },
+        {
+          "end": 1184.81,
+          "probability": 0.89697265625,
+          "speaker": "SPEAKER_09",
+          "start": 1184.37,
+          "word": " uh"
+        },
+        {
+          "end": 1185.69,
+          "probability": 0.94189453125,
+          "speaker": "SPEAKER_09",
+          "start": 1184.81,
+          "word": " i"
+        },
+        {
+          "end": 1186.21,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1185.69,
+          "word": " guess"
+        },
+        {
+          "end": 1186.51,
+          "probability": 0.501953125,
+          "speaker": "SPEAKER_09",
+          "start": 1186.21,
+          "word": " uh"
+        },
+        {
+          "end": 1186.85,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1186.51,
+          "word": " i"
+        },
+        {
+          "end": 1187.25,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1186.85,
+          "word": " can"
+        },
+        {
+          "end": 1187.61,
+          "probability": 0.452392578125,
+          "speaker": "SPEAKER_09",
+          "start": 1187.25,
+          "word": " uh"
+        },
+        {
+          "end": 1188.11,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 1187.61,
+          "word": " see"
+        },
+        {
+          "end": 1188.61,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1188.11,
+          "word": " there"
+        },
+        {
+          "end": 1188.81,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1188.61,
+          "word": " are"
+        },
+        {
+          "end": 1189.09,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1188.81,
+          "word": " lots"
+        },
+        {
+          "end": 1189.29,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1189.09,
+          "word": " of"
+        },
+        {
+          "end": 1189.81,
+          "probability": 0.62158203125,
+          "speaker": "SPEAKER_09",
+          "start": 1189.29,
+          "word": " flower"
+        },
+        {
+          "end": 1190.93,
+          "probability": 0.98779296875,
+          "speaker": "SPEAKER_09",
+          "start": 1189.81,
+          "word": " colorful"
+        },
+        {
+          "end": 1191.47,
+          "probability": 0.80224609375,
+          "speaker": "SPEAKER_09",
+          "start": 1190.93,
+          "word": " uh"
+        },
+        {
+          "end": 1192.91,
+          "probability": 0.11541748046875,
+          "speaker": "SPEAKER_09",
+          "start": 1191.47,
+          "word": " uh"
+        },
+        {
+          "end": 1193.51,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 1192.91,
+          "word": " environment"
+        },
+        {
+          "end": 1195.33,
+          "probability": 0.98193359375,
+          "speaker": "SPEAKER_09",
+          "start": 1193.51,
+          "word": " yeah"
+        },
+        {
+          "end": 1219.66,
+          "probability": 0.9833984375,
+          "speaker": "SPEAKER_09",
+          "start": 1219.16,
+          "word": " pardon"
+        },
+        {
+          "end": 1220.58,
+          "probability": 0.99267578125,
+          "speaker": "SPEAKER_09",
+          "start": 1219.66,
+          "word": " could"
+        },
+        {
+          "end": 1220.7,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1220.58,
+          "word": " you"
+        },
+        {
+          "end": 1220.98,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 1220.7,
+          "word": " repeat"
+        },
+        {
+          "end": 1221.3,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1220.98,
+          "word": " that"
+        },
+        {
+          "end": 1236.26,
+          "probability": 0.77685546875,
+          "speaker": "SPEAKER_08",
+          "start": 1234.76,
+          "word": " yeah"
+        },
+        {
+          "end": 1237.48,
+          "probability": 0.65185546875,
+          "speaker": "SPEAKER_09",
+          "start": 1236.26,
+          "word": " about"
+        },
+        {
+          "end": 1241.68,
+          "probability": 0.95654296875,
+          "speaker": "SPEAKER_09",
+          "start": 1240.32,
+          "word": " two"
+        },
+        {
+          "end": 1242.46,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1241.68,
+          "word": " kilometers"
+        },
+        {
+          "end": 1242.88,
+          "probability": 0.98681640625,
+          "speaker": "SPEAKER_09",
+          "start": 1242.46,
+          "word": " i"
+        },
+        {
+          "end": 1243.2,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1242.88,
+          "word": " guess"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.19693396788723064,
+      "duration": 135.79999999999995,
+      "end": 1379,
+      "speaker": "SPEAKER_09",
+      "start": 1243.2,
+      "text": "uh you mean uh my hobby like that uh in my free time uh i uh uh usually i uh uh tend to uh listen",
+      "words": [
+        {
+          "end": 1243.56,
+          "probability": 0.002086639404296875,
+          "speaker": "SPEAKER_09",
+          "start": 1243.2,
+          "word": " uh"
+        },
+        {
+          "end": 1346.01,
+          "probability": 0.669921875,
+          "speaker": "SPEAKER_09",
+          "start": 1345.19,
+          "word": " you"
+        },
+        {
+          "end": 1348.41,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1348.05,
+          "word": " mean"
+        },
+        {
+          "end": 1348.89,
+          "probability": 0.82421875,
+          "speaker": "SPEAKER_09",
+          "start": 1348.41,
+          "word": " uh"
+        },
+        {
+          "end": 1349.69,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1348.89,
+          "word": " my"
+        },
+        {
+          "end": 1350.25,
+          "probability": 0.98876953125,
+          "speaker": "SPEAKER_09",
+          "start": 1349.69,
+          "word": " hobby"
+        },
+        {
+          "end": 1350.57,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1350.25,
+          "word": " like"
+        },
+        {
+          "end": 1350.89,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1350.57,
+          "word": " that"
+        },
+        {
+          "end": 1368.12,
+          "probability": 0.828125,
+          "speaker": "SPEAKER_09",
+          "start": 1367.78,
+          "word": " uh"
+        },
+        {
+          "end": 1368.82,
+          "probability": 0.87255859375,
+          "speaker": "SPEAKER_09",
+          "start": 1368.12,
+          "word": " in"
+        },
+        {
+          "end": 1369,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1368.82,
+          "word": " my"
+        },
+        {
+          "end": 1369.38,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 1369,
+          "word": " free"
+        },
+        {
+          "end": 1369.86,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1369.38,
+          "word": " time"
+        },
+        {
+          "end": 1370.32,
+          "probability": 0.884765625,
+          "speaker": "SPEAKER_09",
+          "start": 1369.86,
+          "word": " uh"
+        },
+        {
+          "end": 1371.7,
+          "probability": 0.93505859375,
+          "speaker": "SPEAKER_09",
+          "start": 1370.32,
+          "word": " i"
+        },
+        {
+          "end": 1372.28,
+          "probability": 0.94921875,
+          "speaker": "SPEAKER_09",
+          "start": 1371.7,
+          "word": " uh"
+        },
+        {
+          "end": 1374.44,
+          "probability": 0.0141143798828125,
+          "speaker": "SPEAKER_09",
+          "start": 1372.28,
+          "word": " uh"
+        },
+        {
+          "end": 1374.76,
+          "probability": 0.9580078125,
+          "speaker": "SPEAKER_09",
+          "start": 1374.44,
+          "word": " usually"
+        },
+        {
+          "end": 1375.06,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_09",
+          "start": 1374.76,
+          "word": " i"
+        },
+        {
+          "end": 1375.62,
+          "probability": 0.96044921875,
+          "speaker": "SPEAKER_09",
+          "start": 1375.06,
+          "word": " uh"
+        },
+        {
+          "end": 1376.84,
+          "probability": 0.301513671875,
+          "speaker": "SPEAKER_09",
+          "start": 1375.62,
+          "word": " uh"
+        },
+        {
+          "end": 1377.96,
+          "probability": 0.96484375,
+          "speaker": "SPEAKER_09",
+          "start": 1376.84,
+          "word": " tend"
+        },
+        {
+          "end": 1378.3,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1377.96,
+          "word": " to"
+        },
+        {
+          "end": 1378.54,
+          "probability": 0.7841796875,
+          "speaker": "SPEAKER_09",
+          "start": 1378.3,
+          "word": " uh"
+        },
+        {
+          "end": 1379,
+          "probability": 0.376953125,
+          "speaker": "SPEAKER_09",
+          "start": 1378.54,
+          "word": " listen"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.19693396788723064,
+      "duration": 40.57999999999993,
+      "end": 1419.58,
+      "speaker": "SPEAKER_09",
+      "start": 1379,
+      "text": "into music and uh dancing as well uh i think uh listening music uh feel me relaxed and uh refresh my mind uh if i have a free time uh if i have a free time or uh in my bedtime uh if i have free uh i uh probably uh listening to music uh yeah besides uh i love watching movies uh these days uh because these days i love to",
+      "words": [
+        {
+          "end": 1379.3,
+          "probability": 0.6396484375,
+          "speaker": "SPEAKER_09",
+          "start": 1379,
+          "word": " into"
+        },
+        {
+          "end": 1379.82,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1379.3,
+          "word": " music"
+        },
+        {
+          "end": 1380.46,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1379.82,
+          "word": " and"
+        },
+        {
+          "end": 1380.88,
+          "probability": 0.638671875,
+          "speaker": "SPEAKER_09",
+          "start": 1380.46,
+          "word": " uh"
+        },
+        {
+          "end": 1381.56,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1380.88,
+          "word": " dancing"
+        },
+        {
+          "end": 1381.94,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1381.56,
+          "word": " as"
+        },
+        {
+          "end": 1382.22,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1381.94,
+          "word": " well"
+        },
+        {
+          "end": 1383.3,
+          "probability": 0.8544921875,
+          "speaker": "SPEAKER_09",
+          "start": 1382.22,
+          "word": " uh"
+        },
+        {
+          "end": 1384.42,
+          "probability": 0.98681640625,
+          "speaker": "SPEAKER_09",
+          "start": 1383.3,
+          "word": " i"
+        },
+        {
+          "end": 1384.94,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1384.42,
+          "word": " think"
+        },
+        {
+          "end": 1385.36,
+          "probability": 0.97802734375,
+          "speaker": "SPEAKER_09",
+          "start": 1384.94,
+          "word": " uh"
+        },
+        {
+          "end": 1386.08,
+          "probability": 0.99072265625,
+          "speaker": "SPEAKER_09",
+          "start": 1385.36,
+          "word": " listening"
+        },
+        {
+          "end": 1386.7,
+          "probability": 0.94091796875,
+          "speaker": "SPEAKER_09",
+          "start": 1386.08,
+          "word": " music"
+        },
+        {
+          "end": 1387.12,
+          "probability": 0.97314453125,
+          "speaker": "SPEAKER_09",
+          "start": 1386.7,
+          "word": " uh"
+        },
+        {
+          "end": 1387.78,
+          "probability": 0.94189453125,
+          "speaker": "SPEAKER_09",
+          "start": 1387.12,
+          "word": " feel"
+        },
+        {
+          "end": 1388.08,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1387.78,
+          "word": " me"
+        },
+        {
+          "end": 1388.98,
+          "probability": 0.9921875,
+          "speaker": "SPEAKER_09",
+          "start": 1388.08,
+          "word": " relaxed"
+        },
+        {
+          "end": 1389.44,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1388.98,
+          "word": " and"
+        },
+        {
+          "end": 1389.98,
+          "probability": 0.97265625,
+          "speaker": "SPEAKER_09",
+          "start": 1389.44,
+          "word": " uh"
+        },
+        {
+          "end": 1390.98,
+          "probability": 0.97216796875,
+          "speaker": "SPEAKER_09",
+          "start": 1389.98,
+          "word": " refresh"
+        },
+        {
+          "end": 1391.28,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1390.98,
+          "word": " my"
+        },
+        {
+          "end": 1391.82,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1391.28,
+          "word": " mind"
+        },
+        {
+          "end": 1392.78,
+          "probability": 0.006526947021484375,
+          "speaker": "SPEAKER_09",
+          "start": 1391.82,
+          "word": " uh"
+        },
+        {
+          "end": 1393.26,
+          "probability": 0.904296875,
+          "speaker": "SPEAKER_09",
+          "start": 1392.78,
+          "word": " if"
+        },
+        {
+          "end": 1396.36,
+          "probability": 0.828125,
+          "speaker": "SPEAKER_09",
+          "start": 1396.26,
+          "word": " i"
+        },
+        {
+          "end": 1396.76,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1396.36,
+          "word": " have"
+        },
+        {
+          "end": 1397.06,
+          "probability": 0.96630859375,
+          "speaker": "SPEAKER_09",
+          "start": 1396.76,
+          "word": " a"
+        },
+        {
+          "end": 1397.5,
+          "probability": 0.9814453125,
+          "speaker": "SPEAKER_09",
+          "start": 1397.06,
+          "word": " free"
+        },
+        {
+          "end": 1398.04,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1397.5,
+          "word": " time"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.0016918182373046875,
+          "speaker": "SPEAKER_09",
+          "start": 1398.04,
+          "word": " uh"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.1024169921875,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " if"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " i"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " have"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.0687255859375,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " a"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.9912109375,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " free"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.67578125,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " time"
+        },
+        {
+          "end": 1398.58,
+          "probability": 0.174560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " or"
+        },
+        {
+          "end": 1398.98,
+          "probability": 0.42578125,
+          "speaker": "SPEAKER_09",
+          "start": 1398.58,
+          "word": " uh"
+        },
+        {
+          "end": 1399.18,
+          "probability": 0.96630859375,
+          "speaker": "SPEAKER_09",
+          "start": 1398.98,
+          "word": " in"
+        },
+        {
+          "end": 1399.36,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1399.18,
+          "word": " my"
+        },
+        {
+          "end": 1399.92,
+          "probability": 0.454833984375,
+          "speaker": "SPEAKER_09",
+          "start": 1399.36,
+          "word": " bedtime"
+        },
+        {
+          "end": 1400.56,
+          "probability": 0.8232421875,
+          "speaker": "SPEAKER_09",
+          "start": 1399.92,
+          "word": " uh"
+        },
+        {
+          "end": 1401.58,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1400.56,
+          "word": " if"
+        },
+        {
+          "end": 1401.66,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1401.58,
+          "word": " i"
+        },
+        {
+          "end": 1401.92,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1401.66,
+          "word": " have"
+        },
+        {
+          "end": 1402.22,
+          "probability": 0.9619140625,
+          "speaker": "SPEAKER_09",
+          "start": 1401.92,
+          "word": " free"
+        },
+        {
+          "end": 1403.44,
+          "probability": 0.845703125,
+          "speaker": "SPEAKER_09",
+          "start": 1402.22,
+          "word": " uh"
+        },
+        {
+          "end": 1404.04,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_09",
+          "start": 1403.44,
+          "word": " i"
+        },
+        {
+          "end": 1404.58,
+          "probability": 0.9169921875,
+          "speaker": "SPEAKER_09",
+          "start": 1404.04,
+          "word": " uh"
+        },
+        {
+          "end": 1405.84,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1404.58,
+          "word": " probably"
+        },
+        {
+          "end": 1406.26,
+          "probability": 0.9736328125,
+          "speaker": "SPEAKER_09",
+          "start": 1405.84,
+          "word": " uh"
+        },
+        {
+          "end": 1407,
+          "probability": 0.875,
+          "speaker": "SPEAKER_09",
+          "start": 1406.26,
+          "word": " listening"
+        },
+        {
+          "end": 1407.24,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1407,
+          "word": " to"
+        },
+        {
+          "end": 1407.72,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1407.24,
+          "word": " music"
+        },
+        {
+          "end": 1408.46,
+          "probability": 0.91259765625,
+          "speaker": "SPEAKER_09",
+          "start": 1407.72,
+          "word": " uh"
+        },
+        {
+          "end": 1408.96,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 1408.46,
+          "word": " yeah"
+        },
+        {
+          "end": 1411.72,
+          "probability": 0.9345703125,
+          "speaker": "SPEAKER_09",
+          "start": 1410.9,
+          "word": " besides"
+        },
+        {
+          "end": 1412.28,
+          "probability": 0.65478515625,
+          "speaker": "SPEAKER_09",
+          "start": 1411.72,
+          "word": " uh"
+        },
+        {
+          "end": 1412.96,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 1412.28,
+          "word": " i"
+        },
+        {
+          "end": 1413.3,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1412.96,
+          "word": " love"
+        },
+        {
+          "end": 1413.78,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1413.3,
+          "word": " watching"
+        },
+        {
+          "end": 1414.48,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1413.78,
+          "word": " movies"
+        },
+        {
+          "end": 1414.92,
+          "probability": 0.87451171875,
+          "speaker": "SPEAKER_09",
+          "start": 1414.48,
+          "word": " uh"
+        },
+        {
+          "end": 1415.56,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1414.92,
+          "word": " these"
+        },
+        {
+          "end": 1416,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1415.56,
+          "word": " days"
+        },
+        {
+          "end": 1416.6,
+          "probability": 0.83642578125,
+          "speaker": "SPEAKER_09",
+          "start": 1416,
+          "word": " uh"
+        },
+        {
+          "end": 1417.66,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1416.6,
+          "word": " because"
+        },
+        {
+          "end": 1418.14,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1417.66,
+          "word": " these"
+        },
+        {
+          "end": 1418.4,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1418.14,
+          "word": " days"
+        },
+        {
+          "end": 1418.62,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1418.4,
+          "word": " i"
+        },
+        {
+          "end": 1419.38,
+          "probability": 0.66748046875,
+          "speaker": "SPEAKER_09",
+          "start": 1418.62,
+          "word": " love"
+        },
+        {
+          "end": 1419.58,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1419.38,
+          "word": " to"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.19015625059604646,
+      "duration": 109.32000000000016,
+      "end": 1528.9,
+      "speaker": "SPEAKER_09",
+      "start": 1419.58,
+      "text": "uh watching new zealand movie because i want to uh familiar uh the accent and uh i think uh listening and watching movies uh helps me help me uh improve my uh listening skills i guess uh yeah and also uh i uh love walking uh love walking uh nature in beautiful new zealand can you tell me okay",
+      "words": [
+        {
+          "end": 1419.84,
+          "probability": 0.001018524169921875,
+          "speaker": "SPEAKER_09",
+          "start": 1419.58,
+          "word": " uh"
+        },
+        {
+          "end": 1420.14,
+          "probability": 0.66650390625,
+          "speaker": "SPEAKER_09",
+          "start": 1419.84,
+          "word": " watching"
+        },
+        {
+          "end": 1420.44,
+          "probability": 0.49267578125,
+          "speaker": "SPEAKER_09",
+          "start": 1420.14,
+          "word": " new"
+        },
+        {
+          "end": 1420.88,
+          "probability": 0.98046875,
+          "speaker": "SPEAKER_09",
+          "start": 1420.44,
+          "word": " zealand"
+        },
+        {
+          "end": 1421.22,
+          "probability": 0.93896484375,
+          "speaker": "SPEAKER_09",
+          "start": 1420.88,
+          "word": " movie"
+        },
+        {
+          "end": 1421.62,
+          "probability": 0.99560546875,
+          "speaker": "SPEAKER_09",
+          "start": 1421.22,
+          "word": " because"
+        },
+        {
+          "end": 1422.06,
+          "probability": 0.9228515625,
+          "speaker": "SPEAKER_09",
+          "start": 1421.62,
+          "word": " i"
+        },
+        {
+          "end": 1422.4,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1422.06,
+          "word": " want"
+        },
+        {
+          "end": 1422.68,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1422.4,
+          "word": " to"
+        },
+        {
+          "end": 1422.98,
+          "probability": 0.76220703125,
+          "speaker": "SPEAKER_09",
+          "start": 1422.68,
+          "word": " uh"
+        },
+        {
+          "end": 1424.18,
+          "probability": 0.99609375,
+          "speaker": "SPEAKER_09",
+          "start": 1422.98,
+          "word": " familiar"
+        },
+        {
+          "end": 1424.76,
+          "probability": 0.64990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1424.18,
+          "word": " uh"
+        },
+        {
+          "end": 1425.12,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 1424.76,
+          "word": " the"
+        },
+        {
+          "end": 1425.6,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1425.12,
+          "word": " accent"
+        },
+        {
+          "end": 1426.32,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1425.6,
+          "word": " and"
+        },
+        {
+          "end": 1426.86,
+          "probability": 0.79248046875,
+          "speaker": "SPEAKER_09",
+          "start": 1426.32,
+          "word": " uh"
+        },
+        {
+          "end": 1428.14,
+          "probability": 0.94482421875,
+          "speaker": "SPEAKER_09",
+          "start": 1426.86,
+          "word": " i"
+        },
+        {
+          "end": 1428.5,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1428.14,
+          "word": " think"
+        },
+        {
+          "end": 1428.84,
+          "probability": 0.7998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1428.5,
+          "word": " uh"
+        },
+        {
+          "end": 1429.78,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1428.84,
+          "word": " listening"
+        },
+        {
+          "end": 1430.16,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1429.78,
+          "word": " and"
+        },
+        {
+          "end": 1430.52,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1430.16,
+          "word": " watching"
+        },
+        {
+          "end": 1431.1,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1430.52,
+          "word": " movies"
+        },
+        {
+          "end": 1431.92,
+          "probability": 0.9541015625,
+          "speaker": "SPEAKER_09",
+          "start": 1431.1,
+          "word": " uh"
+        },
+        {
+          "end": 1432.54,
+          "probability": 0.99755859375,
+          "speaker": "SPEAKER_09",
+          "start": 1431.92,
+          "word": " helps"
+        },
+        {
+          "end": 1432.92,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1432.54,
+          "word": " me"
+        },
+        {
+          "end": 1433.8,
+          "probability": 0.9521484375,
+          "speaker": "SPEAKER_09",
+          "start": 1432.92,
+          "word": " help"
+        },
+        {
+          "end": 1434.04,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1433.8,
+          "word": " me"
+        },
+        {
+          "end": 1434.42,
+          "probability": 0.08843994140625,
+          "speaker": "SPEAKER_09",
+          "start": 1434.04,
+          "word": " uh"
+        },
+        {
+          "end": 1434.68,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1434.42,
+          "word": " improve"
+        },
+        {
+          "end": 1435.04,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1434.68,
+          "word": " my"
+        },
+        {
+          "end": 1435.42,
+          "probability": 0.60546875,
+          "speaker": "SPEAKER_09",
+          "start": 1435.04,
+          "word": " uh"
+        },
+        {
+          "end": 1435.82,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1435.42,
+          "word": " listening"
+        },
+        {
+          "end": 1436.46,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1435.82,
+          "word": " skills"
+        },
+        {
+          "end": 1437.82,
+          "probability": 0.90625,
+          "speaker": "SPEAKER_09",
+          "start": 1436.46,
+          "word": " i"
+        },
+        {
+          "end": 1438.24,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1437.82,
+          "word": " guess"
+        },
+        {
+          "end": 1438.84,
+          "probability": 0.91162109375,
+          "speaker": "SPEAKER_09",
+          "start": 1438.24,
+          "word": " uh"
+        },
+        {
+          "end": 1439.78,
+          "probability": 0.9990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1438.84,
+          "word": " yeah"
+        },
+        {
+          "end": 1440.68,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1439.78,
+          "word": " and"
+        },
+        {
+          "end": 1441.21,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1440.77,
+          "word": " also"
+        },
+        {
+          "end": 1441.81,
+          "probability": 0.498291015625,
+          "speaker": "SPEAKER_09",
+          "start": 1441.21,
+          "word": " uh"
+        },
+        {
+          "end": 1442.79,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_09",
+          "start": 1441.81,
+          "word": " i"
+        },
+        {
+          "end": 1443.45,
+          "probability": 0.340087890625,
+          "speaker": "SPEAKER_09",
+          "start": 1442.79,
+          "word": " uh"
+        },
+        {
+          "end": 1443.83,
+          "probability": 0.5146484375,
+          "speaker": "SPEAKER_09",
+          "start": 1443.45,
+          "word": " love"
+        },
+        {
+          "end": 1444.41,
+          "probability": 0.73779296875,
+          "speaker": "SPEAKER_09",
+          "start": 1443.83,
+          "word": " walking"
+        },
+        {
+          "end": 1444.89,
+          "probability": 0.188232421875,
+          "speaker": "SPEAKER_09",
+          "start": 1444.41,
+          "word": " uh"
+        },
+        {
+          "end": 1445.35,
+          "probability": 1.4901161193847656e-06,
+          "speaker": "SPEAKER_09",
+          "start": 1444.89,
+          "word": " love"
+        },
+        {
+          "end": 1445.35,
+          "probability": 0.5625,
+          "speaker": "SPEAKER_09",
+          "start": 1445.35,
+          "word": " walking"
+        },
+        {
+          "end": 1445.35,
+          "probability": 0.6728515625,
+          "speaker": "SPEAKER_09",
+          "start": 1445.35,
+          "word": " uh"
+        },
+        {
+          "end": 1445.57,
+          "probability": 0.9482421875,
+          "speaker": "SPEAKER_09",
+          "start": 1445.35,
+          "word": " nature"
+        },
+        {
+          "end": 1445.79,
+          "probability": 0.990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1445.57,
+          "word": " in"
+        },
+        {
+          "end": 1446.39,
+          "probability": 0.9912109375,
+          "speaker": "SPEAKER_09",
+          "start": 1445.79,
+          "word": " beautiful"
+        },
+        {
+          "end": 1447.25,
+          "probability": 0.61865234375,
+          "speaker": "SPEAKER_09",
+          "start": 1446.39,
+          "word": " new"
+        },
+        {
+          "end": 1447.77,
+          "probability": 0.823486328125,
+          "speaker": "SPEAKER_09",
+          "start": 1447.25,
+          "word": " zealand"
+        },
+        {
+          "end": 1449.19,
+          "probability": 0.93798828125,
+          "speaker": "SPEAKER_09",
+          "start": 1447.77,
+          "word": " can"
+        },
+        {
+          "end": 1527.5,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1527.36,
+          "word": " you"
+        },
+        {
+          "end": 1527.72,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1527.5,
+          "word": " tell"
+        },
+        {
+          "end": 1528.02,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1527.72,
+          "word": " me"
+        },
+        {
+          "end": 1528.9,
+          "probability": 0.5478515625,
+          "speaker": "SPEAKER_09",
+          "start": 1528.02,
+          "word": " okay"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.18075980684336493,
+      "duration": 105.13999999999987,
+      "end": 1634.62,
+      "speaker": "SPEAKER_09",
+      "start": 1529.48,
+      "text": "what sentence you see makes i think christian music uh makes me calm you mean you mean uh use making",
+      "words": [
+        {
+          "end": 1529.94,
+          "probability": 0.9921875,
+          "speaker": "SPEAKER_09",
+          "start": 1529.48,
+          "word": " what"
+        },
+        {
+          "end": 1530.42,
+          "probability": 0.99169921875,
+          "speaker": "SPEAKER_09",
+          "start": 1529.94,
+          "word": " sentence"
+        },
+        {
+          "end": 1531,
+          "probability": 0.634765625,
+          "speaker": "SPEAKER_09",
+          "start": 1530.42,
+          "word": " you"
+        },
+        {
+          "end": 1548.22,
+          "probability": 0.93505859375,
+          "speaker": "SPEAKER_09",
+          "start": 1548.04,
+          "word": " see"
+        },
+        {
+          "end": 1548.66,
+          "probability": 0.86376953125,
+          "speaker": "SPEAKER_09",
+          "start": 1548.22,
+          "word": " makes"
+        },
+        {
+          "end": 1549.04,
+          "probability": 0.96923828125,
+          "speaker": "SPEAKER_09",
+          "start": 1548.66,
+          "word": " i"
+        },
+        {
+          "end": 1554.96,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1554.64,
+          "word": " think"
+        },
+        {
+          "end": 1555.52,
+          "probability": 0.719482421875,
+          "speaker": "SPEAKER_09",
+          "start": 1554.96,
+          "word": " christian"
+        },
+        {
+          "end": 1556.12,
+          "probability": 0.98193359375,
+          "speaker": "SPEAKER_09",
+          "start": 1555.52,
+          "word": " music"
+        },
+        {
+          "end": 1556.54,
+          "probability": 0.467529296875,
+          "speaker": "SPEAKER_09",
+          "start": 1556.12,
+          "word": " uh"
+        },
+        {
+          "end": 1556.98,
+          "probability": 0.99853515625,
+          "speaker": "SPEAKER_09",
+          "start": 1556.54,
+          "word": " makes"
+        },
+        {
+          "end": 1557.28,
+          "probability": 1,
+          "speaker": "SPEAKER_09",
+          "start": 1556.98,
+          "word": " me"
+        },
+        {
+          "end": 1557.88,
+          "probability": 0.779296875,
+          "speaker": "SPEAKER_09",
+          "start": 1557.28,
+          "word": " calm"
+        },
+        {
+          "end": 1558.34,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_09",
+          "start": 1557.88,
+          "word": " you"
+        },
+        {
+          "end": 1629.23,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1628.89,
+          "word": " mean"
+        },
+        {
+          "end": 1629.77,
+          "probability": 0.880859375,
+          "speaker": "SPEAKER_09",
+          "start": 1629.23,
+          "word": " you"
+        },
+        {
+          "end": 1633.46,
+          "probability": 0.9970703125,
+          "speaker": "SPEAKER_09",
+          "start": 1633.18,
+          "word": " mean"
+        },
+        {
+          "end": 1633.8,
+          "probability": 0.8203125,
+          "speaker": "SPEAKER_09",
+          "start": 1633.46,
+          "word": " uh"
+        },
+        {
+          "end": 1634.16,
+          "probability": 0.9375,
+          "speaker": "SPEAKER_09",
+          "start": 1633.8,
+          "word": " use"
+        },
+        {
+          "end": 1634.62,
+          "probability": 0.97998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1634.16,
+          "word": " making"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.18075980684336493,
+      "duration": 114.04999999999995,
+      "end": 1749.55,
+      "speaker": "SPEAKER_12",
+      "start": 1635.5,
+      "text": "sentence yeah that sounds good",
+      "words": [
+        {
+          "end": 1636.02,
+          "probability": 0.89404296875,
+          "speaker": "SPEAKER_09",
+          "start": 1635.5,
+          "word": " sentence"
+        },
+        {
+          "end": 1654.85,
+          "probability": 0.9755859375,
+          "speaker": "SPEAKER_12",
+          "start": 1653.07,
+          "word": " yeah"
+        },
+        {
+          "end": 1748.85,
+          "probability": 0.99365234375,
+          "speaker": "SPEAKER_08",
+          "start": 1748.33,
+          "word": " that"
+        },
+        {
+          "end": 1749.17,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_08",
+          "start": 1748.85,
+          "word": " sounds"
+        },
+        {
+          "end": 1749.55,
+          "probability": 0.99951171875,
+          "speaker": "SPEAKER_08",
+          "start": 1749.17,
+          "word": " good"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.3549107110926083,
+      "duration": 35.15000000000009,
+      "end": 1818.2,
+      "speaker": "SPEAKER_09",
+      "start": 1783.05,
+      "text": "yeah that sounds good i really like this teaching style yeah i mean i will book uh lessons",
+      "words": [
+        {
+          "end": 1784.03,
+          "probability": 0.73876953125,
+          "speaker": "SPEAKER_12",
+          "start": 1783.05,
+          "word": " yeah"
+        },
+        {
+          "end": 1802.7,
+          "probability": 0.454345703125,
+          "speaker": "SPEAKER_09",
+          "start": 1801.94,
+          "word": " that"
+        },
+        {
+          "end": 1802.84,
+          "probability": 0.003570556640625,
+          "speaker": "SPEAKER_09",
+          "start": 1802.7,
+          "word": " sounds"
+        },
+        {
+          "end": 1803.16,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1802.84,
+          "word": " good"
+        },
+        {
+          "end": 1804.94,
+          "probability": 0.489990234375,
+          "speaker": "SPEAKER_09",
+          "start": 1803.16,
+          "word": " i"
+        },
+        {
+          "end": 1805.2,
+          "probability": 0.9833984375,
+          "speaker": "SPEAKER_09",
+          "start": 1804.94,
+          "word": " really"
+        },
+        {
+          "end": 1805.74,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 1805.2,
+          "word": " like"
+        },
+        {
+          "end": 1806.22,
+          "probability": 0.919921875,
+          "speaker": "SPEAKER_09",
+          "start": 1805.74,
+          "word": " this"
+        },
+        {
+          "end": 1806.62,
+          "probability": 0.92822265625,
+          "speaker": "SPEAKER_09",
+          "start": 1806.22,
+          "word": " teaching"
+        },
+        {
+          "end": 1807.12,
+          "probability": 0.998046875,
+          "speaker": "SPEAKER_09",
+          "start": 1806.62,
+          "word": " style"
+        },
+        {
+          "end": 1808.28,
+          "probability": 0.91162109375,
+          "speaker": "SPEAKER_09",
+          "start": 1807.12,
+          "word": " yeah"
+        },
+        {
+          "end": 1813.71,
+          "probability": 0.97119140625,
+          "speaker": "SPEAKER_09",
+          "start": 1812.53,
+          "word": " i"
+        },
+        {
+          "end": 1814.01,
+          "probability": 0.2509765625,
+          "speaker": "SPEAKER_09",
+          "start": 1813.71,
+          "word": " mean"
+        },
+        {
+          "end": 1816.7,
+          "probability": 0.7587890625,
+          "speaker": "SPEAKER_09",
+          "start": 1815.92,
+          "word": " i"
+        },
+        {
+          "end": 1816.9,
+          "probability": 0.88525390625,
+          "speaker": "SPEAKER_09",
+          "start": 1816.7,
+          "word": " will"
+        },
+        {
+          "end": 1817.26,
+          "probability": 0.994140625,
+          "speaker": "SPEAKER_09",
+          "start": 1816.9,
+          "word": " book"
+        },
+        {
+          "end": 1817.66,
+          "probability": 0.65185546875,
+          "speaker": "SPEAKER_09",
+          "start": 1817.26,
+          "word": " uh"
+        },
+        {
+          "end": 1818.2,
+          "probability": 0.99658203125,
+          "speaker": "SPEAKER_09",
+          "start": 1817.66,
+          "word": " lessons"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.3549107110926083,
+      "duration": 40.73000000000002,
+      "end": 1861.66,
+      "speaker": "SPEAKER_12",
+      "start": 1820.93,
+      "text": "yeah yeah you too",
+      "words": [
+        {
+          "end": 1821.42,
+          "probability": 0.951171875,
+          "speaker": "SPEAKER_09",
+          "start": 1820.93,
+          "word": " yeah"
+        },
+        {
+          "end": 1852.4,
+          "probability": 0.943359375,
+          "speaker": "SPEAKER_12",
+          "start": 1852,
+          "word": " yeah"
+        },
+        {
+          "end": 1853.5,
+          "probability": 0.82958984375,
+          "speaker": "SPEAKER_12",
+          "start": 1852.4,
+          "word": " you"
+        },
+        {
+          "end": 1861.66,
+          "probability": 0.6416015625,
+          "speaker": "SPEAKER_08",
+          "start": 1861.34,
+          "word": " too"
+        }
+      ]
+    },
+    {
+      "avg_logprob": -0.7927083412806193,
+      "duration": 5.460000000000036,
+      "end": 1873.13,
+      "speaker": "SPEAKER_02",
+      "start": 1867.67,
+      "text": "okay okay okay bye bye bye thank you",
+      "words": [
+        {
+          "end": 1868.69,
+          "probability": 0.422119140625,
+          "speaker": "SPEAKER_02",
+          "start": 1867.67,
+          "word": " okay"
+        },
+        {
+          "end": 1868.83,
+          "probability": 0.26025390625,
+          "speaker": "SPEAKER_02",
+          "start": 1868.69,
+          "word": " okay"
+        },
+        {
+          "end": 1870.27,
+          "probability": 0.01117706298828125,
+          "speaker": "SPEAKER_02",
+          "start": 1868.83,
+          "word": " okay"
+        },
+        {
+          "end": 1870.37,
+          "probability": 0.7802734375,
+          "speaker": "SPEAKER_02",
+          "start": 1870.27,
+          "word": " bye"
+        },
+        {
+          "end": 1871.95,
+          "probability": 0.2646484375,
+          "speaker": "SPEAKER_02",
+          "start": 1870.37,
+          "word": " bye"
+        },
+        {
+          "end": 1872.21,
+          "probability": 0.04925537109375,
+          "speaker": "SPEAKER_02",
+          "start": 1871.95,
+          "word": " bye"
+        },
+        {
+          "end": 1872.97,
+          "probability": 0.8984375,
+          "speaker": "SPEAKER_02",
+          "start": 1872.21,
+          "word": " thank"
+        },
+        {
+          "end": 1873.13,
+          "probability": 0.99462890625,
+          "speaker": "SPEAKER_02",
+          "start": 1872.97,
+          "word": " you"
+        }
+      ]
+    }
+  ]
+}

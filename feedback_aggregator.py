@@ -85,23 +85,30 @@ def _is_positive_observation(value):
 
 def _strength_parts(value):
     text = str(value or "").strip()
-    if " | " in text:
-        phrase, detail = text.split(" | ", 1)
-        category_match = re.search(r"category:\s*([^|]+)", detail, re.I)
-        reason_match = re.search(r"why:\s*(.+)", detail, re.I)
-        return (
-            phrase.strip(),
-            (category_match.group(1).strip().lower() if category_match else "fluency"),
-            (reason_match.group(1).strip() if reason_match else "This makes the message easy to follow."),
-        )
-    lower = text.lower()
-    if any(token in lower for token in ("then", "because", "after", "before", "story")):
-        return text, "narrative control", "This develops the story in a clear sequence."
-    if any(token in lower for token in ("however", "although", "therefore", "first", "finally")):
-        return text, "cohesion", "This links ideas clearly for the listener."
-    if any(token in lower for token in ("idiom", "vivid", "specific", "varied")):
-        return text, "lexical range", "This adds precise, varied language."
-    return text, "fluency", "This makes the message easy to follow."
+    if " | " not in text:
+        lower = text.lower()
+        if any(token in lower for token in ("then", "because", "after", "before", "story")):
+            return text, "narrative control", "This develops the response in a clear sequence."
+        if any(token in lower for token in ("however", "although", "therefore", "first", "finally")):
+            return text, "cohesion", "This links ideas with a clear logical relationship."
+        if any(token in lower for token in ("idiom", "vivid", "specific", "varied")):
+            return text, "lexical range", "This demonstrates precise and varied lexical resource."
+        return None
+    phrase, detail = text.split(" | ", 1)
+    category_match = re.search(r"category:\s*([^|]+)", detail, re.I)
+    reason_match = re.search(r"why:\s*(.+)", detail, re.I)
+    if not category_match or not reason_match:
+        return None
+    reason = reason_match.group(1).strip()
+    generic_reasons = {
+        "this makes the message easy to follow.",
+        "this is clear.",
+        "this is good.",
+        "this sounds natural.",
+    }
+    if reason.lower() in generic_reasons:
+        return None
+    return phrase.strip(), category_match.group(1).strip().lower(), reason
 
 
 def _overlaps_low_confidence_word(phrase, turn, threshold):
@@ -280,12 +287,11 @@ def aggregate_feedback(
                     polarity="issue",
                     evidence=_evidence_span(item.get("turn"), phrase),
                 )
-        positive_observations = [
-            text for text in payload.get("observations") or []
-            if _is_positive_observation(text)
-        ]
-        for text in list(payload.get("highlights") or []) + positive_observations:
-            phrase, category, reason = _strength_parts(text)
+        for text in list(payload.get("strengths") or []) + list(payload.get("highlights") or []):
+            strength = _strength_parts(text)
+            if not strength:
+                continue
+            phrase, category, reason = strength
             if phrase:
                 category = _strength_category(category)
                 _cluster_feedback(

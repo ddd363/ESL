@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "esl-app",
+      "runtimeExecutable": "conda",
+      "runtimeArgs": ["run", "--no-capture-output", "-n", "project1", "python", "-m", "streamlit", "run", "app.py", "--server.port", "8501", "--server.headless", "true"],
+      "port": 8501
+    }
+  ]
+}
