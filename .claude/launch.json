@@ -3,9 +3,21 @@
   "configurations": [
     {
       "name": "esl-app",
-      "runtimeExecutable": "conda",
-      "runtimeArgs": ["run", "--no-capture-output", "-n", "project1", "python", "-m", "streamlit", "run", "app.py", "--server.port", "8501", "--server.headless", "true"],
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "set -a; [ -f .env.project1.local ] && source .env.project1.local; set +a; export ESL_EVENT_LOG=/tmp/esl_app_events.log; exec conda run --no-capture-output -n project1 python -m streamlit run app.py --server.port 8501 --server.headless true"
+      ],
       "port": 8501
+    },
+    {
+      "name": "esl-replay",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "set -a; [ -f .env.project1.local ] && source .env.project1.local; set +a; export ESL_EVENT_LOG=/tmp/esl_replay_events.log; export REPLAY_SPEED=3; exec conda run --no-capture-output -n project1 python -m streamlit run replay_harness.py --server.port 8502 --server.headless true"
+      ],
+      "port": 8502
     }
   ]
 }

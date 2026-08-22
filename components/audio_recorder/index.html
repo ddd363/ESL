@@ -240,6 +240,7 @@
         source.processor = null;
         source.input = null;
         source.analyser = null;
+        source.waveReference = 0;
         source.ready = false;
         source.initPromise = null;
         source.liveChunkBuffers = [];
@@ -355,6 +356,7 @@
             // ignore
           }
           source.analyser = null;
+          source.waveReference = 0;
         }
         if (source.input) {
           try {
@@ -462,39 +464,121 @@
         }
       }
 
+      // This meter answers exactly one question: is audio coming through? Nobody
+      // reads the shape. A fixed gain cannot do that job, because the incoming
+      // level depends entirely on the mic and the system volume - a loopback
+      // device at half volume peaks near 0.01, where any fixed scaling either
+      // shows nothing or pins on room tone.
+      //
+      // So it self-scales: whatever the loudest thing heard recently was becomes
+      // full height. Any real audio therefore fills the canvas, at any input
+      // level, and silence is the only thing that draws flat.
+      const WAVE_SILENCE = 0.0015;  // frame peak below this = genuine silence
+      const WAVE_MIN_REF = 0.012;   // never scale quieter than this up to full
+      const WAVE_REF_DECAY = 0.985; // how fast the reference falls back (per frame)
+      const WAVE_CURVE = 0.5;       // below 1 fattens the body of the envelope
+      const WAVE_COLUMN_PX = 4;     // canvas px per peak column
+      const WAVE_COLORS = {
+        student: { line: "#166e55", fill: "rgba(22, 110, 85, 0.32)" },
+        teacher: { line: "#175cd3", fill: "rgba(23, 92, 211, 0.30)" },
+      };
+
+      function waveAmplitude(peak, reference) {
+        if (peak <= 0 || reference <= 0) {
+          return 0;
+        }
+        return Math.min(1, Math.pow(peak / reference, WAVE_CURVE));
+      }
+
       function drawWaveform() {
+        try {
+          paintWaveforms();
+        } catch (err) {
+          if (!window.__waveformErrorReported) {
+            window.__waveformErrorReported = true;
+            emitEvent("waveform_error", { message: String(err) });
+          }
+        }
+        animationId = requestAnimationFrame(drawWaveform);
+      }
+
+      function paintWaveforms() {
         for (const [sourceName, waveCtx] of Object.entries(waveforms)) {
           const source = sources[sourceName];
           const waveCanvas = waveCtx.canvas;
+          const mid = waveCanvas.height / 2;
+          const colors = WAVE_COLORS[sourceName] || WAVE_COLORS.student;
           waveCtx.fillStyle = "#f6f7f8";
           waveCtx.fillRect(0, 0, waveCanvas.width, waveCanvas.height);
+
+          // Always draw the baseline, so an idle mic reads as quiet rather than
+          // as a dead widget.
+          waveCtx.lineWidth = 1;
+          waveCtx.strokeStyle = "#d8dee5";
+          waveCtx.beginPath();
+          waveCtx.moveTo(0, mid);
+          waveCtx.lineTo(waveCanvas.width, mid);
+          waveCtx.stroke();
+
           if (!source.analyser || !source.ready) {
             continue;
           }
+          // Float, not byte: getByteTimeDomainData quantises to 8 bits, so the
+          // smallest deflection it can express is 1/128 - coarser than the quiet
+          // signals this meter most needs to show.
           const bufferLength = source.analyser.fftSize;
-          const dataArray = new Uint8Array(bufferLength);
-          source.analyser.getByteTimeDomainData(dataArray);
+          const dataArray = new Float32Array(bufferLength);
+          source.analyser.getFloatTimeDomainData(dataArray);
 
-          waveCtx.lineWidth = 2;
-          waveCtx.strokeStyle = sourceName === "student" ? "#166e55" : "#175cd3";
-          waveCtx.beginPath();
-
-          const sliceWidth = waveCanvas.width / bufferLength;
-          let x = 0;
-          for (let i = 0; i < bufferLength; i += 1) {
-            const v = dataArray[i] / 128.0;
-            const y = (v * waveCanvas.height) / 2;
-            if (i === 0) {
-              waveCtx.moveTo(x, y);
-            } else {
-              waveCtx.lineTo(x, y);
+          // One peak per column. At 260 CSS px a 2048-point trace just aliases
+          // into mush; a peak envelope is legible at a glance.
+          const columns = Math.max(1, Math.floor(waveCanvas.width / WAVE_COLUMN_PX));
+          const perColumn = Math.max(1, Math.floor(bufferLength / columns));
+          const maxAmp = mid - 2;
+          const peaks = new Array(columns);
+          let framePeak = 0;
+          for (let c = 0; c < columns; c += 1) {
+            const start = c * perColumn;
+            const end = Math.min(bufferLength, start + perColumn);
+            let peak = 0;
+            for (let i = start; i < end; i += 1) {
+              const deviation = Math.abs(dataArray[i]);
+              if (deviation > peak) {
+                peak = deviation;
+              }
             }
-            x += sliceWidth;
+            peaks[c] = peak;
+            if (peak > framePeak) {
+              framePeak = peak;
+            }
           }
-          waveCtx.lineTo(waveCanvas.width, waveCanvas.height / 2);
+
+          // Instant attack, slow release: the loudest thing heard in the last
+          // second or two defines full height.
+          source.waveReference = Math.max(framePeak, (source.waveReference || 0) * WAVE_REF_DECAY);
+          if (framePeak < WAVE_SILENCE) {
+            continue;  // nothing coming through; the baseline already says so
+          }
+          const reference = Math.max(source.waveReference, WAVE_MIN_REF);
+          const heights = peaks.map((peak) => waveAmplitude(peak, reference) * maxAmp);
+
+          const columnX = (c) => c * WAVE_COLUMN_PX + WAVE_COLUMN_PX / 2;
+          waveCtx.beginPath();
+          waveCtx.moveTo(columnX(0), mid - heights[0]);
+          for (let c = 1; c < columns; c += 1) {
+            waveCtx.lineTo(columnX(c), mid - heights[c]);
+          }
+          for (let c = columns - 1; c >= 0; c -= 1) {
+            waveCtx.lineTo(columnX(c), mid + heights[c]);
+          }
+          waveCtx.closePath();
+          waveCtx.fillStyle = colors.fill;
+          waveCtx.fill();
+          waveCtx.lineWidth = 2;
+          waveCtx.lineJoin = "round";
+          waveCtx.strokeStyle = colors.line;
           waveCtx.stroke();
         }
-        animationId = requestAnimationFrame(drawWaveform);
       }
 
       function pickMediaRecorderMime() {
@@ -727,7 +811,15 @@
           setUiState();
           setStatus("Recording lesson... 00:00");
           startTimer();
-          drawWaveform();
+          // The meter is cosmetic and sits upstream of lesson_started. If it
+          // ever throws, the emit below never runs, the app never enters the
+          // recording state, and nothing is transcribed at all - with only a
+          // "microphone unavailable" message to go on. Never let that happen.
+          try {
+            drawWaveform();
+          } catch (err) {
+            emitEvent("waveform_error", { message: String(err) });
+          }
           emitEvent("lesson_started", {
             sources: Object.fromEntries(activeSources.map(([sourceName, source]) => [sourceName, source.audioContext.sampleRate])),
           });

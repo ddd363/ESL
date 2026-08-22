@@ -11,7 +11,7 @@ if [ -f .env.project1.local ]; then
   set +a
 fi
 
-for key in DEEPGRAM_API_KEY REPLICATE_API_TOKEN; do
+for key in DEEPGRAM_API_KEY REPLICATE_API_TOKEN DEEPSEEK_API_KEY; do
   if [ -z "${!key:-}" ]; then
     echo "Warning: $key is not set — the app will start but that feature will not work." >&2
   fi
