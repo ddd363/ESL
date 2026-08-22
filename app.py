@@ -25,6 +25,8 @@ import replicate
 import streamlit as st
 import streamlit.components.v1 as components
 
+import lesson_audio
+import lesson_library
 import live_runtime
 from live_sentences import (
     in_feedback_window,
@@ -53,7 +55,7 @@ except Exception:
 AUDIO_DIR = "audio"
 APP_EVENT_LOG = os.environ.get("ESL_EVENT_LOG", "/tmp/esl_app_events.log")
 LEGACY_AUDIO_EXTS = {".wav", ".m4a"}
-LESSON_AUDIO_EXTS = {".wav", ".m4a", ".webm", ".ogg", ".mp4", ".mp3"}
+LESSON_AUDIO_EXTS = lesson_library.LESSON_AUDIO_EXTS
 SOURCE_LABELS = {"student": "Student", "teacher": "Teacher"}
 AUTOSAVE_INTERVAL_S = 5.0
 TURN_GAP_SECONDS = 8.0
@@ -521,6 +523,7 @@ def end_all_streams():
     streamers = st.session_state.deepgram_streamers
     for source in list(streamers):
         _retire_streamer(source, streamers.pop(source))
+    close_lesson_recorders()
 
 
 def handle_audio_chunk(payload):
@@ -536,6 +539,9 @@ def handle_audio_chunk(payload):
     except Exception as e:
         log_event("deepgram_chunk_decode_error", source=source, error=str(e))
         return
+    # First, before any Deepgram handling: transcription can fail and be redone
+    # from the file, but audio not written down is gone for good.
+    record_audio_chunk(source, chunk_bytes, sample_rate)
     streamer = st.session_state.deepgram_streamers.get(source)
     if streamer is None:
         start_deepgram_stream(source, sample_rate)
@@ -648,18 +654,91 @@ def autosave_lesson(force=False):
         feedback = st.session_state.get("live_feedback") or {}
         if feedback:
             with open(os.path.join(lesson_dir, "live_feedback.json"), "w", encoding="utf-8") as f:
-                json.dump({"version": 1, "feedback": feedback}, f, ensure_ascii=False)
+                json.dump({
+                    "version": 2,
+                    "feedback": feedback,
+                    "windows": st.session_state.get("live_feedback_windows") or [],
+                }, f, ensure_ascii=False)
         st.session_state.autosave_last_at = now
         st.session_state.autosave_last_clock = datetime.now().strftime("%H:%M:%S")
     except Exception as e:
         log_event("autosave_error", error=str(e), lesson_dir=lesson_dir)
 
 
-def save_lesson_audio(audio_payload):
-    """Write the whole-lesson compressed audio delivered by the recorder."""
+def ensure_lesson_dir(reason):
+    """The open lesson's folder, creating a recovery one if it went missing.
+
+    A Streamlit session recycled mid-lesson comes back with lesson_dir unset
+    while audio is still arriving. That audio is real and unrepeatable, so it
+    gets a folder rather than being dropped.
+    """
     lesson_dir = st.session_state.get("lesson_dir")
-    if not lesson_dir or not isinstance(audio_payload, dict):
+    if lesson_dir:
+        return lesson_dir
+    lesson_dir = os.path.join(
+        AUDIO_DIR, f"recovered_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    )
+    st.session_state.lesson_dir = lesson_dir
+    log_event("lesson_dir_recovered", lesson_dir=lesson_dir, reason=reason)
+    return lesson_dir
+
+
+# ---------------------------------------------------------------------------
+# Continuous recording
+#
+# Kept deliberately independent of the Deepgram streamers: a socket that drops,
+# restarts, or never connects must not cost the lesson its recording. The only
+# thing that stops a recorder is the lesson ending.
+# ---------------------------------------------------------------------------
+def record_audio_chunk(source, chunk_bytes, sample_rate):
+    """Tee the incoming PCM to this microphone's file on disk."""
+    recorders = st.session_state.lesson_recorders
+    recorder = recorders.get(source)
+    if recorder is None:
+        lesson_dir = ensure_lesson_dir("audio_chunk")
+        try:
+            recorder = lesson_audio.TrackRecorder(
+                lesson_dir, source, sample_rate, on_event=log_event
+            )
+        except Exception as e:
+            log_event("lesson_recorder_start_error", source=source, error=str(e))
+            return
+        recorders[source] = recorder
+    recorder.write(chunk_bytes)
+
+
+def close_lesson_recorders():
+    recorders = st.session_state.get("lesson_recorders") or {}
+    for source in list(recorders):
+        try:
+            recorders.pop(source).close()
+        except Exception as e:
+            log_event("lesson_recorder_close_error", source=source, error=str(e))
+
+
+def lesson_recording_status():
+    """(seconds, megabytes) captured so far, for the status bar."""
+    recorders = st.session_state.get("lesson_recorders") or {}
+    if not recorders:
+        return None
+    seconds = max((r.seconds_captured for r in recorders.values()), default=0.0)
+    megabytes = sum(
+        os.path.getsize(r.path) for r in recorders.values() if os.path.exists(r.path)
+    ) / (1024.0 * 1024.0)
+    return seconds, megabytes
+
+
+def save_lesson_audio(audio_payload):
+    """Write the whole-lesson compressed audio delivered by the recorder.
+
+    This is the only moment the browser ever hands the recording over, so it is
+    never dropped for want of somewhere to put it. A Streamlit session that was
+    recycled mid-lesson comes back with lesson_dir unset; the audio is still
+    real, so it goes to a recovery folder instead of being discarded.
+    """
+    if not isinstance(audio_payload, dict) or not audio_payload:
         return []
+    lesson_dir = ensure_lesson_dir("lesson_ended_audio")
     saved = []
     os.makedirs(lesson_dir, exist_ok=True)
     for source, entry in audio_payload.items():
@@ -694,31 +773,37 @@ def new_lesson_dir():
 
 
 def list_lesson_audio():
-    """Student audio from lesson folders (newest first), then legacy loose files.
+    """Student audio from every lesson folder (newest first), then legacy files.
 
     Error analysis runs on the student file only, so teacher files stay on
-    disk but are not offered for upload.
+    disk but are not offered for upload. Any folder under audio/ counts as a
+    lesson, not only the recorder's lesson_* ones: a lesson recorded elsewhere
+    is dropped in under whatever name it arrived with.
     """
     if not os.path.isdir(AUDIO_DIR):
         return []
-    lesson_files = []
+    lesson_files = [
+        entry["tracks"]["student"]
+        for entry in lesson_library.list_lessons(AUDIO_DIR)
+        if entry["tracks"].get("student")
+    ]
     legacy_files = []
     for name in os.listdir(AUDIO_DIR):
         path = os.path.join(AUDIO_DIR, name)
-        if os.path.isdir(path) and name.startswith("lesson_"):
-            for inner in sorted(os.listdir(path)):
-                inner_path = os.path.join(path, inner)
-                if (
-                    os.path.isfile(inner_path)
-                    and inner.startswith("student")
-                    and os.path.splitext(inner)[1].lower() in LESSON_AUDIO_EXTS
-                ):
-                    lesson_files.append(inner_path)
-        elif os.path.isfile(path) and os.path.splitext(name)[1].lower() in LEGACY_AUDIO_EXTS:
+        if os.path.isfile(path) and os.path.splitext(name)[1].lower() in LEGACY_AUDIO_EXTS:
             legacy_files.append(path)
-    lesson_files.sort(key=os.path.getmtime, reverse=True)
     legacy_files.sort(key=os.path.getmtime, reverse=True)
     return lesson_files + legacy_files
+
+
+def lesson_dir_for_audio(audio_path):
+    """The lesson folder an audio file belongs to, or None for a loose file."""
+    if not audio_path:
+        return None
+    parent = os.path.dirname(os.path.abspath(audio_path))
+    if parent == os.path.abspath(AUDIO_DIR):
+        return None
+    return os.path.dirname(audio_path)
 
 
 # ---------------------------------------------------------------------------
@@ -829,6 +914,160 @@ def run_replicate_transcription(audio_path):
         raise RuntimeError("Replicate returned no usable segments.")
     log_event("replicate_success", segments_count=len(_extract_replicate_segments(output)))
     return output, transcript
+
+
+# ---------------------------------------------------------------------------
+# Deepgram pre-recorded (transcribing a lesson that was never streamed live)
+#
+# A lesson recorded elsewhere, or one whose live socket dropped, has audio but
+# no words.json. The batch API runs the same nova-3 model over the saved files
+# and writes exactly the words.json/transcript.txt the live path writes, so
+# from here on a loaded lesson is indistinguishable from a recorded one: same
+# transcript pane, same confidence viewpoint, same synthesis bundle.
+#
+# Both microphones are sent, unlike the Whisper pass — speaker separation comes
+# from the files themselves, so the teacher side survives.
+# ---------------------------------------------------------------------------
+DEEPGRAM_PRERECORDED_URL = "https://api.deepgram.com/v1/listen"
+DEEPGRAM_PRERECORDED_TIMEOUT_S = int(
+    os.environ.get("DEEPGRAM_PRERECORDED_TIMEOUT_S", "1800")
+)
+AUDIO_MIME_TYPES = {ext: mime for mime, ext in MIME_EXTENSIONS.items()}
+
+
+def deepgram_prerecorded_params():
+    """The live socket's recognition settings, minus the streaming-only ones."""
+    params = [
+        ("model", DEEPGRAM_DEFAULT_MODEL),
+        ("language", DEEPGRAM_DEFAULT_LANGUAGE),
+        ("punctuate", "true"),
+        ("smart_format", str(DEEPGRAM_SMART_FORMAT).lower()),
+    ]
+    params.extend(("keyterm", term) for term in DEEPGRAM_KEYTERMS)
+    return params
+
+
+def run_deepgram_prerecorded(audio_path, source):
+    """POST one microphone's file to Deepgram; return (raw_reply, words)."""
+    api_key = os.environ.get("DEEPGRAM_API_KEY")
+    if not api_key:
+        raise RuntimeError("DEEPGRAM_API_KEY not set. Add it to the environment and retry.")
+    ext = os.path.splitext(audio_path)[1].lower()
+    content_type = AUDIO_MIME_TYPES.get(ext, "application/octet-stream")
+    log_event(
+        "deepgram_prerecorded_attempt",
+        audio_path=audio_path,
+        source=source,
+        bytes=os.path.getsize(audio_path),
+        model=DEEPGRAM_DEFAULT_MODEL,
+    )
+    with open(audio_path, "rb") as f:
+        audio_bytes = f.read()
+    try:
+        response = httpx.post(
+            DEEPGRAM_PRERECORDED_URL,
+            params=deepgram_prerecorded_params(),
+            headers={"Authorization": f"Token {api_key}", "Content-Type": content_type},
+            content=audio_bytes,
+            # A whole lesson takes minutes to come back. The connect timeout
+            # stays short so a dead network still fails fast.
+            timeout=httpx.Timeout(DEEPGRAM_PRERECORDED_TIMEOUT_S, connect=10.0),
+        )
+    except Exception as e:
+        log_event("deepgram_prerecorded_error", source=source, error=str(e))
+        raise RuntimeError(f"Deepgram request failed for the {source} track: {e}") from e
+    if response.status_code == 401:
+        raise RuntimeError("Deepgram authentication failed. Set a valid DEEPGRAM_API_KEY.")
+    if response.status_code >= 400:
+        detail = response.text[:300]
+        log_event(
+            "deepgram_prerecorded_http_error",
+            source=source, status=response.status_code, detail=detail,
+        )
+        raise RuntimeError(
+            f"Deepgram returned {response.status_code} for the {source} track: {detail}"
+        )
+    payload = response.json()
+    words = lesson_library.words_from_prerecorded(payload, source)
+    log_event("deepgram_prerecorded_success", source=source, words=len(words))
+    return payload, words
+
+
+def _backup_existing(path):
+    """Move a file aside instead of overwriting it.
+
+    A live words.json is the record of a lesson that really was streamed; it
+    cannot be reproduced, so a re-transcription never destroys it.
+    """
+    if not os.path.exists(path):
+        return
+    stem, ext = os.path.splitext(path)
+    backup = f"{stem}.previous{ext}"
+    try:
+        os.replace(path, backup)
+        log_event("lesson_file_backed_up", path=backup)
+    except OSError as e:
+        log_event("lesson_file_backup_error", path=path, error=str(e))
+
+
+def write_prerecorded_lesson(lesson_dir, words, raw_by_source):
+    """Write words.json / transcript.txt in exactly the live path's format."""
+    os.makedirs(lesson_dir, exist_ok=True)
+    words_path = os.path.join(lesson_dir, "words.json")
+    transcript_path = lesson_transcript_path(lesson_dir)
+    _backup_existing(words_path)
+    _backup_existing(transcript_path)
+    with open(words_path, "w", encoding="utf-8") as f:
+        json.dump(
+            {"version": 2, "origin": "deepgram_prerecorded", "words": words},
+            f, ensure_ascii=False,
+        )
+    header = (
+        f"Lesson: {os.path.basename(lesson_dir)}\n"
+        f"Transcribed: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} "
+        f"(Deepgram {DEEPGRAM_DEFAULT_MODEL}, pre-recorded)\n\n"
+    )
+    with open(transcript_path, "w", encoding="utf-8") as f:
+        f.write(header + build_transcript_text(group_turns(words)) + "\n")
+    # Kept whole: the raw reply carries per-word detail the app does not read
+    # today, and re-running costs another pass over the audio.
+    for source, payload in raw_by_source.items():
+        raw_path = os.path.join(lesson_dir, f"{source}.deepgram.json")
+        with open(raw_path, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
+
+
+def run_deepgram_batch_job(lesson_dir, tracks):
+    """Background job body; returns a plain dict for the polling loop.
+
+    Runs off the script thread, so it touches no session_state — the poller
+    reopens the lesson from the files written here.
+    """
+    try:
+        words_by_source = {}
+        raw_by_source = {}
+        for source in ("student", "teacher"):
+            path = tracks.get(source)
+            if not path or not os.path.exists(path):
+                continue
+            payload, words = run_deepgram_prerecorded(path, source)
+            words_by_source[source] = words
+            raw_by_source[source] = payload
+        if not words_by_source:
+            return {"ok": False, "lesson_dir": lesson_dir,
+                    "error": "No audio tracks found for this lesson."}
+        words = lesson_library.merge_words(*words_by_source.values())
+        if not words:
+            return {"ok": False, "lesson_dir": lesson_dir,
+                    "error": "Deepgram returned no words for this lesson's audio."}
+        write_prerecorded_lesson(lesson_dir, words, raw_by_source)
+        return {
+            "ok": True,
+            "lesson_dir": lesson_dir,
+            "counts": {source: len(w) for source, w in words_by_source.items()},
+        }
+    except Exception as e:
+        return {"ok": False, "lesson_dir": lesson_dir, "error": str(e)}
 
 
 # ---------------------------------------------------------------------------
@@ -1401,6 +1640,11 @@ def dispatch_live_feedback(sentences, turns):
     """
     if not deepseek_api_key():
         return
+    # A loaded lesson is a record, not a live one. Its saved results are shown,
+    # but nothing is re-sent: otherwise opening an old lesson would silently
+    # spend a call on every sentence that was never analysed at the time.
+    if st.session_state.get("lesson_loaded"):
+        return
     windows = st.session_state.live_feedback_windows
     if not windows:
         return
@@ -1483,11 +1727,13 @@ def init_session_state():
         "lesson_state": "idle",  # idle | recording | paused | ended
         "transcript_filter": "Both",  # on-screen display filter; never affects capture
         "lesson_dir": None,
+        "lesson_loaded": False,  # True when the open lesson came off disk, not a mic
         "lesson_started_at": None,
         "lesson_active_seconds": 0,
         "lesson_words": [],
         "source_offsets": {},
         "deepgram_streamers": {},
+        "lesson_recorders": {},   # source -> TrackRecorder, open for the lesson
         "deepgram_last_restart_at": None,
         "autosave_last_at": None,
         "autosave_last_clock": None,
@@ -1499,6 +1745,9 @@ def init_session_state():
         "synthesis_future": None,
         "synthesis_error": "",
         "synthesis_transcript": "",
+        "deepgram_batch_future": None,
+        "deepgram_batch_error": "",
+        "deepgram_batch_note": "",
         "live_feedback_on": False,      # the toggle widget's own key
         "live_feedback_switch": False,  # mirror of it, safe to read from a fragment
         "live_feedback_windows": [],    # [[audio_start, audio_end_or_None], ...]
@@ -1539,6 +1788,8 @@ def handle_recorder_event(payload):
 
     if event == "lesson_started":
         st.session_state.lesson_state = "recording"
+        st.session_state.lesson_loaded = False
+        close_lesson_recorders()
         st.session_state.lesson_dir = new_lesson_dir()
         st.session_state.lesson_started_at = datetime.now(timezone.utc)
         st.session_state.lesson_active_seconds = 0
@@ -1577,10 +1828,15 @@ def handle_recorder_event(payload):
         end_all_streams()
         autosave_lesson(force=True)
         st.session_state.lesson_state = "ended"
-        if saved_audio:
-            # Default the post-lesson step to this lesson's student audio.
-            student_audio = [p for p in saved_audio if os.path.basename(p).startswith("student")]
-            st.session_state.replicate_audio_path = (student_audio or saved_audio)[0]
+        # Point the post-lesson step at this lesson's student track, chosen the
+        # same way the picker chooses it. Read after the streams are closed, so
+        # the continuous recording is final — and so it still resolves when the
+        # browser never delivered its own copy.
+        lesson_dir = st.session_state.get("lesson_dir")
+        tracks = lesson_library.lesson_tracks(lesson_dir) if lesson_dir else {}
+        student_track = tracks.get("student") or tracks.get("teacher")
+        if student_track:
+            st.session_state.replicate_audio_path = student_track
         log_event(
             "lesson_ended",
             lesson_dir=st.session_state.lesson_dir,
@@ -2028,6 +2284,14 @@ def render_status_bar():
         parts.append(f"<span>{html.escape(os.path.basename(lesson_dir))}</span>")
     if st.session_state.get("autosave_last_clock"):
         parts.append(f"<span>Autosaved {st.session_state.autosave_last_clock}</span>")
+    # Audio is the one thing that cannot be reconstructed later, so say plainly
+    # that it is on disk and growing rather than leaving it to be assumed.
+    recording = lesson_recording_status()
+    if recording:
+        seconds, megabytes = recording
+        parts.append(
+            f"<span>Audio saved {_format_clock(seconds)} ({megabytes:.0f} MB)</span>"
+        )
     missing_keys = []
     if not os.environ.get("DEEPGRAM_API_KEY"):
         missing_keys.append("DEEPGRAM_API_KEY")
@@ -2040,16 +2304,219 @@ def render_status_bar():
     st.markdown(f'<div class="lesson-status">{"".join(parts)}</div>', unsafe_allow_html=True)
 
 
+# ---------------------------------------------------------------------------
+# Loading a past lesson
+#
+# Everything after the microphones works off files in the lesson folder, so a
+# lesson from any earlier session can be put back into that state and carried
+# through the same pipeline: Deepgram for both speakers, Whisper for the
+# student, DeepSeek to reconcile them.
+# ---------------------------------------------------------------------------
+def load_lesson_feedback(lesson_dir):
+    """Cached live-feedback results, and the windows they were gathered in."""
+    try:
+        with open(os.path.join(lesson_dir, "live_feedback.json"), "r", encoding="utf-8") as f:
+            payload = json.load(f)
+    except Exception:
+        return {}, []
+    if not isinstance(payload, dict):
+        return {}, []
+    feedback = payload.get("feedback")
+    windows = payload.get("windows")
+    return (
+        feedback if isinstance(feedback, dict) else {},
+        [list(w) for w in windows if isinstance(w, (list, tuple))] if isinstance(windows, list) else [],
+    )
+
+
+def load_lesson_into_session(lesson_dir):
+    """Open a past lesson: transcript on screen, audio ready to send.
+
+    The lesson goes into the 'ended' state, which is what it is — nothing is
+    live. Autosave only runs while recording or paused, so merely looking at a
+    lesson never rewrites it.
+    """
+    tracks = lesson_library.lesson_tracks(lesson_dir)
+    words = load_lesson_words(lesson_dir)
+    feedback, windows = load_lesson_feedback(lesson_dir)
+
+    end_all_streams()
+    st.session_state.lesson_dir = lesson_dir
+    st.session_state.lesson_state = "ended"
+    st.session_state.lesson_loaded = True
+    st.session_state.lesson_words = words
+    st.session_state.source_offsets = {}
+    st.session_state.lesson_started_at = None
+    st.session_state.lesson_active_seconds = (
+        int(max((w.get("end") or 0.0) for w in words)) if words else 0
+    )
+    st.session_state.autosave_last_at = None
+    st.session_state.autosave_last_clock = None
+
+    # Results on screen belong to whichever lesson was open before. Drop them
+    # rather than show one lesson's transcript under another's name.
+    st.session_state.replicate_transcript = ""
+    st.session_state.replicate_error = ""
+    st.session_state.synthesis_transcript = ""
+    st.session_state.synthesis_error = ""
+    st.session_state.deepgram_batch_error = ""
+    st.session_state.deepgram_batch_note = ""
+    st.session_state.replicate_audio_path = tracks.get("student") or tracks.get("teacher")
+
+    reset_live_feedback()
+    st.session_state.live_feedback = feedback
+    st.session_state.live_feedback_windows = windows
+    log_event(
+        "lesson_loaded",
+        lesson_dir=lesson_dir,
+        words=len(words),
+        tracks=sorted(tracks),
+        feedback=len(feedback),
+    )
+
+
+def create_lesson_from_uploads(files, name):
+    """Write uploaded audio into a new folder under audio/, return its path."""
+    # basename() only: an uploaded filename is untrusted and must not be able
+    # to point anywhere but inside the new lesson folder.
+    safe = "".join(c for c in (name or "").strip() if c.isalnum() or c in " -_").strip()
+    folder = safe or f"lesson_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+    lesson_dir = os.path.join(AUDIO_DIR, folder)
+    suffix = 1
+    while os.path.exists(lesson_dir):
+        lesson_dir = os.path.join(AUDIO_DIR, f"{folder}_{suffix}")
+        suffix += 1
+    os.makedirs(lesson_dir, exist_ok=True)
+    for upload in files:
+        target = os.path.join(lesson_dir, os.path.basename(upload.name))
+        with open(target, "wb") as f:
+            f.write(upload.getbuffer())
+        log_event("lesson_upload_saved", path=target, bytes=os.path.getsize(target))
+    return lesson_dir
+
+
+def start_deepgram_batch(lesson_dir, tracks):
+    st.session_state.deepgram_batch_error = ""
+    st.session_state.deepgram_batch_note = ""
+    st.session_state.deepgram_batch_future = BACKGROUND_EXECUTOR.submit(
+        run_deepgram_batch_job, lesson_dir, dict(tracks)
+    )
+
+
+def render_load_lesson():
+    """Pick a past lesson, or bring one in, and open it in the app."""
+    st.caption(
+        "Opens a lesson saved under audio/ — its transcript on screen, its audio "
+        "ready for Deepgram or Replicate below. Any folder in audio/ counts, so a "
+        "lesson recorded elsewhere can simply be dropped in."
+    )
+    live = st.session_state.lesson_state in ("recording", "paused")
+    if live:
+        st.info("A lesson is in progress. End it before loading another.")
+
+    lessons = lesson_library.list_lessons(AUDIO_DIR)
+    if not lessons:
+        st.caption("No lessons in audio/ yet.")
+    else:
+        by_dir = {entry["dir"]: entry for entry in lessons}
+        choices = [entry["dir"] for entry in lessons]
+        current = st.session_state.get("lesson_dir")
+        selected = st.selectbox(
+            "Lesson",
+            choices,
+            index=choices.index(current) if current in choices else 0,
+            format_func=lambda d: lesson_library.describe_lesson(by_dir[d]),
+            key="load_lesson_choice",
+        )
+        entry = by_dir[selected]
+        if not entry["tracks"]:
+            st.caption(
+                "No audio in this folder — the saved transcript can be read and "
+                "synthesised, but not re-transcribed."
+            )
+        if st.button("Load lesson", type="primary", disabled=live):
+            load_lesson_into_session(selected)
+            st.rerun()
+        if st.session_state.get("lesson_loaded") and current == selected:
+            st.success(f"Loaded — {len(st.session_state.lesson_words)} words on screen above.")
+
+    st.markdown("**Bring in a lesson from elsewhere**")
+    uploads = st.file_uploader(
+        "Audio files",
+        type=sorted(ext.lstrip(".") for ext in LESSON_AUDIO_EXTS),
+        accept_multiple_files=True,
+        help=(
+            "Put 'student' or 'teacher' in each filename so the speakers are kept "
+            "apart. A single file with neither word is read as the student."
+        ),
+        key="lesson_upload_files",
+    )
+    folder_name = st.text_input(
+        "Folder name (optional)",
+        placeholder="e.g. maria lesson 4",
+        key="lesson_upload_name",
+    )
+    if st.button("Create lesson from these files", disabled=live or not uploads):
+        new_dir = create_lesson_from_uploads(uploads, folder_name)
+        load_lesson_into_session(new_dir)
+        st.rerun()
+
+
+def render_deepgram_batch(lesson_dir, tracks):
+    """Transcribe a loaded lesson's saved audio with the live model.
+
+    This is the step that gives an imported lesson everything a live one has:
+    both speakers, word-level confidence, and the files the rest of the page
+    reads. Without it a loaded lesson only ever has the student's side.
+    """
+    st.markdown("#### Both speakers — Deepgram nova-3 (pre-recorded)")
+    st.caption(
+        "Runs the same model the live lesson uses over the saved student and "
+        "teacher files, and writes the same transcript files. Use it for a lesson "
+        "that was never streamed live, or to redo one whose live socket dropped. "
+        "An existing transcript is kept as words.previous.json."
+    )
+    running = st.session_state.deepgram_batch_future is not None
+    have_key = bool(os.environ.get("DEEPGRAM_API_KEY"))
+    if not lesson_dir:
+        st.caption("This file is not in a lesson folder, so there is nothing to pair it with.")
+    elif not tracks:
+        st.caption("No audio tracks found in this lesson folder.")
+    else:
+        st.caption("Will send: " + ", ".join(
+            f"{source} ({os.path.basename(path)})" for source, path in sorted(tracks.items())
+        ))
+    if not have_key:
+        st.warning("DEEPGRAM_API_KEY is not set — add it to the environment to enable this.")
+    if st.button(
+        "Transcribe lesson (Deepgram)",
+        disabled=running or not tracks or not have_key,
+        help=None if tracks else "Needs a lesson folder with student and/or teacher audio.",
+    ):
+        start_deepgram_batch(lesson_dir, tracks)
+        st.rerun()
+    if running:
+        st.info("Deepgram transcription running... a full lesson takes a few minutes per track.")
+    if st.session_state.deepgram_batch_error:
+        st.error(st.session_state.deepgram_batch_error)
+    if st.session_state.deepgram_batch_note:
+        st.success(st.session_state.deepgram_batch_note)
+
+
 def render_after_lesson():
     st.markdown("### After the lesson — student error analysis")
     st.caption(
-        "Sends only the student audio to Replicate (Whisper large-v3, single speaker). "
-        "Together with the live Deepgram transcript this gives independent ASR viewpoints, "
-        "each with full confidence data, for an external LLM to synthesize."
+        "Two independent ASR viewpoints on the same lesson, each with full confidence "
+        "data: Deepgram over both microphones, Whisper over the student alone. DeepSeek "
+        "reconciles them below. A lesson recorded live already has the Deepgram side; "
+        "one loaded from disk gets it here."
     )
     audio_files = list_lesson_audio()
     if not audio_files:
-        st.caption("No student audio yet. End a lesson and its audio will appear here.")
+        st.caption(
+            "No student audio yet. End a lesson, or load a past one above, and its "
+            "audio will appear here."
+        )
         return
 
     default_index = 0
@@ -2066,6 +2533,11 @@ def render_after_lesson():
     if selected and os.path.exists(selected):
         st.audio(selected)
 
+    lesson_dir = lesson_dir_for_audio(selected)
+    tracks = lesson_library.lesson_tracks(lesson_dir) if lesson_dir else {}
+    render_deepgram_batch(lesson_dir, tracks)
+
+    st.markdown("#### Student only — Whisper large-v3 (Replicate)")
     saved_transcript = replicate_transcript_path(selected)
     existing_transcript = ""
     if os.path.exists(saved_transcript):
@@ -2105,9 +2577,6 @@ def render_after_lesson():
             unsafe_allow_html=True,
         )
 
-    lesson_dir = os.path.dirname(selected)
-    if not os.path.basename(lesson_dir).startswith("lesson_"):
-        lesson_dir = None
     lesson_words = load_lesson_words(lesson_dir) if lesson_dir else []
     deepgram_text = build_deepgram_confidence_transcript(lesson_words) if lesson_words else ""
     bundle = build_synthesis_bundle(lesson_dir, selected)
@@ -2231,6 +2700,32 @@ def poll_replicate_job():
         st.session_state.replicate_error = result.get("error") or "Replicate transcription failed."
 
 
+def poll_deepgram_batch_job():
+    future = st.session_state.deepgram_batch_future
+    if future is None:
+        return
+    if not future.done():
+        return
+    st.session_state.deepgram_batch_future = None
+    try:
+        result = future.result()
+    except Exception as e:
+        st.session_state.deepgram_batch_error = str(e)
+        return
+    if not result.get("ok"):
+        st.session_state.deepgram_batch_error = (
+            result.get("error") or "Deepgram transcription failed."
+        )
+        return
+    # Reopen from the files the job just wrote, so what is on screen is what is
+    # on disk rather than a second in-memory copy that could drift from it.
+    load_lesson_into_session(result["lesson_dir"])
+    counts = result.get("counts") or {}
+    st.session_state.deepgram_batch_note = "Transcript written — " + ", ".join(
+        f"{count} {source} words" for source, count in sorted(counts.items())
+    )
+
+
 def poll_synthesis_job():
     future = st.session_state.synthesis_future
     if future is None:
@@ -2256,9 +2751,16 @@ render_styles()
 init_session_state()
 poll_replicate_job()
 poll_synthesis_job()
+poll_deepgram_batch_job()
 
 st.title("Lesson Transcriber")
 render_status_bar()
+
+with st.expander(
+    "Load a past lesson",
+    expanded=st.session_state.lesson_state != "recording",
+):
+    render_load_lesson()
 
 recorder_value = audio_recorder_component(key="audio_recorder")
 recorder_payload = parse_recorder_value(recorder_value)
@@ -2360,6 +2862,7 @@ with st.expander("Live feedback prompt (editable)", expanded=False):
 if (
     st.session_state.replicate_future is not None
     or st.session_state.synthesis_future is not None
+    or st.session_state.deepgram_batch_future is not None
 ):
     time.sleep(2)
     st.rerun()

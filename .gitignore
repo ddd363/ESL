@@ -1,5 +1,7 @@
 *.m4a
 *.wav
+*.ogg
+*.webm
 .conda/
 .env.project1.local
 evaluation/annotations.csv
