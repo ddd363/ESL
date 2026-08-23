@@ -128,6 +128,91 @@ class ListLessonsTests(unittest.TestCase):
         self.assertEqual(ll.list_lessons(os.path.join(self.root, "nope")), [])
 
 
+class StudentRosterTests(unittest.TestCase):
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        self.path = os.path.join(self.root, "students.json")
+
+    def tearDown(self):
+        shutil.rmtree(self.root, ignore_errors=True)
+
+    def test_a_name_survives_to_the_next_session(self):
+        ll.add_student("Maria Silva", self.path)
+        self.assertEqual(ll.load_students(self.path), ["Maria Silva"])
+
+    def test_names_are_tidied_before_saving(self):
+        _, cleaned = ll.add_student("   Maria    Silva  ", self.path)
+        self.assertEqual(cleaned, "Maria Silva")
+
+    def test_the_same_student_is_not_added_twice(self):
+        ll.add_student("Maria", self.path)
+        roster, cleaned = ll.add_student("maria", self.path)
+        self.assertEqual(roster, ["Maria"])
+        self.assertEqual(cleaned, "Maria", "existing spelling should win")
+
+    def test_roster_is_alphabetical_regardless_of_case(self):
+        for name in ("zoe", "Ana", "maria"):
+            ll.add_student(name, self.path)
+        self.assertEqual(ll.load_students(self.path), ["Ana", "maria", "zoe"])
+
+    def test_blank_names_are_refused(self):
+        roster, cleaned = ll.add_student("   ", self.path)
+        self.assertEqual((roster, cleaned), ([], ""))
+
+    def test_a_missing_or_corrupt_roster_reads_as_empty(self):
+        self.assertEqual(ll.load_students(self.path), [])
+        with open(self.path, "w", encoding="utf-8") as f:
+            f.write("not json{{{")
+        self.assertEqual(ll.load_students(self.path), [])
+
+
+class SlugTests(unittest.TestCase):
+    def test_names_become_safe_folder_components(self):
+        self.assertEqual(ll.slugify_student("Maria Silva"), "maria-silva")
+        self.assertEqual(ll.slugify_student("  Ana   B.  "), "ana-b")
+
+    def test_path_separators_cannot_survive_a_slug(self):
+        """A typed name must never be able to escape the audio folder."""
+        for hostile in ("../../etc", "a/b", "..", "/root"):
+            slug = ll.slugify_student(hostile)
+            self.assertNotIn("/", slug)
+            self.assertNotIn("..", slug)
+
+    def test_a_name_with_nothing_usable_slugs_to_empty(self):
+        self.assertEqual(ll.slugify_student("///"), "")
+        self.assertEqual(ll.slugify_student(""), "")
+
+
+class LessonMetaTests(unittest.TestCase):
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+
+    def tearDown(self):
+        shutil.rmtree(self.root, ignore_errors=True)
+
+    def test_the_student_is_read_back_from_the_folder(self):
+        lesson = os.path.join(self.root, "maria-silva_20260822_1830")
+        ll.write_lesson_meta(lesson, student="Maria Silva", recorded="2026-08-22 18:30")
+        entry = ll.lesson_entry(lesson)
+        self.assertEqual(entry["student"], "Maria Silva")
+        self.assertIn("Maria Silva", ll.describe_lesson(entry))
+
+    def test_renaming_the_folder_does_not_lose_the_student(self):
+        lesson = os.path.join(self.root, "whatever")
+        ll.write_lesson_meta(lesson, student="Maria Silva")
+        self.assertEqual(ll.lesson_entry(lesson)["student"], "Maria Silva")
+
+    def test_a_lesson_without_metadata_falls_back_to_its_folder_name(self):
+        lesson = os.path.join(self.root, "fabian L2")
+        touch(os.path.join(lesson, "student.mp3"))
+        self.assertIn("fabian L2", ll.describe_lesson(ll.lesson_entry(lesson)))
+
+    def test_metadata_is_not_mistaken_for_audio(self):
+        lesson = os.path.join(self.root, "L")
+        ll.write_lesson_meta(lesson, student="Maria")
+        self.assertEqual(ll.lesson_tracks(lesson), {})
+
+
 def reply(words):
     return {"results": {"channels": [{"alternatives": [{"words": words}]}]}}
 

@@ -10,6 +10,7 @@ with, so a track is identified by the speaker word anywhere in its filename
 ("fabiana l3 student.mp3" is the student track).
 """
 
+import json
 import os
 
 LESSON_AUDIO_EXTS = {".wav", ".m4a", ".webm", ".ogg", ".mp4", ".mp3"}
@@ -90,9 +91,12 @@ def lesson_entry(lesson_dir):
     for path in (words_path, transcript_path):
         if os.path.exists(path):
             times.append(os.path.getmtime(path))
+    meta = read_lesson_meta(lesson_dir)
     return {
         "dir": lesson_dir,
         "name": os.path.basename(lesson_dir),
+        "student": meta.get("student") or "",
+        "recorded": meta.get("recorded") or "",
         "tracks": tracks,
         "has_words": os.path.exists(words_path),
         "has_transcript": os.path.exists(transcript_path),
@@ -123,13 +127,22 @@ def list_lessons(audio_dir):
 
 
 def describe_lesson(entry):
-    """Short summary for the picker, so a lesson is chosen on what it holds."""
+    """Short summary for the picker, so a lesson is chosen on what it holds.
+
+    Led by the student's name where one was recorded — that is what a teacher
+    is actually looking for. Lessons from before names existed, and any folder
+    dropped in by hand, fall back to the folder name.
+    """
     bits = []
     have = [s for s in SOURCES if s in entry["tracks"]]
     bits.append(" + ".join(have) + " audio" if have else "no audio")
     if entry["has_words"]:
         bits.append("transcribed")
-    return f"{entry['name']} — {', '.join(bits)}"
+    label = entry["name"]
+    if entry.get("student"):
+        when = entry.get("recorded") or ""
+        label = f"{entry['student']} · {when}" if when else entry["student"]
+    return f"{label} — {', '.join(bits)}"
 
 
 # ---------------------------------------------------------------------------
@@ -175,3 +188,96 @@ def merge_words(*groups):
     words = [w for group in groups for w in group]
     words.sort(key=lambda w: (w.get("start") or 0.0))
     return words
+
+
+# ---------------------------------------------------------------------------
+# Students
+#
+# A lesson belongs to someone, and the teacher picks that person before
+# pressing record. The roster is kept in one small file so a name typed once
+# comes back as a dropdown entry next time, and the chosen name is written into
+# the lesson folder as well — the folder name is only a hint, the metadata is
+# what the app reads back.
+# ---------------------------------------------------------------------------
+STUDENTS_PATH = os.path.join("outputs", "students.json")
+LESSON_META_NAME = "lesson.json"
+
+
+def slugify_student(name):
+    """Folder-safe form of a name: 'Maria Silva' -> 'maria-silva'."""
+    kept = "".join(c if (c.isalnum() or c in " -_") else " " for c in (name or ""))
+    return "-".join(kept.split()).strip("-_").lower()
+
+
+def clean_student_name(name):
+    """The name as it will be stored and shown: trimmed, spaces collapsed."""
+    return " ".join((name or "").split())
+
+
+def load_students(path=STUDENTS_PATH):
+    """Saved student names, in the order they should appear in the dropdown."""
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            payload = json.load(f)
+    except Exception:
+        return []
+    names = payload.get("students") if isinstance(payload, dict) else payload
+    if not isinstance(names, list):
+        return []
+    seen = set()
+    ordered = []
+    for name in names:
+        cleaned = clean_student_name(name if isinstance(name, str) else "")
+        key = cleaned.lower()
+        if cleaned and key not in seen:
+            seen.add(key)
+            ordered.append(cleaned)
+    return ordered
+
+
+def save_students(names, path=STUDENTS_PATH):
+    directory = os.path.dirname(path)
+    if directory:
+        os.makedirs(directory, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump({"version": 1, "students": names}, f, ensure_ascii=False, indent=2)
+
+
+def add_student(name, path=STUDENTS_PATH):
+    """Add a name to the roster, returning (roster, cleaned_name).
+
+    Matching is case-insensitive, so "maria" does not become a second Maria.
+    An existing entry keeps its original spelling rather than being rewritten.
+    """
+    cleaned = clean_student_name(name)
+    if not cleaned:
+        return load_students(path), ""
+    roster = load_students(path)
+    for existing in roster:
+        if existing.lower() == cleaned.lower():
+            return roster, existing
+    roster.append(cleaned)
+    roster.sort(key=str.lower)
+    save_students(roster, path)
+    return roster, cleaned
+
+
+def read_lesson_meta(lesson_dir):
+    try:
+        with open(os.path.join(lesson_dir, LESSON_META_NAME), "r", encoding="utf-8") as f:
+            payload = json.load(f)
+        return payload if isinstance(payload, dict) else {}
+    except Exception:
+        return {}
+
+
+def write_lesson_meta(lesson_dir, student=None, **extra):
+    os.makedirs(lesson_dir, exist_ok=True)
+    payload = read_lesson_meta(lesson_dir)
+    payload.setdefault("version", 1)
+    if student:
+        payload["student"] = student
+    payload.update(extra)
+    with open(os.path.join(lesson_dir, LESSON_META_NAME), "w", encoding="utf-8") as f:
+        json.dump(payload, f, ensure_ascii=False, indent=2)
+    return payload

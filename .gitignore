@@ -4,6 +4,9 @@
 *.webm
 .conda/
 .env.project1.local
+# Student names — personal data, and this repo has a public remote.
+outputs/students.json
+
 evaluation/annotations.csv
 evaluation/manifest.csv
 evaluation/predictions/

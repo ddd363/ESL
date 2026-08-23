@@ -27,6 +27,7 @@ import streamlit.components.v1 as components
 
 import lesson_audio
 import lesson_library
+import lesson_turns
 import live_runtime
 from live_sentences import (
     in_feedback_window,
@@ -58,7 +59,13 @@ LEGACY_AUDIO_EXTS = {".wav", ".m4a"}
 LESSON_AUDIO_EXTS = lesson_library.LESSON_AUDIO_EXTS
 SOURCE_LABELS = {"student": "Student", "teacher": "Teacher"}
 AUTOSAVE_INTERVAL_S = 5.0
-TURN_GAP_SECONDS = 8.0
+# Silence *within one speaker* that ends their turn. Turns are grouped per
+# microphone (see lesson_turns), so these are the only things that end one —
+# the gap used to be near-dead, because any word from the other mic broke the
+# turn first. The ordinary gap applies only once a sentence has closed; a
+# learner pausing mid-thought keeps their turn until the hard gap.
+TURN_GAP_SECONDS = 2.0
+TURN_HARD_GAP_SECONDS = 8.0
 TURN_MAX_SECONDS = 60.0
 REPLICATE_TIMEOUT_S = 1800
 LIVE_SETTLE_SECONDS = 3.0        # how far behind the newest word before a sentence is trusted
@@ -577,35 +584,15 @@ def collect_lesson_words():
 
 
 def group_turns(words):
-    """Group consecutive same-speaker words into timestamped turns."""
-    turns = []
-    for word in words:
-        token = (word.get("word") or "").strip()
-        if not token:
-            continue
-        start = word.get("start") or 0.0
-        current = turns[-1] if turns else None
-        new_turn = (
-            current is None
-            or current["source"] != word["source"]
-            or start - current["end"] > TURN_GAP_SECONDS
-            or start - current["start"] > TURN_MAX_SECONDS
-        )
-        if new_turn:
-            turns.append({
-                "source": word["source"],
-                "start": start,
-                "end": word.get("end") or start,
-                "tokens": [token],
-                "words": [word],
-            })
-        else:
-            current["tokens"].append(token)
-            current["words"].append(word)
-            current["end"] = word.get("end") or current["end"]
-    for turn in turns:
-        turn["text"] = " ".join(turn["tokens"])
-    return turns
+    """Group each speaker's words into timestamped turns.
+
+    Grouped per microphone: both record at once, so a merged timeline
+    interleaves simultaneous speech and breaking on speaker change shredded
+    whole sentences into single words. See lesson_turns for the detail.
+    """
+    return lesson_turns.group_turns(
+        words, TURN_GAP_SECONDS, TURN_MAX_SECONDS, TURN_HARD_GAP_SECONDS
+    )
 
 
 def interim_by_source():
@@ -760,15 +747,33 @@ def save_lesson_audio(audio_payload):
     return saved
 
 
-def new_lesson_dir():
+def new_lesson_dir(student=None):
+    """A fresh folder for a lesson, named for the student and the date.
+
+    The folder name is for browsing; lesson.json inside it is what the app
+    reads back, so renaming a folder never loses whose lesson it was. With no
+    student chosen the old lesson_<stamp> naming still applies — picking a name
+    is a convenience, never a precondition for recording.
+    """
     os.makedirs(AUDIO_DIR, exist_ok=True)
-    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    lesson_dir = os.path.join(AUDIO_DIR, f"lesson_{stamp}")
+    now = datetime.now()
+    stamp = now.strftime("%Y%m%d_%H%M%S")
+    slug = lesson_library.slugify_student(student)
+    base = f"{slug}_{stamp}" if slug else f"lesson_{stamp}"
+    lesson_dir = os.path.join(AUDIO_DIR, base)
     suffix = 1
     while os.path.exists(lesson_dir):
-        lesson_dir = os.path.join(AUDIO_DIR, f"lesson_{stamp}_{suffix}")
+        lesson_dir = os.path.join(AUDIO_DIR, f"{base}_{suffix}")
         suffix += 1
     os.makedirs(lesson_dir, exist_ok=True)
+    try:
+        lesson_library.write_lesson_meta(
+            lesson_dir,
+            student=lesson_library.clean_student_name(student),
+            recorded=now.strftime("%Y-%m-%d %H:%M"),
+        )
+    except Exception as e:
+        log_event("lesson_meta_write_error", lesson_dir=lesson_dir, error=str(e))
     return lesson_dir
 
 
@@ -1728,6 +1733,7 @@ def init_session_state():
         "transcript_filter": "Both",  # on-screen display filter; never affects capture
         "lesson_dir": None,
         "lesson_loaded": False,  # True when the open lesson came off disk, not a mic
+        "student_name": "",      # whose lesson the next recording belongs to
         "lesson_started_at": None,
         "lesson_active_seconds": 0,
         "lesson_words": [],
@@ -1762,6 +1768,8 @@ def init_session_state():
             st.session_state[key] = value
     if "live_feedback_prompt" not in st.session_state:
         st.session_state.live_feedback_prompt = load_persisted_live_feedback_prompt()
+    if "student_roster" not in st.session_state:
+        st.session_state.student_roster = lesson_library.load_students()
 
 
 def parse_recorder_value(value):
@@ -1790,7 +1798,7 @@ def handle_recorder_event(payload):
         st.session_state.lesson_state = "recording"
         st.session_state.lesson_loaded = False
         close_lesson_recorders()
-        st.session_state.lesson_dir = new_lesson_dir()
+        st.session_state.lesson_dir = new_lesson_dir(st.session_state.get("student_name"))
         st.session_state.lesson_started_at = datetime.now(timezone.utc)
         st.session_state.lesson_active_seconds = 0
         st.session_state.lesson_words = []
@@ -1806,7 +1814,9 @@ def handle_recorder_event(payload):
         for source, rate in source_rates.items():
             if source in SOURCE_LABELS:
                 start_deepgram_stream(source, rate)
-        log_event("lesson_started", lesson_dir=st.session_state.lesson_dir, sources=list(source_rates))
+        log_event("lesson_started", lesson_dir=st.session_state.lesson_dir,
+                  student=st.session_state.get("student_name") or "",
+                  sources=list(source_rates))
 
     elif event == "recording_chunk":
         if st.session_state.lesson_state == "recording":
@@ -2279,6 +2289,13 @@ def render_status_bar():
         "ended": "Lesson ended",
     }
     parts = [f'<span class="state {state}">{state_labels.get(state, state)}</span>']
+    # Named first: a lesson filed under the wrong student is only obvious if
+    # the name is visible while it is being recorded.
+    student = st.session_state.get("student_name")
+    if state == "idle" and student:
+        parts.append(f"<span><b>{html.escape(student)}</b> next</span>")
+    elif student and state != "idle" and not st.session_state.get("lesson_loaded"):
+        parts.append(f"<span><b>{html.escape(student)}</b></span>")
     lesson_dir = st.session_state.get("lesson_dir")
     if lesson_dir:
         parts.append(f"<span>{html.escape(os.path.basename(lesson_dir))}</span>")
@@ -2501,6 +2518,71 @@ def render_deepgram_batch(lesson_dir, tracks):
         st.error(st.session_state.deepgram_batch_error)
     if st.session_state.deepgram_batch_note:
         st.success(st.session_state.deepgram_batch_note)
+
+
+# ---------------------------------------------------------------------------
+# Student picker
+#
+# Chosen before recording starts, because it decides where the lesson is
+# written. A name typed once is kept in outputs/students.json and comes back as
+# a dropdown entry, so the common case is one click.
+# ---------------------------------------------------------------------------
+NEW_STUDENT_OPTION = "+ New student…"
+
+
+def add_student_from_input():
+    """Add the typed name to the roster and select it."""
+    typed = (st.session_state.get("student_new_name") or "").strip()
+    if not typed:
+        return
+    roster, cleaned = lesson_library.add_student(typed)
+    st.session_state.student_roster = roster
+    st.session_state.student_name = cleaned
+    # The selectbox reads its own key ahead of any index, so the new name has
+    # to be written there or the box springs back to "+ New student…".
+    st.session_state.student_choice = cleaned
+    log_event("student_added", student=cleaned, roster_size=len(roster))
+
+
+def render_student_picker():
+    """Whose lesson the next recording belongs to."""
+    live = st.session_state.lesson_state in ("recording", "paused")
+    roster = st.session_state.student_roster
+    options = roster + [NEW_STUDENT_OPTION]
+    pick_col, add_col = st.columns([2, 3])
+    with pick_col:
+        choice = st.selectbox(
+            "Student",
+            options,
+            key="student_choice",
+            disabled=live,
+            help=(
+                "New lessons are saved to a folder named for the student and the "
+                "date. Loading or transcribing an older lesson is unaffected."
+            ),
+        )
+    if choice != NEW_STUDENT_OPTION:
+        st.session_state.student_name = choice
+        return
+    st.session_state.student_name = ""
+    with add_col:
+        entry_col, button_col = st.columns([3, 1])
+        with entry_col:
+            st.text_input(
+                "New student name",
+                key="student_new_name",
+                placeholder="e.g. Maria Silva",
+                disabled=live,
+                label_visibility="visible",
+            )
+        with button_col:
+            st.markdown("<div style='height:1.85rem'></div>", unsafe_allow_html=True)
+            st.button("Add", disabled=live, on_click=add_student_from_input)
+    if not roster:
+        st.caption(
+            "No students saved yet. Add one and it will be here next time — "
+            "without a name, lessons keep the old lesson_<date> folder name."
+        )
 
 
 def render_after_lesson():
@@ -2761,6 +2843,8 @@ with st.expander(
     expanded=st.session_state.lesson_state != "recording",
 ):
     render_load_lesson()
+
+render_student_picker()
 
 recorder_value = audio_recorder_component(key="audio_recorder")
 recorder_payload = parse_recorder_value(recorder_value)
