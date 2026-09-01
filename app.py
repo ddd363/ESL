@@ -29,6 +29,8 @@ import lesson_audio
 import lesson_library
 import lesson_turns
 import live_runtime
+from gladia_stream import GladiaStreamingClient
+from live_consensus import build_consensus_words, normalize_token
 from live_sentences import (
     in_feedback_window,
     index_words_to_sentences,
@@ -91,6 +93,9 @@ DEEPGRAM_KEYTERMS = tuple(
     term.strip() for term in os.environ.get("DEEPGRAM_KEYTERMS", "").split(",") if term.strip()
 )
 DEEPGRAM_SMART_FORMAT = os.environ.get("DEEPGRAM_SMART_FORMAT", "true").lower() == "true"
+
+GLADIA_RESTART_MIN_INTERVAL_S = 1.0
+GLADIA_SEND_STALL_S = 4.0
 
 RECORDER_COMPONENT_DIR = os.path.join(
     os.path.dirname(__file__), "components", "audio_recorder"
@@ -480,38 +485,33 @@ def start_deepgram_stream(source, sample_rate):
 
 
 def _retire_streamer(source, streamer, block=True):
-    """Fold a stream's words into the lesson and advance the time offset.
+    """Persist a retired stream without mutating Streamlit state off-thread."""
+    def _store_snapshot():
+        snap = streamer.snapshot()
+        offset = st.session_state.source_offsets.get(source, 0.0)
+        for word in snap["final_words"]:
+            w_dict = {
+                "source": source,
+                "word": word["word"],
+                "start": (word.get("start") or 0.0) + offset,
+                "end": (word.get("end") or 0.0) + offset,
+                "confidence": word.get("confidence"),
+            }
+            st.session_state.setdefault("lesson_words_deepgram", []).append(w_dict)
+            st.session_state.lesson_words.append(w_dict)
+        st.session_state.source_offsets[source] = offset + streamer.audio_seconds_sent()
 
-    `block=False` closes the socket on a throwaway thread. close() waits up to
-    3s for Deepgram's final frame and then joins two more threads for 1.2s each
-    - over five seconds. That is fine when the lesson is ending, but on a
-    mid-lesson restart it runs on the script thread, from handle_audio_chunk,
-    and stalls the whole app: the page greys out and audio stops being read
-    while we wait. A dying socket must never cost the lesson its transcription.
-    """
-    snap = streamer.snapshot()
-    offset = st.session_state.source_offsets.get(source, 0.0)
-    for word in snap["final_words"]:
-        st.session_state.lesson_words.append({
-            "source": source,
-            "word": word["word"],
-            "start": (word.get("start") or 0.0) + offset,
-            "end": (word.get("end") or 0.0) + offset,
-            "confidence": word.get("confidence"),
-        })
-    st.session_state.source_offsets[source] = offset + streamer.audio_seconds_sent()
-
-    def _close():
-        try:
-            streamer.close()
-        except Exception:
-            pass
-
-    if block:
-        _close()
-    else:
-        threading.Thread(target=_close, daemon=True,
+    if not block:
+        _store_snapshot()
+        threading.Thread(target=lambda: streamer.close(), daemon=True,
                          name=f"deepgram-close-{source}").start()
+        return
+
+    try:
+        streamer.close()
+    except Exception:
+        pass
+    _store_snapshot()
 
 
 def restart_dead_stream(source, sample_rate):
@@ -526,11 +526,81 @@ def restart_dead_stream(source, sample_rate):
     start_deepgram_stream(source, sample_rate)
 
 
+def start_gladia_stream(source, sample_rate):
+    api_key = os.environ.get("GLADIA_API_KEY")
+    if not api_key:
+        return
+    streamers = st.session_state.setdefault("gladia_streamers", {})
+    existing = streamers.get(source)
+    if existing and (existing.is_active or existing.is_connecting):
+        return
+    if existing:
+        _retire_gladia_streamer(source, existing, block=False)
+    try:
+        streamer = GladiaStreamingClient(
+            api_key=api_key, sample_rate=sample_rate or 16000, on_event=log_event
+        )
+        streamer.start()
+        streamers[source] = streamer
+        st.session_state.setdefault("gladia_source_offsets", {}).setdefault(source, 0.0)
+        st.session_state.gladia_last_restart_at = perf_counter()
+        log_event("gladia_stream_start", source=source, sample_rate=sample_rate)
+    except Exception as e:
+        streamers.pop(source, None)
+        log_event("gladia_stream_start_error", source=source, error=str(e))
+
+
+def _retire_gladia_streamer(source, streamer, block=True):
+    """Persist a retired Gladia stream without mutating Streamlit state off-thread."""
+    def _store_snapshot():
+        snap = streamer.snapshot()
+        offsets = st.session_state.setdefault("gladia_source_offsets", {})
+        offset = offsets.get(source, 0.0)
+        for word in snap["final_words"]:
+            st.session_state.setdefault("lesson_words_gladia", []).append({
+                "source": source,
+                "word": word["word"],
+                "start": (word.get("start") or 0.0) + offset,
+                "end": (word.get("end") or 0.0) + offset,
+                "confidence": word.get("confidence"),
+            })
+        offsets[source] = offset + streamer.audio_seconds_sent()
+
+    if not block:
+        _store_snapshot()
+        threading.Thread(target=lambda: streamer.close(), daemon=True,
+                         name=f"gladia-close-{source}").start()
+        return
+
+    try:
+        streamer.close()
+    except Exception:
+        pass
+    _store_snapshot()
+
+
+def restart_dead_gladia_stream(source, sample_rate):
+    now = perf_counter()
+    last_restart = st.session_state.get("gladia_last_restart_at")
+    if last_restart is not None and now - last_restart < GLADIA_RESTART_MIN_INTERVAL_S:
+        return
+    streamers = st.session_state.setdefault("gladia_streamers", {})
+    streamer = streamers.pop(source, None)
+    if streamer:
+        log_event("gladia_stream_restart", source=source, last_error=streamer.error)
+        _retire_gladia_streamer(source, streamer, block=False)
+    start_gladia_stream(source, sample_rate)
+
+
 def end_all_streams():
-    streamers = st.session_state.deepgram_streamers
-    for source in list(streamers):
-        _retire_streamer(source, streamers.pop(source))
+    dg_streamers = st.session_state.deepgram_streamers
+    for source in list(dg_streamers):
+        _retire_streamer(source, dg_streamers.pop(source), block=True)
+    gl_streamers = st.session_state.get("gladia_streamers") or {}
+    for source in list(gl_streamers):
+        _retire_gladia_streamer(source, gl_streamers.pop(source), block=True)
     close_lesson_recorders()
+    autosave_lesson(force=True)
 
 
 def handle_audio_chunk(payload):
@@ -546,9 +616,11 @@ def handle_audio_chunk(payload):
     except Exception as e:
         log_event("deepgram_chunk_decode_error", source=source, error=str(e))
         return
-    # First, before any Deepgram handling: transcription can fail and be redone
+    # First, before any transcription handling: transcription can fail and be redone
     # from the file, but audio not written down is gone for good.
     record_audio_chunk(source, chunk_bytes, sample_rate)
+
+    # Deepgram stream handling
     streamer = st.session_state.deepgram_streamers.get(source)
     if streamer is None:
         start_deepgram_stream(source, sample_rate)
@@ -556,18 +628,31 @@ def handle_audio_chunk(payload):
     elif not streamer.is_active and not streamer.is_connecting:
         restart_dead_stream(source, sample_rate)
         streamer = st.session_state.deepgram_streamers.get(source)
-    if streamer is None:
-        return
-    streamer.chunks_received += 1
-    streamer.send_pcm16(chunk_bytes)
+    if streamer is not None:
+        streamer.chunks_received += 1
+        streamer.send_pcm16(chunk_bytes)
+
+    # Gladia stream handling (if GLADIA_API_KEY is available)
+    if os.environ.get("GLADIA_API_KEY"):
+        gl_streamers = st.session_state.setdefault("gladia_streamers", {})
+        gl_streamer = gl_streamers.get(source)
+        if gl_streamer is None:
+            start_gladia_stream(source, sample_rate)
+            gl_streamer = gl_streamers.get(source)
+        elif not gl_streamer.is_active and not gl_streamer.is_connecting:
+            restart_dead_gladia_stream(source, sample_rate)
+            gl_streamer = gl_streamers.get(source)
+        if gl_streamer is not None:
+            gl_streamer.chunks_received += 1
+            gl_streamer.send_pcm16(chunk_bytes)
 
 
 # ---------------------------------------------------------------------------
 # Transcript assembly, timestamps, autosave
 # ---------------------------------------------------------------------------
-def collect_lesson_words():
-    """All finalized words so far: retired streams + live streams, sorted."""
-    words = list(st.session_state.lesson_words)
+def collect_raw_deepgram_words():
+    """All finalized Deepgram words so far: retired streams + live streams, sorted."""
+    words = list(st.session_state.get("lesson_words_deepgram", st.session_state.get("lesson_words", [])))
     for source, streamer in st.session_state.deepgram_streamers.items():
         snap = streamer.snapshot()
         offset = st.session_state.source_offsets.get(source, 0.0)
@@ -581,6 +666,64 @@ def collect_lesson_words():
             })
     words.sort(key=lambda w: (w.get("start") or 0.0))
     return words
+
+
+def collect_raw_gladia_words():
+    """All finalized Gladia words so far: retired streams + live streams, sorted."""
+    words = list(st.session_state.get("lesson_words_gladia", []))
+    for source, streamer in (st.session_state.get("gladia_streamers") or {}).items():
+        snap = streamer.snapshot()
+        offset = st.session_state.get("gladia_source_offsets", {}).get(source, 0.0)
+        for word in snap["final_words"]:
+            words.append({
+                "source": source,
+                "word": word["word"],
+                "start": (word.get("start") or 0.0) + offset,
+                "end": (word.get("end") or 0.0) + offset,
+                "confidence": word.get("confidence"),
+            })
+    words.sort(key=lambda w: (w.get("start") or 0.0))
+    return words
+
+
+def get_captured_audio_clock():
+    """Current audio position in seconds, advancing continuously even through silence."""
+    if st.session_state.get("lesson_state") == "ended":
+        return float("inf")
+    candidates = [0.0]
+    recorders = st.session_state.get("lesson_recorders") or {}
+    for rec in recorders.values():
+        if hasattr(rec, "seconds_captured"):
+            candidates.append(rec.seconds_captured)
+    for source, streamer in st.session_state.get("deepgram_streamers", {}).items():
+        offset = st.session_state.get("source_offsets", {}).get(source, 0.0)
+        candidates.append(offset + streamer.audio_seconds_sent())
+    for source, streamer in (st.session_state.get("gladia_streamers") or {}).items():
+        offset = st.session_state.get("gladia_source_offsets", {}).get(source, 0.0)
+        candidates.append(offset + streamer.audio_seconds_sent())
+    return max(candidates)
+
+
+def collect_lesson_words():
+    """All finalized consensus words so far across both providers."""
+    # When a saved lesson is loaded from disk, lesson_words contains loaded words
+    if st.session_state.get("lesson_loaded") and st.session_state.get("lesson_words"):
+        return list(st.session_state.lesson_words)
+
+    dg_words = collect_raw_deepgram_words()
+    gl_words = collect_raw_gladia_words()
+    gladia_key = os.environ.get("GLADIA_API_KEY")
+    gl_streamers = st.session_state.get("gladia_streamers") or {}
+    gladia_active = bool(gladia_key and (gl_streamers or gl_words))
+
+    # Base clock on continuous captured-audio time, falling back to newest word end
+    captured_clock = get_captured_audio_clock()
+    newest_dg = newest_word_end(dg_words)
+    audio_clock = max(captured_clock, newest_dg)
+
+    return build_consensus_words(
+        dg_words, gl_words, gladia_active=gladia_active, audio_clock=audio_clock
+    )
 
 
 def group_turns(words):
@@ -624,10 +767,11 @@ def autosave_lesson(force=False):
     last = st.session_state.get("autosave_last_at")
     if not force and last is not None and now - last < AUTOSAVE_INTERVAL_S:
         return
-    words = collect_lesson_words()
-    if not words and not force:
+    consensus_words = collect_lesson_words()
+    raw_dg = collect_raw_deepgram_words()
+    if not consensus_words and not raw_dg and not force:
         return
-    turns = group_turns(words)
+    turns = group_turns(consensus_words if consensus_words else raw_dg)
     header = (
         f"Lesson: {os.path.basename(lesson_dir)}\n"
         f"Saved: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
@@ -636,8 +780,18 @@ def autosave_lesson(force=False):
         os.makedirs(lesson_dir, exist_ok=True)
         with open(lesson_transcript_path(lesson_dir), "w", encoding="utf-8") as f:
             f.write(header + build_transcript_text(turns) + "\n")
+        # Raw Deepgram words saved to words.json (retains original lesson record contract)
         with open(os.path.join(lesson_dir, "words.json"), "w", encoding="utf-8") as f:
-            json.dump({"version": 2, "words": words}, f, ensure_ascii=False)
+            json.dump({"version": 2, "words": raw_dg}, f, ensure_ascii=False)
+        # Derived consensus words saved to words_consensus.json
+        if consensus_words:
+            with open(os.path.join(lesson_dir, "words_consensus.json"), "w", encoding="utf-8") as f:
+                json.dump({"version": 2, "words": consensus_words}, f, ensure_ascii=False)
+        # Raw Gladia words saved to words_gladia.json
+        raw_gl = collect_raw_gladia_words()
+        if raw_gl:
+            with open(os.path.join(lesson_dir, "words_gladia.json"), "w", encoding="utf-8") as f:
+                json.dump({"version": 2, "words": raw_gl}, f, ensure_ascii=False)
         feedback = st.session_state.get("live_feedback") or {}
         if feedback:
             with open(os.path.join(lesson_dir, "live_feedback.json"), "w", encoding="utf-8") as f:
@@ -1120,8 +1274,9 @@ def build_deepgram_confidence_transcript(words):
 def build_synthesis_bundle(lesson_dir, audio_path):
     """One JSON with every available ASR viewpoint, ready to hand to an LLM."""
     viewpoints = []
-    words = load_lesson_words(lesson_dir) if lesson_dir else []
-    if words:
+    # 1. Raw Deepgram viewpoint (words.json)
+    dg_words = load_lesson_words(lesson_dir) if lesson_dir else []
+    if dg_words:
         viewpoints.append({
             "id": "deepgram_live",
             "service": "Deepgram nova-3 (live streaming)",
@@ -1143,9 +1298,84 @@ def build_synthesis_bundle(lesson_dir, audio_path):
                         for w in turn["words"]
                     ],
                 }
-                for turn in group_turns(words)
+                for turn in group_turns(dg_words)
             ],
         })
+
+    # 2. Raw Gladia viewpoint (words_gladia.json)
+    if lesson_dir:
+        gl_path = os.path.join(lesson_dir, "words_gladia.json")
+        if os.path.exists(gl_path):
+            try:
+                with open(gl_path, "r", encoding="utf-8") as f:
+                    gl_payload = json.load(f)
+                gl_words = gl_payload.get("words", []) if isinstance(gl_payload, dict) else gl_payload
+                if gl_words:
+                    viewpoints.append({
+                        "id": "gladia_live",
+                        "service": "Gladia solaria-1 (live streaming)",
+                        "granularity": "word",
+                        "speakers": "student and teacher, separated by microphone",
+                        "turns": [
+                            {
+                                "speaker": SOURCE_LABELS.get(turn["source"], str(turn["source"])),
+                                "start": turn["start"],
+                                "end": turn["end"],
+                                "text": turn["text"],
+                                "words": [
+                                    {
+                                        "word": w["word"],
+                                        "start": w.get("start"),
+                                        "end": w.get("end"),
+                                        "confidence": w.get("confidence"),
+                                    }
+                                    for w in turn["words"]
+                                ],
+                            }
+                            for turn in group_turns(gl_words)
+                        ],
+                    })
+            except Exception:
+                pass
+
+    # 3. Derived Live Consensus viewpoint (words_consensus.json)
+    if lesson_dir:
+        con_path = os.path.join(lesson_dir, "words_consensus.json")
+        if os.path.exists(con_path):
+            try:
+                with open(con_path, "r", encoding="utf-8") as f:
+                    con_payload = json.load(f)
+                con_words = con_payload.get("words", []) if isinstance(con_payload, dict) else con_payload
+                if con_words:
+                    viewpoints.append({
+                        "id": "live_consensus",
+                        "service": "Deepgram + Gladia live consensus reconciliation",
+                        "granularity": "word",
+                        "speakers": "student and teacher, separated by microphone",
+                        "turns": [
+                            {
+                                "speaker": SOURCE_LABELS.get(turn["source"], str(turn["source"])),
+                                "start": turn["start"],
+                                "end": turn["end"],
+                                "text": turn["text"],
+                                "words": [
+                                    {
+                                        "word": w["word"],
+                                        "start": w.get("start"),
+                                        "end": w.get("end"),
+                                        "status": w.get("status"),
+                                        "evidence": w.get("evidence"),
+                                    }
+                                    for w in turn["words"]
+                                ],
+                            }
+                            for turn in group_turns(con_words)
+                        ],
+                    })
+            except Exception:
+                pass
+
+    # 4. Replicate Whisper viewpoint
     replicate_output = None
     if audio_path and os.path.exists(replicate_json_path(audio_path)):
         try:
@@ -1262,14 +1492,19 @@ DEEPSEEK_SYSTEM_PROMPT = (
     "You are given independent automatic-speech-recognition (ASR) viewpoints of "
     "the same lesson as JSON:\n"
     "- 'deepgram_live': word-level, with a confidence per word, covering BOTH "
-    "speakers (each on a separate microphone, so the speaker label is reliable).\n"
+    "speakers (each on a separate microphone, so speaker labels are reliable).\n"
+    "- 'gladia_live' (may be absent): word-level, with a confidence per word, "
+    "covering BOTH speakers.\n"
+    "- 'live_consensus' (may be absent): deterministic real-time reconciliation "
+    "between Deepgram and Gladia. Spans marked 'consensus' indicate both engines agreed "
+    "on the word. Spans marked 'uncertain' indicate engine disagreement or disputed "
+    "insertions/deletions and should NOT be treated as ground truth.\n"
     "- 'whisper_large_v3' (may be absent): segment-level, with a probability per "
     "segment, covering the STUDENT only.\n\n"
     "Your job: merge these into one chronological transcript of what was really "
-    "said. Where the viewpoints disagree on the student's words, choose the "
-    "reading better supported by the evidence (higher confidence/probability, or "
-    "agreement between the two viewpoints). Teacher words come only from "
-    "'deepgram_live'; transcribe them faithfully.\n\n"
+    "said. Where the viewpoints disagree on words, choose the reading best supported "
+    "by the evidence (engine agreement, higher confidence/probability, acoustic plausibility). "
+    "For teacher words, use 'deepgram_live' and 'gladia_live' to transcribe faithfully.\n\n"
     "CRITICAL — this transcript is used to analyse the student's language errors, "
     "so you must NOT correct the student's English. Preserve their real mistakes "
     "exactly: wrong tense, missing/extra articles, wrong word choice, "
@@ -1277,7 +1512,7 @@ DEEPSEEK_SYSTEM_PROMPT = (
     "uncertainty (a word one engine misheard), never a learner mistake. When you "
     "cannot tell whether something is a mishearing or a genuine learner error, "
     "keep the student's apparent words. Do not paraphrase, translate, or add or "
-    "invent content that neither viewpoint supports.\n\n"
+    "invent content that no viewpoint supports.\n\n"
     "OUTPUT FORMAT — output ONLY the transcript, nothing else. One turn per line, "
     "turns in time order, a blank line between turns, each line exactly:\n"
     "[mm:ss] Speaker: text\n"
@@ -1668,6 +1903,10 @@ def dispatch_live_feedback(sentences, turns):
         cached = cache.get(sentence_id)
         if cached is not None and cached.get("status") != "retry":
             continue
+        # Exclude any sentence containing uncertain words from automatic ESL error feedback
+        if any(w.get("status") == "uncertain" for w in sentence.get("words", [])):
+            cache[sentence_id] = {"status": "skipped", "reason": "uncertain_asr"}
+            continue
         if sentence["word_count"] < LIVE_MIN_WORDS:
             cache[sentence_id] = {"status": "skipped"}
             continue
@@ -1737,10 +1976,15 @@ def init_session_state():
         "lesson_started_at": None,
         "lesson_active_seconds": 0,
         "lesson_words": [],
+        "lesson_words_deepgram": [],
+        "lesson_words_gladia": [],
         "source_offsets": {},
+        "gladia_source_offsets": {},
         "deepgram_streamers": {},
+        "gladia_streamers": {},
         "lesson_recorders": {},   # source -> TrackRecorder, open for the lesson
         "deepgram_last_restart_at": None,
+        "gladia_last_restart_at": None,
         "autosave_last_at": None,
         "autosave_last_clock": None,
         "last_recorder_event_id": "",
@@ -1802,7 +2046,10 @@ def handle_recorder_event(payload):
         st.session_state.lesson_started_at = datetime.now(timezone.utc)
         st.session_state.lesson_active_seconds = 0
         st.session_state.lesson_words = []
+        st.session_state.lesson_words_deepgram = []
+        st.session_state.lesson_words_gladia = []
         st.session_state.source_offsets = {}
+        st.session_state.gladia_source_offsets = {}
         st.session_state.autosave_last_at = None
         st.session_state.autosave_last_clock = None
         st.session_state.replicate_transcript = ""
@@ -1814,6 +2061,8 @@ def handle_recorder_event(payload):
         for source, rate in source_rates.items():
             if source in SOURCE_LABELS:
                 start_deepgram_stream(source, rate)
+                if os.environ.get("GLADIA_API_KEY"):
+                    start_gladia_stream(source, rate)
         log_event("lesson_started", lesson_dir=st.session_state.lesson_dir,
                   student=st.session_state.get("student_name") or "",
                   sources=list(source_rates))
@@ -1834,10 +2083,11 @@ def handle_recorder_event(payload):
 
     elif event == "lesson_ended":
         st.session_state.lesson_active_seconds = payload.get("active_seconds") or 0
+        # No more audio can arrive, so any still-pending consensus span settles.
+        st.session_state.lesson_state = "ended"
         saved_audio = save_lesson_audio(payload.get("audio") or {})
         end_all_streams()
         autosave_lesson(force=True)
-        st.session_state.lesson_state = "ended"
         # Point the post-lesson step at this lesson's student track, chosen the
         # same way the picker chooses it. Read after the streams are closed, so
         # the continuous recording is final — and so it still resolves when the
@@ -1952,6 +2202,14 @@ def render_styles():
             text-indent: -15px;
         }
         #fb-popup .fb-fix::before { content: "→ "; color: #98a1b0; }
+        .uncertain-word {
+            text-decoration: underline dotted #e08b00;
+            color: #b54708;
+            background: rgba(224, 139, 0, 0.08);
+            padding: 0 2px;
+            border-radius: 3px;
+            cursor: help;
+        }
         .fb-counts {
             font-size: 0.78rem; color: #8a93a3; margin-top: 2px;
         }
@@ -1962,13 +2220,39 @@ def render_styles():
     )
 
 
-def _turn_html(source, start, text, interim=False, segments=None):
+def _format_word_html(word_item):
+    if not isinstance(word_item, dict):
+        return html.escape(str(word_item))
+    token = (word_item.get("word") or "").strip()
+    escaped_token = html.escape(token)
+    if word_item.get("status") == "uncertain":
+        evidence = word_item.get("evidence") or {}
+        dg_info = evidence.get("deepgram") or {}
+        gl_info = evidence.get("gladia") or {}
+        dg_word = dg_info.get("word") if isinstance(dg_info, dict) else None
+        gl_word = gl_info.get("word") if isinstance(gl_info, dict) else None
+        parts = []
+        if dg_word:
+            parts.append(f"Deepgram: {dg_word}")
+        if gl_word:
+            parts.append(f"Gladia: {gl_word}")
+        tooltip = " | ".join(parts) if parts else "Disputed ASR word"
+        return f'<span class="uncertain-word" title="{html.escape(tooltip)}">{escaped_token}</span>'
+    return escaped_token
+
+
+def _turn_html(source, start, text, interim=False, segments=None, words=None):
     """One turn. With `segments` the text is broken into hoverable sentences;
-    without it the markup is exactly what it has always been."""
+    without it the markup is formatted with word-level highlights."""
     label = SOURCE_LABELS.get(source, str(source).title())
     classes = f"turn {html.escape(str(source))}" + (" interim" if interim else "")
     stamp = "..." if interim else _format_clock(start)
-    body = "".join(_segment_html(seg) for seg in segments) if segments else html.escape(text)
+    if segments:
+        body = "".join(_segment_html(seg) for seg in segments)
+    elif words:
+        body = " ".join(_format_word_html(w) for w in words)
+    else:
+        body = html.escape(text)
     return (
         f'<div class="{classes}">'
         f'<span class="ts">[{stamp}]</span>'
@@ -1986,7 +2270,7 @@ def _segment_html(segment):
     sentence with no underline was never sent (too short, or the switch was off
     when it went past), so the point the analysis reached stays visible.
     """
-    text = html.escape(segment["text"])
+    text = segment.get("html_text") or html.escape(segment["text"])
     state = segment.get("state")
     if state not in ("flagged", "pending", "checked", "failed"):
         return f"{text} "
@@ -2027,18 +2311,25 @@ def turn_segments(turn, word_to_sentence, sentences_by_id, feedback, in_flight):
     which is correct.
     """
     runs = []
-    for word in turn["words"]:
+    for word in turn.get("words", []):
         token = (word.get("word") or "").strip()
         if not token:
             continue
         sentence_id = word_to_sentence.get(id(word))
+        formatted = _format_word_html(word)
         if runs and runs[-1]["id"] == sentence_id:
             runs[-1]["tokens"].append(token)
+            runs[-1]["formatted"].append(formatted)
         else:
-            runs.append({"id": sentence_id, "tokens": [token]})
+            runs.append({"id": sentence_id, "tokens": [token], "formatted": [formatted]})
     segments = []
     for run in runs:
-        segment = {"id": run["id"], "text": " ".join(run["tokens"]), "state": None}
+        segment = {
+            "id": run["id"],
+            "text": " ".join(run["tokens"]),
+            "html_text": " ".join(run["formatted"]),
+            "state": None,
+        }
         entry = feedback.get(run["id"]) if run["id"] else None
         if run["id"] and run["id"] in in_flight:
             segment["state"] = "pending"
@@ -2198,7 +2489,7 @@ def _render_transcript_pane():
     # it off must never erase feedback already gathered, nor abandon sentences
     # from the window that have not settled yet.
     if not (live_feedback_is_on() or live_feedback_engaged()):
-        blocks = [_turn_html(t["source"], t["start"], t["text"]) for t in visible_turns]
+        blocks = [_turn_html(t["source"], t["start"], t["text"], words=t.get("words")) for t in visible_turns]
         for source in ("student", "teacher"):
             if source in shown and interim.get(source):
                 blocks.append(_turn_html(source, None, interim[source], interim=True))
@@ -2228,7 +2519,8 @@ def _render_transcript_pane():
     blocks = [
         _turn_html(turn["source"], turn["start"], turn["text"],
                    segments=turn_segments(turn, word_to_sentence, sentences_by_id,
-                                          feedback, in_flight))
+                                          feedback, in_flight),
+                   words=turn.get("words"))
         for turn in visible_turns
     ]
     for source in ("student", "teacher"):
@@ -2891,6 +3183,7 @@ with st.expander("Diagnostics", expanded=False):
         "lesson_state": st.session_state.lesson_state,
         "lesson_dir": st.session_state.get("lesson_dir"),
         "deepgram_key_present": bool(os.environ.get("DEEPGRAM_API_KEY")),
+        "gladia_key_present": bool(os.environ.get("GLADIA_API_KEY")),
         "replicate_key_present": bool(os.environ.get("REPLICATE_API_TOKEN")),
         "deepseek_key_present": bool(deepseek_api_key()),
         "deepseek_model": DEEPSEEK_MODEL,
@@ -2904,7 +3197,17 @@ with st.expander("Diagnostics", expanded=False):
     }
     for source, streamer in st.session_state.deepgram_streamers.items():
         snap = streamer.snapshot()
-        diag[f"{source}_stream"] = {
+        diag[f"{source}_deepgram_stream"] = {
+            "active": streamer.is_active,
+            "error": snap["error"],
+            "bytes_sent": snap["bytes_sent_total"],
+            "chunks_received": snap["chunks_received"],
+            "transcript_events": snap["transcript_events_received"],
+            "sample_rate": snap["sample_rate"],
+        }
+    for source, streamer in (st.session_state.get("gladia_streamers") or {}).items():
+        snap = streamer.snapshot()
+        diag[f"{source}_gladia_stream"] = {
             "active": streamer.is_active,
             "error": snap["error"],
             "bytes_sent": snap["bytes_sent_total"],

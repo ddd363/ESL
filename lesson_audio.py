@@ -199,7 +199,18 @@ class TrackRecorder:
         try:
             if self.process is not None:
                 try:
-                    self.process.stdin.close()
+                    if self.process.stdin:
+                        self.process.stdin.close()
+                except Exception:
+                    pass
+                try:
+                    if self.process.stderr:
+                        self.process.stderr.close()
+                except Exception:
+                    pass
+                try:
+                    if self.process.stdout:
+                        self.process.stdout.close()
                 except Exception:
                     pass
                 try:
