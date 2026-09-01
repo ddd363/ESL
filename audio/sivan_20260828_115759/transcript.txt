@@ -1,0 +1,264 @@
+Lesson: sivan_20260828_115759
+Saved: 2026-08-28 13:04:13
+
+[00:00] Student: A cube is an image that really don't know how to explain, but I will find it find the the answer for you.
+
+[00:09] Teacher: Yeah.
+
+[00:17] Student: It's like having a lot of of image.
+
+[00:27] Teacher: I remember I remember when you explained it the other time. But okay. Why why did you use hyper pectral cubes?
+
+[00:40] Student: This is the only method I use now, and and there is a lot of alternative. Not that I for the hyperspectral cubes, we use them for detecting Dectin. I don't know if there is something that I I'm going to say after it. So yes, And they will
+
+[00:41] Teacher: There, like, alternative methods, or is that the only important Yeah. Yeah.
+
+[00:54] Teacher: Sure. Sure.
+
+[01:11] Teacher: Yeah. The ticketing things.
+
+[01:17] Teacher: Yeah. Detecting stuff. Detecting things. But from from very far away, I think. Right? From really far away. Because it's more from a satellite Oh, okay. That was Yeah.
+
+[01:23] Student: This is not far away.
+
+[01:26] Student: Because it look like far away, but because the this is a cube, of pictures that layers one on each other. We take each pixel and we know the material the pixel is built on. So if there is a grasp we know that is a grasp because of the signature of the pixel. So we can recognize this is a glass this is a grass. And we separate that. If we know the sick the signature of this something we want to detect, like, maybe maybe something different. We want to detect the army. So there is a signature. We want
+
+[01:49] Teacher: Yeah.
+
+[02:03] Teacher: Yeah.
+
+[02:11] Teacher: Yep.
+
+[02:26] Student: to learn and to search it at the the average spectral cubes. So there is for now, some I don't know how. I don't know how many. There is some detect that we can use for detect the the signature at the hyperspectral cubes, but each one is built on like, background that we we want to analyze. We want to know how I said it.
+
+[02:31] Teacher: Oh, yeah. Yeah. Yeah.
+
+[02:35] Teacher: Yeah.
+
+[02:39] Teacher: Yeah.
+
+[03:20] Student: We thought at first I I but everyone thought at first that the cube distribution is Gaussian. And they built the detectors about that. So when we analyze and discover that the cube is not it's not like Gaussian. It's more look like student t. Lepticalcom combo. Distribution, So this is maybe change our our detectors also. So when we understanding more cues and the statistics over of the cubes, we learn more
+
+[03:48] Teacher: Oh, yeah.
+
+[04:21] Student: and maybe because
+
+[04:42] Teacher: Yes.
+
+[04:42] Student: I'm I'm going to ask questions also. Wait. What what are you doing? If you are working on?
+
+[04:45] Teacher: Okay. Yeah.
+
+[04:50] Teacher: Yeah.
+
+[04:54] Teacher: Alright. So you would if you think it's like a conversation, Okay. Okay. Okay.
+
+[05:10] Teacher: What am I working on? Actually, lately, I'm doing more programming type of stuff. I want to do some things that are useful for me for teaching and, yeah, some of the things I want I'm thinking also if I should try to build some maybe app or some stuff that can be useful for teachers. Yeah.
+
+[05:12] Student: Act I I I have tutoring. My boyfriend made it for me. You do you want to see it? You need to translate it to English, but oh, yeah. I will send it here.
+
+[05:35] Student: And and for teaching, I'm doing the study. Of course. You can book. Like like, probably, you can book my
+
+[05:43] Teacher: Not really?
+
+[05:51] Teacher: Yeah. Okay.
+
+[05:54] Teacher: I can translate it. Yeah.
+
+[05:58] Student: Mhmm.
+
+[05:58] Teacher: It's for you, for, like, learning, studying Of course. I remember. Yeah. Yeah. Yeah.
+
+[06:01] Student: We can Translate it into English. You can Okay. On the screen to my calendar, Look like look more
+
+[06:18] Teacher: I also have this plan, but I I finished my website, like, 50%, and I didn't have time to do it to finish. Yeah. Are you seeing that, Stefan? You're really you're you're Okay. Let me see.
+
+[06:31] Student: We use it We use the chat, the the cloud. We didn't build it ourselves. We asked what we asked what we want to to see, and he do he did it. You can use it.
+
+[06:42] Teacher: Yeah. I can I can translate it here?
+
+[06:47] Teacher: How do you find the nice. How do you find the students? Private math
+
+[07:01] Student: Yeah.
+
+[07:05] Teacher: Yeah. Yeah.
+
+[07:14] Teacher: Yeah.
+
+[07:21] Teacher: Okay.
+
+[07:26] Teacher: Cool. Yeah. So you want to do it? It's nice. Yeah. It's it's actually, when I also Ah, okay. Sure. But it has everything
+
+[07:42] Student: Yes. Like TikTok and some I I don't I have TikTok, but know this this is a good platform for like, advertisers. So
+
+[07:54] Teacher: Yeah. Yeah. Yeah. I need to finish, yeah. I also they can market Yeah. I'm that much. Yeah. So now that's what I'm more yeah. I'm small Like, make answer Yeah. Okay.
+
+[08:24] Teacher: Someone actually
+
+[08:32] Student: Do you have a lot of students in Proply?
+
+[08:41] Teacher: Yep.
+
+[08:43] Student: That's the wow. This is a lot of They they what they they do with you They study for the exam you told me about?
+
+[08:45] Teacher: Yeah.
+
+[09:17] Student: Business Let let me. But in different way.
+
+[09:17] Teacher: I see.
+
+[09:20] Teacher: Yeah.
+
+[09:23] Teacher: Yeah. That's a good question. It's good it's good to ask. Is that open? Or if you ask if you ask something like simple, is it your first time at the conference? They can just say yes or they can say no. It's like a closed question. It has only a short answer, If you ask, like, what are you working on? You know, they could talk about a lot more things. And they can tell you more about themselves. So yeah,
+
+[10:15] Teacher: Yeah. For sure. Then some people talk a lot. Yeah. That's true. But that's good. Way to to have some questions that you prepared that you can It's gonna, like, be an open question so they can tell you about their stuff, their research. How do you validate your results? That's a pretty good one. Actually.
+
+[10:43] Teacher: Yeah. Yeah. Thank you. If you, I would just get about ten ten questions you can ask so you can easily remember
+
+[10:52] Student: This is a lot of different people. I I asked now the chat to may made me a question to ask. I will send it to you. Give me maybe you can look at it. Yeah.
+
+[11:04] Teacher: Hey, John.
+
+[11:08] Teacher: Thank you.
+
+[11:15] Teacher: Yep. Eliminate.
+
+[11:18] Student: What are you working on?
+
+[11:21] Teacher: Yeah.
+
+[11:22] Student: What areas you're researching as a this is what you said.
+
+[11:31] Student: And I Because this is a a a separated like, a simple opening talk Next one is the I'll translate from Libri to you. A question about the research. So what is the research about? What is the main idea behind your work? And if the work related to hyper hyperspectral imaging So do you mainly work on hyperspectral imaging?
+
+[11:49] Teacher: Yeah.
+
+[11:58] Teacher: You you can read it, I think. Yeah.
+
+[12:08] Teacher: Yeah. Yeah. I will. Okay.
+
+[12:12] Student: The next one is after they presentation.
+
+[12:13] Teacher: Yeah.
+
+[12:19] Teacher: Yeah. It's good.
+
+[12:21] Student: What to ask?
+
+[12:24] Student: And question that can connect to my research.
+
+[12:31] Teacher: Conference. Conference. Yeah. Conference.
+
+[12:32] Student: And
+
+[12:40] Student: Ending questions. Like, no. Any questions? Can I connect with you on LinkedIn? And then con Which talks are you looking forward to? Nice.
+
+[12:45] Teacher: Yeah.
+
+[13:06] Student: Yeah.
+
+[13:12] Student: Next.
+
+[13:15] Teacher: Yeah.
+
+[13:41] Student: I I was will think about it for if I think the person is interesting, maybe I will ask about something like longer. But if the person is blah blah blah, this is isn't your first time, conference?
+
+[13:46] Teacher: Yeah.
+
+[13:52] Teacher: Yeah.
+
+[14:05] Teacher: Christian, you Okay. So Yeah.
+
+[14:27] Teacher: Yeah. Yeah. Yeah.
+
+[14:44] Student: Maybe we will try to to to say the questions, and then maybe we can you can correct me. If I'm me tell me it's wrong. So yeah. I will read every questions, and then I will going to eliminate eliminate.
+
+[14:47] Teacher: Active. Yeah. True.
+
+[15:10] Student: Yes. Because then I don't want to say that. And then and maybe the next time, I will send you also answers that I can say for each one. Like, it's we you did it question, like, are you going are you doing PhD after your master's? And my answer in a like, I'm considering it. I really enjoy research. So it's definitely something I'm thinking about. So something like things like that also.
+
+[15:15] Teacher: Yes.
+
+[15:28] Teacher: Yeah. Yeah. Yeah.
+
+[15:32] Teacher: You mean, like, you you ask one question? And then I give an answer, and you want to practice, like, asking another question? A Yeah. Yeah.
+
+[15:54] Teacher: Yeah. Yeah. Yeah.
+
+[15:56] Student: Oh, we have got only four minutes.
+
+[15:58] Teacher: I can try. Yeah. I can try to do it.
+
+[16:03] Student: Okay. Alright. I'm going and maybe to you can you can write the words. I'm not good at. And and I will practice them. Okay. Is it is this your first time at this conference? Conference. Okay. Where are you from? Which university or company are? Are you with, Are you presenting at the conference I need to know to say the word conference. This is a difficult work for me. Yes. What are you working on? What area is your research in? Are you student, or are you already working in the field? What is your research about? Is the main idea behind your work? How did you get into this research area?
+
+[16:05] Teacher: If you sent me the papers, that that would be more useful. Because it's gonna be Yeah.
+
+[16:15] Teacher: Yeah. Okay.
+
+[16:18] Teacher: Yeah.
+
+[16:23] Teacher: Yes.
+
+[16:32] Teacher: Yeah.
+
+[16:37] Teacher: Yeah. Yeah.
+
+[16:41] Teacher: I think that sounds good, like a good idea. Yeah. Yeah. Yeah. Send it to me. We'll we'll be more realistic. I think. So it's good. Yeah. Yeah.
+
+[16:58] Teacher: Yeah.
+
+[17:04] Student: What are you currently working on? What is the main challenge in your research? What kind of data are you working with?
+
+[17:05] Teacher: Yeah. Exactly. Yeah.
+
+[17:10] Teacher: It's not related. Yeah. Exactly. Yeah. That's that's what I yeah. Yeah. That sounds good. That sounds cool. I will do that. Has it? Ah.
+
+[17:16] Student: Are you working with real data, synthetic data, or both? What are you trying to improve compared to x? Existing methods. What you do to think is the most interesting part of your work? This is interesting. Okay. Do you mainly work on hyperspectral imaging? What kind of spectral data do you use? Do you work with target detection as well? Which target detection methods do you really use? Do you assume a Gaussian background is is in in your work? Have you looked at non Gaussian background models? You work with synthetic hyperspectral data at all. How you valid validate validate?
+
+[17:23] Teacher: Oh, good. Good.
+
+[17:29] Teacher: Yeah.
+
+[17:33] Teacher: I see.
+
+[17:36] Teacher: Okay.
+
+[17:43] Teacher: I can. I I think I can do it. Yeah. Actually, because it's in the upper arm.
+
+[17:51] Teacher: Of course. I will. Of course.
+
+[17:55] Teacher: Yeah. I will practice with this. That sounds good. Okay.
+
+[18:02] Teacher: Cool. Cool. Yes. Yeah. Awesome. Yeah. K. Have a good day, and, yeah, see you tomorrow. Bye.
+
+[18:16] Student: Your reserve results. Which dataset you you will use? K? I really enjoy your presentation. How did you choose this method? I was curious.
+
+[18:36] Student: Okay.
+
+[18:39] Student: I was curious about the data set you used. It Is it publicly publicly available? Oh, this is, like, a good question. Have you tried this method on other datasets as well? Oh, it's good. Wow. This is That's that's good. Yeah.
+
+[18:57] Student: Do you think the method would work for hyperspectral target detection?
+
+[19:05] Student: What would you say if what would you say is the main limitation of the method? Oh, this is hard question to ask.
+
+[19:21] Student: Are you planning to continue this work? Okay.
+
+[19:28] Student: And I will not read the other one. If you can, prepare for me some maybe answers, not real answers, but maybe with AI. Answers to to some of the questions that I will try to understand which question I want to ask after the question I ask. Like, what I need to continue to ask you understand what I mean?
+
+[20:10] Student: But some some answers Yeah. So what what I need to follow what is the follow-up questions Maybe if you were a lot of answers, I will try to know maybe I want to ask other questions. And practice it. If you can do this, I will can I I can I can send you two papers Maybe you can Maybe for now, maybe for now I send you the papers that my professor wrote and something I'm using for my disease? And we can practice on these questions because they are related
+
+[21:10] Student: to my field. And and when they published the they papers so we can practice a real paper and know this is also wheels. Yes. But a real paper that present at the conference.
+
+[21:34] Student: Did is this okay for you?
+
+[21:39] Student: I just love said send you I will I will send you between two to three papers, and maybe it can help. And to con to do this conversation and not stuck because because I can't I can ask you about your but it's not related to the conference. Yes. So okay. Thank you. I will see you tomorrow.
+
+[22:22] Student: Yes. Because my because of my duty, I'm I rescheduled all my lessons to be at the week.
+
+[22:38] Student: Yes. I I don't know if you're going to to be prepared more more, but I will send you right now all the Use AI. Cool.
+
+[23:09] Student: Okay. Thank you. I'll see you tomorrow. And right now, I'm going to send it to you. A lot of this.
+
+[29:18] Teacher: And consider
+
+[30:18] Teacher: a
