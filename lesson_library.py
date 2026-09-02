@@ -86,9 +86,10 @@ def lesson_entry(lesson_dir):
     """One lesson described well enough to pick it out of a list."""
     tracks = lesson_tracks(lesson_dir)
     words_path = os.path.join(lesson_dir, "words.json")
+    words_con_path = os.path.join(lesson_dir, "words_consensus.json")
     transcript_path = os.path.join(lesson_dir, "transcript.txt")
     times = [os.path.getmtime(p) for p in tracks.values() if os.path.exists(p)]
-    for path in (words_path, transcript_path):
+    for path in (words_path, words_con_path, transcript_path):
         if os.path.exists(path):
             times.append(os.path.getmtime(path))
     meta = read_lesson_meta(lesson_dir)
@@ -98,7 +99,7 @@ def lesson_entry(lesson_dir):
         "student": meta.get("student") or "",
         "recorded": meta.get("recorded") or "",
         "tracks": tracks,
-        "has_words": os.path.exists(words_path),
+        "has_words": os.path.exists(words_path) or os.path.exists(words_con_path),
         "has_transcript": os.path.exists(transcript_path),
         "modified": max(times) if times else 0.0,
     }

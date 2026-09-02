@@ -29,6 +29,15 @@ import lesson_audio
 import lesson_library
 import lesson_turns
 import live_runtime
+from feedback_retrospective import (
+    atomic_save_feedback,
+    create_retrospective_snapshot,
+    format_inspection_json,
+    format_inspection_markdown,
+    load_lesson_feedback,
+    merge_retrospective_result,
+    resolve_lesson_words,
+)
 from gladia_stream import GladiaStreamingClient
 from live_consensus import build_consensus_words, normalize_token
 from live_sentences import (
@@ -1238,13 +1247,7 @@ def run_deepgram_batch_job(lesson_dir, tracks):
 # external LLM can compare them and reconstruct what the student really said.
 # ---------------------------------------------------------------------------
 def load_lesson_words(lesson_dir):
-    try:
-        with open(os.path.join(lesson_dir, "words.json"), "r", encoding="utf-8") as f:
-            payload = json.load(f)
-        words = payload.get("words", []) if isinstance(payload, dict) else payload
-        return [w for w in words if isinstance(w, dict)]
-    except Exception:
-        return []
+    return resolve_lesson_words(lesson_dir)
 
 
 def build_deepgram_confidence_transcript(words):
@@ -1642,23 +1645,26 @@ DEFAULT_LIVE_FEEDBACK_PROMPT = (
     "involves one of them, the sentence is fine.\n"
     "- A stray word from the other speaker sometimes bleeds into the sentence. "
     "Ignore anything that clearly is not part of the student's own utterance.\n\n"
-    "Report ONLY a genuine learner language error: verb tense or form, "
-    "subject-verb agreement, articles, prepositions, plurals, word order, or a "
-    "wrong word choice. Report the single most important one, not a list. If the "
-    "sentence is acceptable spoken English, or the only problems are disfluency "
-    "or mis-transcription, say so and stop.\n\n"
+    "Be conservative. Report ONLY a clear, local grammar-form error: verb form, "
+    "subject-verb agreement, article/countability, or a fixed-preposition error. "
+    "Do NOT report vocabulary choice, naturalness, incomplete thoughts, discourse, "
+    "pronunciation, or a possible transcription problem. Do NOT write 'probably', "
+    "'likely mean', or otherwise guess the student's intended meaning. If correcting "
+    "the sentence needs a guess or changes more than a short span, return ok.\n\n"
     "Reply with json only, in exactly this shape:\n"
     '{"verdict": "ok" | "issue", "label": "...", "explanation": "...", '
-    '"rewrites": ["...", "..."]}\n\n'
+    '"quoted_span": "...", "replacement": "..."}\n\n'
     "- 'verdict': 'issue' only when there is a real learner error to show.\n"
     "- 'label': the error type in two to four words, lowercase, e.g. "
     "'past tense', 'missing article'.\n"
+    "- 'quoted_span': copy the exact erroneous words from the sentence, maximum five "
+    "words. Never quote words that are not present.\n"
     "- 'explanation': ONE short sentence, at most 15 words, saying plainly what "
     "is wrong. Write it for the teacher to read at a glance mid-lesson.\n"
-    "- 'rewrites': one or two natural ways to say it, keeping the student's "
-    "meaning and their spoken register. Never more than two.\n"
+    "- 'replacement': one minimal replacement for quoted_span only. Do not rewrite "
+    "the whole sentence or change the student's meaning.\n"
     "- When 'verdict' is 'ok', use an empty label, an empty explanation and an "
-    "empty rewrites list."
+    "empty quoted_span and replacement."
 )
 
 
@@ -1694,7 +1700,20 @@ def persist_live_feedback_prompt():
         log_event("live_feedback_prompt_save_error", error=str(e))
 
 
-def parse_live_feedback_reply(raw):
+def _contains_normalized_span(sentence, quoted_span):
+    """Whether a model-quoted span is a contiguous part of the ASR sentence."""
+    sentence_tokens = [normalize_token(token) for token in str(sentence or "").split()]
+    span_tokens = [normalize_token(token) for token in str(quoted_span or "").split()]
+    sentence_tokens = [token for token in sentence_tokens if token]
+    span_tokens = [token for token in span_tokens if token]
+    if not span_tokens or len(span_tokens) > 5:
+        return False
+    width = len(span_tokens)
+    return any(sentence_tokens[i:i + width] == span_tokens
+               for i in range(len(sentence_tokens) - width + 1))
+
+
+def parse_live_feedback_reply(raw, sentence=None):
     """Tolerant parse of the model's JSON, normalised to what the renderer needs."""
     text = (raw or "").strip()
     if text.startswith("```"):
@@ -1709,19 +1728,20 @@ def parse_live_feedback_reply(raw):
     verdict = str(data.get("verdict") or "").strip().lower()
     if verdict not in ("ok", "issue"):
         # Treat anything unrecognised as clean rather than showing a broken card.
-        verdict = "issue" if data.get("rewrites") else "ok"
-    rewrites = data.get("rewrites") or []
-    if isinstance(rewrites, str):
-        rewrites = [rewrites]
-    rewrites = [str(r).strip() for r in rewrites if str(r).strip()][:2]
+        verdict = "issue" if data.get("replacement") else "ok"
+    quoted_span = str(data.get("quoted_span") or "").strip()
+    replacement = str(data.get("replacement") or "").strip()
     explanation = str(data.get("explanation") or "").strip()
-    if verdict == "issue" and not (rewrites or explanation):
+    if verdict == "issue" and not (quoted_span and replacement and explanation):
+        verdict = "ok"
+    if verdict == "issue" and sentence is not None and not _contains_normalized_span(sentence, quoted_span):
         verdict = "ok"
     return {
         "verdict": verdict,
         "label": str(data.get("label") or "").strip(),
         "explanation": explanation,
-        "rewrites": rewrites,
+        "quoted_span": quoted_span,
+        "replacement": replacement,
     }
 
 
@@ -1732,17 +1752,18 @@ def build_live_feedback_payload(sentence, turns):
     question that prompted the sentence.
     """
     context = []
-    for turn in turns:
-        if turn["start"] >= sentence["start"]:
-            break
+    for turn in reversed(turns):
+        if turn["start"] >= sentence["start"] or turn["source"] != "teacher":
+            continue
         context.append({
             "speaker": SOURCE_LABELS.get(turn["source"], turn["source"]),
             "text": turn["text"],
         })
+        break
     return {
         "speaker": SOURCE_LABELS.get(sentence["source"], sentence["source"]),
         "sentence": sentence["text"],
-        "context": context[-LIVE_FEEDBACK_CONTEXT_TURNS:],
+        "context": context,
         "uncertain_words": low_confidence_words(sentence, LIVE_LOW_CONFIDENCE),
     }
 
@@ -1751,17 +1772,17 @@ def live_feedback_client(api_key):
     return live_runtime.openai_client(api_key, DEEPSEEK_BASE_URL, LIVE_FEEDBACK_TIMEOUT_S)
 
 
-def run_live_feedback_job(sentence_id, system_prompt, model, payload):
+def run_live_feedback_job(sentence_id, system_prompt, model, payload, run_id=None):
     """Background job body. Pure: returns a plain dict, never touches st.*."""
     api_key = deepseek_api_key()
     if not api_key:
-        return {"id": sentence_id, "ok": False, "error": "DEEPSEEK_API_KEY not set."}
+        return {"id": sentence_id, "ok": False, "error": "DEEPSEEK_API_KEY not set.", "run_id": run_id}
     try:
         client = live_feedback_client(api_key)
     except Exception as e:  # pragma: no cover - dependency guard
-        return {"id": sentence_id, "ok": False, "error": f"openai package missing: {e}"}
+        return {"id": sentence_id, "ok": False, "error": f"openai package missing: {e}", "run_id": run_id}
     log_event("live_feedback_call_attempt", sentence_id=sentence_id, model=model,
-              words=len(payload.get("sentence", "").split()))
+              words=len(payload.get("sentence", "").split()), run_id=run_id)
     try:
         response = client.chat.completions.create(
             model=model,
@@ -1774,18 +1795,20 @@ def run_live_feedback_job(sentence_id, system_prompt, model, payload):
             max_tokens=LIVE_FEEDBACK_MAX_TOKENS,
             stream=False,
         )
-        result = parse_live_feedback_reply(response.choices[0].message.content)
+        result = parse_live_feedback_reply(
+            response.choices[0].message.content, sentence=payload.get("sentence")
+        )
     except Exception as e:
         message = str(e)
         log_event("live_feedback_call_error", sentence_id=sentence_id,
-                  error=message, error_type=type(e).__name__)
+                  error=message, error_type=type(e).__name__, run_id=run_id)
         lowered = message.lower()
         if "401" in message or "authentication" in lowered or "invalid api key" in lowered:
             message = "DeepSeek authentication failed. Check DEEPSEEK_API_KEY."
-        return {"id": sentence_id, "ok": False, "error": message}
+        return {"id": sentence_id, "ok": False, "error": message, "run_id": run_id}
     if result["verdict"] == "issue":
-        log_event("live_feedback_issue", sentence_id=sentence_id, label=result["label"])
-    result.update({"id": sentence_id, "ok": True})
+        log_event("live_feedback_issue", sentence_id=sentence_id, label=result["label"], run_id=run_id)
+    result.update({"id": sentence_id, "ok": True, "run_id": run_id})
     return result
 
 
@@ -1814,23 +1837,127 @@ def _record_live_feedback_failure(sentence_id, error):
 def drain_live_feedback():
     """Move finished jobs into the cache. Main thread only."""
     futures = st.session_state.live_feedback_futures
+    active_run_id = st.session_state.get("live_feedback_run_id")
+
     for sentence_id in [k for k, f in futures.items() if f.done()]:
         future = futures.pop(sentence_id)
+        if future.cancelled():
+            continue
         try:
             result = future.result()
         except Exception as e:
             _record_live_feedback_failure(sentence_id, str(e))
             continue
+
+        # If a specific run token is expected, reject stale results from older runs
+        res_run_id = result.get("run_id")
+        if active_run_id and res_run_id and res_run_id != active_run_id:
+            continue
+
+        # Retrospective run handling
+        snapshot = st.session_state.get("retrospective_run")
+        if snapshot and active_run_id and snapshot.get("run_id") == active_run_id:
+            updated_snapshot, accepted = merge_retrospective_result(
+                snapshot, sentence_id, result, active_run_id, LIVE_FEEDBACK_MAX_ATTEMPTS
+            )
+            if accepted:
+                st.session_state.retrospective_run = updated_snapshot
+                st.session_state.live_feedback = dict(updated_snapshot.get("feedback") or {})
+                if updated_snapshot.get("is_complete"):
+                    lesson_dir = st.session_state.get("lesson_dir")
+                    if lesson_dir:
+                        atomic_save_feedback(lesson_dir, updated_snapshot, st.session_state.get("live_feedback_windows"))
+                continue
+
+        # Live streaming handling
         if result.get("ok"):
             st.session_state.live_feedback[sentence_id] = {
                 "status": "ok",
                 "verdict": result["verdict"],
                 "label": result["label"],
                 "explanation": result["explanation"],
-                "rewrites": result["rewrites"],
+                "quoted_span": result["quoted_span"],
+                "replacement": result["replacement"],
             }
         else:
             _record_live_feedback_failure(sentence_id, result.get("error"))
+
+
+def dispatch_retrospective_queue():
+    """Submit pending/retrying sentences from the active retrospective snapshot."""
+    snapshot = st.session_state.get("retrospective_run")
+    if not snapshot or snapshot.get("is_complete"):
+        return
+    active_run_id = st.session_state.get("live_feedback_run_id")
+    if not active_run_id or snapshot.get("run_id") != active_run_id:
+        return
+    if not deepseek_api_key():
+        return
+
+    futures = st.session_state.live_feedback_futures
+    system_prompt = snapshot.get("system_prompt") or DEFAULT_LIVE_FEEDBACK_PROMPT
+    model = snapshot.get("model") or DEEPSEEK_LIVE_MODEL
+
+    for item in snapshot.get("items", []):
+        if len(futures) >= LIVE_FEEDBACK_MAX_INFLIGHT:
+            break
+        sentence_id = item["sentence_id"]
+        if sentence_id in futures:
+            continue
+        status = item.get("status")
+        if status in ("pending", "retry"):
+            payload = item["payload"]
+            futures[sentence_id] = LIVE_FEEDBACK_EXECUTOR.submit(
+                run_live_feedback_job, sentence_id, system_prompt, model, payload, active_run_id
+            )
+            st.session_state.live_feedback_calls += 1
+
+
+def trigger_reanalyse_all():
+    """Trigger sentence-by-sentence retrospective analysis of the current lesson."""
+    if st.session_state.lesson_state == "recording":
+        return
+    if not deepseek_api_key():
+        return
+
+    # Cancel any previous in-flight futures so executor workers are not saturated
+    for fut in list(st.session_state.get("live_feedback_futures", {}).values()):
+        try:
+            fut.cancel()
+        except Exception:
+            pass
+    st.session_state.live_feedback_futures = {}
+
+    words = collect_lesson_words()
+    if not words and st.session_state.get("lesson_dir"):
+        words = resolve_lesson_words(st.session_state.lesson_dir)
+        st.session_state.lesson_words = words
+    if not words:
+        return
+    turns = group_turns(words)
+    prompt = (st.session_state.get("live_feedback_prompt") or "").strip() or DEFAULT_LIVE_FEEDBACK_PROMPT
+    snapshot = create_retrospective_snapshot(
+        words=words,
+        turns=turns,
+        system_prompt=prompt,
+        model=DEEPSEEK_LIVE_MODEL,
+        max_calls=LIVE_FEEDBACK_MAX_CALLS_PER_LESSON,
+        source=LIVE_FEEDBACK_SOURCE,
+        min_words=LIVE_MIN_WORDS,
+        low_confidence_threshold=LIVE_LOW_CONFIDENCE,
+        source_labels=SOURCE_LABELS,
+    )
+    run_id = snapshot["run_id"]
+    st.session_state.retrospective_run = snapshot
+    st.session_state.live_feedback_run_id = run_id
+    st.session_state.live_feedback = dict(snapshot.get("feedback") or {})
+    st.session_state.live_feedback_windows = [[0.0, None]]
+    st.session_state.live_feedback_on = True
+    st.session_state.live_feedback_switch = True
+    st.session_state.live_feedback_was_on = True
+    st.session_state.live_feedback_calls = 0
+    st.session_state.live_feedback_errors = 0
+    dispatch_retrospective_queue()
 
 
 def live_feedback_is_on():
@@ -1903,8 +2030,12 @@ def dispatch_live_feedback(sentences, turns):
         cached = cache.get(sentence_id)
         if cached is not None and cached.get("status") != "retry":
             continue
-        # Exclude any sentence containing uncertain words from automatic ESL error feedback
-        if any(w.get("status") == "uncertain" for w in sentence.get("words", [])):
+        # Pending words are rechecked when Gladia settles them. Disputed words
+        # are permanently excluded from automatic feedback.
+        statuses = {w.get("status") for w in sentence.get("words", [])}
+        if "pending" in statuses:
+            continue
+        if "uncertain" in statuses:
             cache[sentence_id] = {"status": "skipped", "reason": "uncertain_asr"}
             continue
         if sentence["word_count"] < LIVE_MIN_WORDS:
@@ -1956,6 +2087,8 @@ def reset_live_feedback():
     st.session_state.live_feedback = {}
     st.session_state.live_feedback_futures = {}
     st.session_state.live_feedback_windows = []
+    st.session_state.live_feedback_run_id = None
+    st.session_state.retrospective_run = None
     # Cleared, not set from the switch: if the switch is still on, the next sync
     # opens a fresh window at the new lesson's zero.
     st.session_state.live_feedback_was_on = False
@@ -2004,6 +2137,8 @@ def init_session_state():
         "live_feedback_was_on": False,  # edge detector for the switch
         "live_feedback": {},            # sentence id -> cached result
         "live_feedback_futures": {},    # sentence id -> in-flight Future
+        "live_feedback_run_id": None,   # generation token for active run
+        "retrospective_run": None,      # immutable snapshot for retrospective prompt evaluation
         "live_feedback_calls": 0,
         "live_feedback_errors": 0,
     }
@@ -2295,8 +2430,12 @@ def _segment_html(segment):
         parts.append(f'<span class="fb-said">{html.escape(whole)}</span>')
     if segment.get("explanation"):
         parts.append(f'<span class="fb-exp">{html.escape(segment["explanation"])}</span>')
-    for rewrite in segment.get("rewrites") or []:
-        parts.append(f'<span class="fb-fix">{html.escape(rewrite)}</span>')
+    quoted_span = segment.get("quoted_span")
+    replacement = segment.get("replacement")
+    if quoted_span:
+        parts.append(f'<span class="fb-said">{html.escape(quoted_span)}</span>')
+    if replacement:
+        parts.append(f'<span class="fb-fix">{html.escape(replacement)}</span>')
     card = f'<span class="fb-card">{"".join(parts)}</span>'
     return (f'<span class="sent flagged">'
             f'<span class="sent-text">{text}</span>{card}</span> ')
@@ -2344,7 +2483,10 @@ def turn_segments(turn, word_to_sentence, sentences_by_id, feedback, in_flight):
                     "state": "flagged",
                     "label": entry.get("label"),
                     "explanation": entry.get("explanation"),
-                    "rewrites": entry.get("rewrites"),
+                    "quoted_span": entry.get("quoted_span"),
+                    "replacement": entry.get("replacement") or next(
+                        iter(entry.get("rewrites") or []), ""
+                    ),
                     "sentence": sentence.get("text"),
                 })
             else:
@@ -2507,7 +2649,10 @@ def _render_transcript_pane():
     boundary = (now_audio - LIVE_SETTLE_SECONDS
                 if st.session_state.lesson_state == "recording" else float("inf"))
     sentences = split_sentences(words, LIVE_FEEDBACK_SOURCE)
-    dispatch_live_feedback(settled_sentences(sentences, boundary), turns)
+    if st.session_state.get("retrospective_run") and not st.session_state.retrospective_run.get("is_complete"):
+        dispatch_retrospective_queue()
+    else:
+        dispatch_live_feedback(settled_sentences(sentences, boundary), turns)
     # Index EVERY sentence, not just the settled ones, or a sentence goes
     # unmarked for exactly the seconds it is in flight and the grey "being
     # checked" state is never seen - it appears already green or red.
@@ -2621,23 +2766,6 @@ def render_status_bar():
 # through the same pipeline: Deepgram for both speakers, Whisper for the
 # student, DeepSeek to reconcile them.
 # ---------------------------------------------------------------------------
-def load_lesson_feedback(lesson_dir):
-    """Cached live-feedback results, and the windows they were gathered in."""
-    try:
-        with open(os.path.join(lesson_dir, "live_feedback.json"), "r", encoding="utf-8") as f:
-            payload = json.load(f)
-    except Exception:
-        return {}, []
-    if not isinstance(payload, dict):
-        return {}, []
-    feedback = payload.get("feedback")
-    windows = payload.get("windows")
-    return (
-        feedback if isinstance(feedback, dict) else {},
-        [list(w) for w in windows if isinstance(w, (list, tuple))] if isinstance(windows, list) else [],
-    )
-
-
 def load_lesson_into_session(lesson_dir):
     """Open a past lesson: transcript on screen, audio ready to send.
 
@@ -2647,7 +2775,7 @@ def load_lesson_into_session(lesson_dir):
     """
     tracks = lesson_library.lesson_tracks(lesson_dir)
     words = load_lesson_words(lesson_dir)
-    feedback, windows = load_lesson_feedback(lesson_dir)
+    feedback, windows, snapshot = load_lesson_feedback(lesson_dir)
 
     end_all_streams()
     st.session_state.lesson_dir = lesson_dir
@@ -2674,7 +2802,14 @@ def load_lesson_into_session(lesson_dir):
 
     reset_live_feedback()
     st.session_state.live_feedback = feedback
-    st.session_state.live_feedback_windows = windows
+    st.session_state.live_feedback_windows = windows or ([[0.0, None]] if feedback else [])
+    if feedback:
+        st.session_state.live_feedback_on = True
+        st.session_state.live_feedback_switch = True
+        st.session_state.live_feedback_was_on = True
+    if snapshot:
+        st.session_state.retrospective_run = snapshot
+        st.session_state.live_feedback_run_id = snapshot.get("run_id")
     log_event(
         "lesson_loaded",
         lesson_dir=lesson_dir,
@@ -3221,7 +3356,7 @@ with st.expander("Live feedback prompt (editable)", expanded=False):
     st.caption(
         "System prompt for the live per-sentence check. The app parses the reply as "
         'JSON shaped {"verdict": "ok"|"issue", "label": ..., "explanation": ..., '
-        '"rewrites": [...]} — keep that contract or nothing will render. Saved to '
+        '"quoted_span": ..., "replacement": ...} — keep that contract or nothing will render. Saved to '
         f"{LIVE_FEEDBACK_PROMPT_PATH} and reused next time."
     )
     st.text_area(
@@ -3238,11 +3373,235 @@ with st.expander("Live feedback prompt (editable)", expanded=False):
             persist_live_feedback_prompt()
             st.rerun()
     with rerun_col:
-        if st.button("Re-analyse all", help="Clear cached results so the edited prompt is applied to sentences already checked."):
-            reset_live_feedback()
+        is_rec = st.session_state.lesson_state == "recording"
+        is_running = bool(st.session_state.get("live_feedback_futures")) or (
+            st.session_state.get("retrospective_run")
+            and not st.session_state.retrospective_run.get("is_complete")
+            and bool(st.session_state.get("live_feedback_run_id"))
+        )
+        has_key = bool(deepseek_api_key())
+        if st.button(
+            "⏳ Analysing..." if is_running else "Re-analyse all",
+            disabled=is_rec or is_running or not has_key,
+            help=(
+                "Disabled while recording is active."
+                if is_rec
+                else (
+                    "Analysis in progress..."
+                    if is_running
+                    else ("Needs DEEPSEEK_API_KEY." if not has_key else "Send all student sentences sentence-by-sentence to DeepSeek using the edited prompt (max 400).")
+                )
+            ),
+        ):
+            trigger_reanalyse_all()
             st.rerun()
     with model_col:
         st.caption(f"Model: `{DEEPSEEK_LIVE_MODEL}` (set DEEPSEEK_LIVE_MODEL to change)")
+
+
+def render_deepseek_inspection_window():
+    with st.expander("DeepSeek sentence-by-sentence feedback & inspection", expanded=False):
+        words = collect_lesson_words()
+        if not words and st.session_state.get("lesson_dir"):
+            words = resolve_lesson_words(st.session_state.lesson_dir)
+
+        snapshot = st.session_state.get("retrospective_run")
+        if not snapshot and words:
+            turns = group_turns(words)
+            prompt = (st.session_state.get("live_feedback_prompt") or "").strip() or DEFAULT_LIVE_FEEDBACK_PROMPT
+            snapshot = create_retrospective_snapshot(
+                words=words,
+                turns=turns,
+                system_prompt=prompt,
+                model=DEEPSEEK_LIVE_MODEL,
+                max_calls=None,
+                source=LIVE_FEEDBACK_SOURCE,
+                min_words=LIVE_MIN_WORDS,
+                low_confidence_threshold=LIVE_LOW_CONFIDENCE,
+                source_labels=SOURCE_LABELS,
+            )
+            cached_fb = st.session_state.get("live_feedback") or {}
+            if cached_fb:
+                for item in snapshot["items"]:
+                    sid = item["sentence_id"]
+                    if sid in cached_fb:
+                        fb = cached_fb[sid]
+                        status = fb.get("status")
+                        if status == "ok":
+                            item["status"] = fb.get("verdict", "ok")
+                            item["result"] = fb
+                        elif status == "skipped":
+                            item["status"] = "skipped"
+                            item["result"] = fb
+                        elif status == "error":
+                            item["status"] = "error"
+                            item["result"] = fb
+                            item["error"] = fb.get("error")
+                        elif status == "retry":
+                            item["status"] = "retry"
+                            item["result"] = fb
+                snapshot["feedback"] = dict(cached_fb)
+
+        if not snapshot or not snapshot.get("items"):
+            st.caption("No student sentences available in the current lesson.")
+            return
+
+        btn_col, stat_col = st.columns([2, 5])
+        with btn_col:
+            is_recording = st.session_state.lesson_state == "recording"
+            is_running = bool(st.session_state.get("live_feedback_futures")) or (
+                snapshot and not snapshot.get("is_complete") and bool(st.session_state.get("live_feedback_run_id"))
+            )
+            has_key = bool(deepseek_api_key())
+            if st.button(
+                "⏳ Analysing..." if is_running else "🔄 Re-analyse all sentences",
+                disabled=is_recording or is_running or not has_key,
+                help=(
+                    "Disabled during recording"
+                    if is_recording
+                    else ("Needs DEEPSEEK_API_KEY" if not has_key else "Run sentence-by-sentence analysis with DeepSeek on this lesson.")
+                ),
+                key="btn_reanalyse_inspection",
+            ):
+                trigger_reanalyse_all()
+                st.rerun()
+
+        with stat_col:
+            items = snapshot.get("items", [])
+            total = len(items)
+            issues = sum(1 for it in items if it.get("status") == "issue")
+            clean = sum(1 for it in items if it.get("status") == "ok")
+            skipped = sum(1 for it in items if it.get("status") == "skipped")
+            pending = sum(1 for it in items if it.get("status") in ("pending", "retry"))
+            errors = sum(1 for it in items if it.get("status") in ("error", "failed"))
+            omitted = sum(1 for it in items if it.get("status") == "omitted_cap")
+
+            metric_parts = [
+                f"**Total**: {total}",
+                f'<span style="color:#d9381e; font-weight:600;">Issues: {issues}</span>' if issues else "Issues: 0",
+                f'<span style="color:#1b7f3b; font-weight:600;">Clean: {clean}</span>' if clean else "Clean: 0",
+                f"Skipped: {skipped}" if skipped else None,
+                f'<span style="color:#005fb8; font-weight:600;">Pending: {pending}</span>' if pending else None,
+                f'<span style="color:#b00020; font-weight:600;">Failed: {errors}</span>' if errors else None,
+                f"Capped: {omitted}" if omitted else None,
+            ]
+            st.markdown(" · ".join(p for p in metric_parts if p is not None), unsafe_allow_html=True)
+
+        st.markdown("---")
+        st.markdown("#### Export for Advisor Agent")
+        exp_col1, exp_col2 = st.columns([1, 1])
+        with exp_col1:
+            st.download_button(
+                "📥 Download Markdown Log",
+                data=format_inspection_markdown(snapshot),
+                file_name=f"deepseek_sentences_{snapshot.get('run_id', 'export')}.md",
+                mime="text/markdown",
+                key="dl_inspection_md",
+            )
+        with exp_col2:
+            st.download_button(
+                "📥 Download JSON Export",
+                data=format_inspection_json(snapshot),
+                file_name=f"deepseek_sentences_{snapshot.get('run_id', 'export')}.json",
+                mime="application/json",
+                key="dl_inspection_json",
+            )
+
+        with st.expander("📋 Copyable Markdown log for prompting review", expanded=False):
+            st.text_area(
+                "Markdown Log",
+                value=format_inspection_markdown(snapshot),
+                height=220,
+                key="txt_inspection_md",
+            )
+
+        st.markdown("---")
+        st.markdown("#### Sentence Breakdown")
+
+        filter_choice = st.radio(
+            "Filter sentences",
+            ["All", "Issues only", "Clean only", "Skipped only", "Errors only"],
+            horizontal=True,
+            key="inspection_filter",
+        )
+
+        filtered_items = []
+        for it in items:
+            st_val = it.get("status")
+            if filter_choice == "Issues only" and st_val != "issue":
+                continue
+            if filter_choice == "Clean only" and st_val != "ok":
+                continue
+            if filter_choice == "Skipped only" and st_val != "skipped":
+                continue
+            if filter_choice == "Errors only" and st_val not in ("error", "failed"):
+                continue
+            filtered_items.append(it)
+
+        if not filtered_items:
+            st.caption(f"No sentences match the filter '{filter_choice}'.")
+
+        for it in filtered_items:
+            idx = it.get("index")
+            start = it.get("start", 0.0)
+            mins = int(start // 60)
+            secs = int(start % 60)
+            clock = f"{mins:02d}:{secs:02d}"
+            text = it.get("text", "")
+            status = it.get("status", "unknown")
+            payload = it.get("payload") or {}
+            context = payload.get("context") or []
+            uncertain = payload.get("uncertain_words") or []
+            res = it.get("result") or {}
+
+            if status == "issue":
+                badge = f'<span style="background-color:#ffebe9; color:#cf222e; padding:2px 8px; border-radius:12px; font-weight:600; font-size:12px; border:1px solid #ff818266;">ISSUE: {html.escape(res.get("label", "Grammar issue"))}</span>'
+            elif status == "ok":
+                badge = '<span style="background-color:#dafbe1; color:#1a7f37; padding:2px 8px; border-radius:12px; font-weight:600; font-size:12px; border:1px solid #4ac26b66;">CLEAN</span>'
+            elif status == "skipped":
+                reason = res.get("reason", "too short")
+                badge = f'<span style="background-color:#f6f8fa; color:#57606a; padding:2px 8px; border-radius:12px; font-size:12px; border:1px solid #d0d7de;">SKIPPED ({html.escape(reason)})</span>'
+            elif status in ("pending", "retry"):
+                badge = f'<span style="background-color:#ddf4ff; color:#0969da; padding:2px 8px; border-radius:12px; font-size:12px; border:1px solid #54aeff66;">IN PROGRESS (attempt {it.get("attempts", 0)})</span>'
+            else:
+                badge = f'<span style="background-color:#ffebe9; color:#cf222e; padding:2px 8px; border-radius:12px; font-size:12px;">FAILED</span>'
+
+            with st.container():
+                st.markdown(
+                    f"**#{idx}** `[{clock}]` {badge} &nbsp; **\"{html.escape(text)}\"**",
+                    unsafe_allow_html=True,
+                )
+                if status == "issue":
+                    card_bits = []
+                    quoted = res.get("quoted_span")
+                    repl = res.get("replacement")
+                    expl = res.get("explanation")
+                    if quoted and repl:
+                        card_bits.append(f"**Correction**: <span style=\"color:#cf222e; text-decoration:line-through;\">{html.escape(quoted)}</span> &rarr; <span style=\"color:#1a7f37; font-weight:600;\">{html.escape(repl)}</span>")
+                    if expl:
+                        card_bits.append(f"**Explanation**: *{html.escape(expl)}*")
+                    st.markdown("<br>".join(card_bits), unsafe_allow_html=True)
+                elif status in ("error", "failed"):
+                    st.caption(f"Error: {it.get('error') or res.get('error')}")
+
+                if context:
+                    ctx_str = " | ".join(f"**{html.escape(c.get('speaker', 'Teacher'))}**: {html.escape(c.get('text', ''))}" for c in context)
+                    st.caption(f"Context: {ctx_str}")
+                if uncertain:
+                    st.caption(f"Uncertain ASR words: {', '.join(uncertain)}")
+
+                with st.expander("Show sent payload & model response", expanded=False):
+                    p_col, r_col = st.columns([1, 1])
+                    with p_col:
+                        st.caption("Payload sent to DeepSeek:")
+                        st.json(payload)
+                    with r_col:
+                        st.caption("DeepSeek response:")
+                        st.json(res if res else {"status": status, "error": it.get("error")})
+                st.markdown("<div style='margin-bottom:8px; border-bottom:1px solid #ececec;'></div>", unsafe_allow_html=True)
+
+
+render_deepseek_inspection_window()
 
 # Keep polling while a background job is running so completion is detected
 # without user interaction. st.rerun() preserves session_state.
@@ -3250,6 +3609,12 @@ if (
     st.session_state.replicate_future is not None
     or st.session_state.synthesis_future is not None
     or st.session_state.deepgram_batch_future is not None
+    or bool(st.session_state.live_feedback_futures)
+    or (
+        st.session_state.get("retrospective_run")
+        and not st.session_state.retrospective_run.get("is_complete")
+        and bool(st.session_state.get("live_feedback_run_id"))
+    )
 ):
-    time.sleep(2)
+    time.sleep(1)
     st.rerun()
