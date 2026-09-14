@@ -1,128 +1,64 @@
 site:
-  brand: Jonathan Cole — English Coaching
-  email: hello@example.com
+  brand: "Jonathan Cole | English Teacher"
+  email: "hello@example.com"
+  tagline: "English lessons for work, IELTS and real-world communication."
+  copyright_year: "2026"
 
 hero:
-  title: English Coaching for Engineers and STEM Professionals
-  description: Data-driven speaking improvement for interviews, business communication and IELTS.
-  positioning_line: For working professionals and university-educated learners.
-  button_text: Book a Free Consultation
-  button_href: mailto:hello@example.com?subject=Free%20Consultation
+  title: "English lessons for work, IELTS and real-world communication"
+  description: "Practical, conversation-based lessons for adults who want to improve their English. Build fluency, communicate more clearly, and focus on the English you actually need."
+  button_text: "Book a trial lesson"
+  button_href: "/book-a-trial-lesson/"
 
-authority:
-  heading: Engineering background. Certified instruction.
-  intro: Former electronics engineer with seven years in design. Graduate diploma in TESOL. Certified by IDP IELTS Australia. Coaching is built for STEM and business professionals who need precise, performance-focused speaking improvement.
+audience:
+  heading: "Who I work with"
   items:
-    - icon: ⚙️
-      title: Engineering foundation
-      body: Professional technical background, then transition to language coaching.
-    - icon: 🎓
-      title: TESOL qualification
-      body: Graduate diploma training for applied language instruction.
-    - icon: ✅
-      title: IELTS certification
-      body: IDP IELTS Australia certified for score-focused speaking preparation.
+    - "Professionals who use English at work"
+    - "Adults preparing for IELTS"
+    - "Learners who want to speak more confidently"
+
+help_with:
+  heading: "What I can help with"
+  items:
+    - "Business English"
+    - "IELTS"
+    - "Conversation"
+    - "Technical English"
+
+how_it_works:
+  heading: "How lessons work"
+  steps:
+    - title: "Start with your goals"
+      body: "We discuss what you use English for, what you want to improve, and what is currently getting in the way."
+    - title: "Spend the lesson using English"
+      body: "You'll speak, discuss ideas, answer questions and practise situations relevant to you."
+    - title: "Focus your next steps"
+      body: "We identify what will help you most and decide what to work on next."
+
+why_work_with_me:
+  heading: "Why work with me"
+  body: "Before becoming an English teacher, I worked as an electronics engineer. That experience helps me understand the communication challenges professionals face when explaining technical ideas, working with international colleagues and using English at work."
+
+qualifications:
+  heading: "Qualifications"
+  items:
+    - "Over six years teaching experience"
+    - "Graduate Certificate in TESOL"
+    - "IELTS teacher training from IDP"
+    - "Bachelor's degrees in electronics and mathematics"
+    - "Former electronics engineer"
 
 videos:
-  heading: IELTS session previews
-  intro: See how IELTS speaking sessions are structured.
+  heading: "IELTS session previews"
+  intro: "See how IELTS speaking sessions are structured."
   items:
-    - title: IELTS Part 1 response coaching sample
-      embed_url: https://www.youtube.com/embed/xlOjvHWKun8
-    - title: IELTS Part 2 and Part 3 feedback sample
-      embed_url: https://www.youtube.com/embed/INZqQwQUPJ4
-
-method:
-  heading: Evidence-based, data-driven coaching
-  intro: Lessons use communicative simulation, targeted correction, and error-pattern tracking to focus each session on highest-impact gains.
-  items:
-    - icon: 🧪
-      title: Diagnostic baseline
-      body: Identify high-impact breakdowns before practice.
-    - icon: 📈
-      title: Pattern tracking
-      body: Log recurring errors and monitor progress over time.
-    - icon: 🎯
-      title: Targeted intervention
-      body: Prioritize drills that improve performance fastest.
-
-work:
-  heading: What we work on
-  intro: Priority speaking outcomes for interviews, workplace communication, and IELTS.
-  items:
-    - icon: 🎯
-      title: Interview English
-      body: Structured, concise, high-confidence answers.
-    - icon: 📊
-      title: Business Communication
-      body: Clear updates, persuasive meetings, effective delivery.
-    - icon: 🧪
-      title: IELTS Speaking
-      body: Band-focused scoring criteria and targeted drills.
-    - icon: 🔊
-      title: Pronunciation
-      body: Intonation, rhythm and stress for professional delivery.
-    - icon: ✍️
-      title: Grammar Correction
-      body: Eliminate persistent performance-limiting errors.
-
-process:
-  heading: How it works
-  intro: A focused three-step system for steady speaking improvement.
-  steps:
-    - title: Diagnose current performance
-      body: Map strengths and priority gaps quickly.
-    - title: Practice in real scenarios
-      body: Train with interview, meeting, and IELTS simulations.
-    - title: Apply targeted corrections
-      body: Use direct feedback with clear next actions.
+    - title: "Video 1: IELTS Part 1 session"
+      embed_url: "https://www.youtube.com/embed/xlOjvHWKun8"
+    - title: "Video 2: IELTS Part 2 and Part 3 session"
+      embed_url: "https://www.youtube.com/embed/INZqQwQUPJ4"
 
 final_cta:
-  heading: Book a free 20 minute consultation.
-  description: Get a clear plan for your next speaking improvement cycle.
-  button_text: Book Your Free 20 Minute Consultation
-  button_href: mailto:hello@example.com?subject=Free%2020%20Minute%20Consultation
-
-testimonials:
-  heading: Client feedback themes
-  intro: Reported outcomes from professional learners.
-  items:
-    - quote: I became much clearer in meetings and no longer lose my point mid-sentence.
-      meta: Engineering manager
-    - quote: My interview answers became structured and confident instead of improvised.
-      meta: Software engineer
-    - quote: Pronunciation feedback was specific, practical, and immediately usable.
-      meta: Product analyst
-    - quote: IELTS speaking practice felt realistic and helped me stay fluent under pressure.
-      meta: IELTS candidate
-
-qualifications_page:
-  heading: Qualifications and professional background
-  description: Credentials and experience for professional speaking coaching.
-  highlights:
-    - title: Engineering foundation
-      body: Former electronics engineer with seven years in design.
-    - title: TESOL training
-      body: Graduate diploma in TESOL focused on adult professional learners.
-    - title: IELTS certification
-      body: Certified by IDP IELTS Australia for band-focused speaking preparation.
-    - title: Professional coaching focus
-      body: Structured coaching for engineers and business professionals in interviews, meetings, and IELTS speaking.
-
-methodology_page:
-  heading: Teaching methodology
-  description: A clear framework for controlled speaking improvement.
-  principles:
-    - title: Diagnose before practice
-      body: Identify recurring errors in grammar, pronunciation, and response structure first.
-    - title: Train in real scenarios
-      body: Use interview, workplace, and IELTS speaking simulations instead of isolated drills.
-    - title: Track and apply feedback
-      body: Convert corrections into clear next actions and measurable session targets.
-  session_flow:
-    - title: Baseline check
-      body: Capture a short sample to map strengths and high-impact gaps.
-    - title: Guided practice
-      body: Complete controlled and open speaking tasks aligned to your goals.
-    - title: Performance review
-      body: Review corrections, log progress, and set focused practice priorities.
+  heading: "Book a trial lesson and tell me what you use English for."
+  description: "We'll discuss your goals, work out your current level, and make a clear plan for what to do next."
+  button_text: "Book a trial lesson"
+  button_href: "/book-a-trial-lesson/"

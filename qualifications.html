@@ -1,43 +1,20 @@
 ---
 layout: default
-title: Qualifications
+title: Redirecting...
 permalink: /qualifications/
 ---
 
-<section class="section hero site-bg-noise">
-  <div class="container">
-    <div class="page-hero-shell">
-      <h1>{{ site.data.home.qualifications_page.heading }}</h1>
-      <p>{{ site.data.home.qualifications_page.description }}</p>
-    </div>
-  </div>
-</section>
+<script>
+  window.location.replace("{{ '/about/' | relative_url }}");
+</script>
+<meta http-equiv="refresh" content="0; url={{ '/about/' | relative_url }}">
+<link rel="canonical" href="{{ '/about/' | absolute_url }}">
 
 <section class="section section-light">
-  <div class="container">
-    <div class="page-grid">
-      {% for item in site.data.home.qualifications_page.highlights %}
-      <article class="page-card">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.body }}</p>
-      </article>
-      {% endfor %}
-    </div>
-  </div>
-</section>
-
-<section class="section section-contrast">
-  <div class="container">
-    <h2>{{ site.data.home.authority.heading }}</h2>
-    <p class="section-intro">{{ site.data.home.authority.intro }}</p>
-    <div class="credibility-grid" style="margin-top:18px;">
-      {% for item in site.data.home.authority.items %}
-      <article class="credibility-card">
-        <div class="icon-chip" aria-hidden="true">{{ item.icon }}</div>
-        <strong>{{ item.title }}</strong>
-        <p>{{ item.body }}</p>
-      </article>
-      {% endfor %}
-    </div>
+  <div class="container" style="text-align: center; padding: 60px 0;">
+    <h2>Redirecting to About</h2>
+    <p style="margin-top: 16px;">
+      If you are not redirected automatically, please <a class="btn-primary" href="{{ '/about/' | relative_url }}">click here</a>.
+    </p>
   </div>
 </section>
