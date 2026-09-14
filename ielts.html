@@ -1,0 +1,78 @@
+---
+layout: default
+title: IELTS Preparation
+permalink: /ielts/
+---
+
+<section class="section hero site-bg-noise">
+  <div class="container">
+    <div class="page-hero-shell">
+      <h1>IELTS Preparation</h1>
+      <p>Practical preparation focused on the criteria that affect your score.</p>
+      <div class="hero-actions" style="margin-top:24px;">
+        <a class="btn-primary" href="{{ '/book-a-trial-lesson/' | relative_url }}">Book a trial lesson</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container">
+    <h2>What we work on</h2>
+    <div class="page-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      <article class="page-card">
+        <h3>Fluency and coherence</h3>
+      </article>
+      <article class="page-card">
+        <h3>Vocabulary</h3>
+      </article>
+      <article class="page-card">
+        <h3>Grammar</h3>
+      </article>
+      <article class="page-card">
+        <h3>Pronunciation</h3>
+      </article>
+      <article class="page-card">
+        <h3>Developing and organising answers</h3>
+      </article>
+      <article class="page-card">
+        <h3>Responding under time pressure</h3>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-contrast">
+  <div class="container">
+    <h2>How I can help</h2>
+    <div class="page-card" style="max-width: 820px;">
+      <p style="font-size: clamp(17px, 1.2vw, 19px); line-height: 1.8;">
+        I've completed IDP's IELTS teacher training, so I can explain the assessment criteria and help you identify which ones are currently limiting your score. Lessons focus on the skills that will make the biggest difference to your performance.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container">
+    <h2>Session previews</h2>
+    <p class="section-intro">See how IELTS speaking sessions are structured.</p>
+    <div class="video-grid">
+      {% for item in site.data.home.videos.items %}
+      <div class="video-card">
+        <h3>{{ item.title }}</h3>
+        <iframe class="video-frame" src="{{ item.embed_url }}" title="{{ item.title }}" allowfullscreen loading="lazy"></iframe>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section cta-final">
+  <div class="container final-cta-inner">
+    <h2>Book a trial lesson and tell me what you use English for.</h2>
+    <p>We'll discuss your goals, work out your current level, and make a clear plan for what to do next.</p>
+    <a class="btn-primary" href="{{ '/book-a-trial-lesson/' | relative_url }}">Book a trial lesson</a>
+    <p class="final-email">Email: <a href="mailto:{{ site.data.home.site.email }}">{{ site.data.home.site.email }}</a></p>
+  </div>
+</section>

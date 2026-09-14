@@ -1,0 +1,60 @@
+---
+layout: default
+title: About
+permalink: /about/
+---
+
+<section class="section hero site-bg-noise">
+  <div class="container">
+    <div class="page-hero-shell">
+      <h1>Hi, I'm Jonathan.</h1>
+      <p>I'm an English teacher with over six years of experience. I work mainly with adult professionals and IELTS candidates.</p>
+      <p style="margin-top:14px;">Before becoming an English teacher, I worked as an electronics engineer. That experience helps me understand the communication challenges professionals face, especially when discussing technical subjects or working with international colleagues.</p>
+      <div class="hero-actions" style="margin-top:24px;">
+        <a class="btn-primary" href="{{ '/book-a-trial-lesson/' | relative_url }}">Book a trial lesson</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-light">
+  <div class="container">
+    <h2>My teaching approach</h2>
+    <div class="page-grid" style="grid-template-columns: 1fr;">
+      <article class="page-card">
+        <p style="font-size: clamp(17px, 1.2vw, 19px); line-height: 1.8; margin-top: 0;">
+          I don't believe every student needs the same lesson. We start with your goals, identify what will make the biggest difference, and build practice around that.
+        </p>
+        <p style="font-size: clamp(17px, 1.2vw, 19px); line-height: 1.8;">
+          You'll spend the lesson using English rather than talking about it. We'll identify what will help you most and decide what to focus on next.
+        </p>
+        <p style="font-size: clamp(17px, 1.2vw, 19px); line-height: 1.8;">
+          You don't need to improve everything at once. The goal is steady progress in the areas that matter most.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section section-contrast">
+  <div class="container">
+    <h2>Qualifications</h2>
+    <div class="page-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+      {% for item in site.data.home.qualifications.items %}
+      <article class="page-card">
+        <div class="icon-chip" aria-hidden="true">&#x2713;</div>
+        <h3 style="font-size: 18px;">{{ item }}</h3>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section cta-final">
+  <div class="container final-cta-inner">
+    <h2>Book a trial lesson and tell me what you use English for.</h2>
+    <p>We'll discuss your goals, work out your current level, and make a clear plan for what to do next.</p>
+    <a class="btn-primary" href="{{ '/book-a-trial-lesson/' | relative_url }}">Book a trial lesson</a>
+    <p class="final-email">Email: <a href="mailto:{{ site.data.home.site.email }}">{{ site.data.home.site.email }}</a></p>
+  </div>
+</section>
