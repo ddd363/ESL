@@ -17,15 +17,24 @@ audience:
     - "Adults preparing for IELTS"
     - "Learners who want to speak more confidently"
 
-help_with:
-  heading: "What I can help with"
-  items:
-    - "Business English"
-    - "IELTS"
-    - "Conversation"
-    - "Technical English"
+english_for_professionals:
+  heading: "English for Professionals"
+  body:
+    - "If you use English at work, lessons can focus on the communication skills you need in your professional life."
+    - "We can work on meetings, presentations, discussions, explaining complex ideas, working with international colleagues, and other situations where you need to communicate clearly and effectively."
+    - "My background in electronics engineering also helps me understand the communication challenges professionals face when discussing technical subjects."
+  link_text: "Learn more about English for Professionals"
+  link_href: "/english-for-professionals/"
 
-how_it_works:
+ielts:
+  heading: "IELTS"
+  body:
+    - "Prepare for IELTS with practical lessons focused on the skills that matter for your performance."
+    - "I've completed IDP's IELTS teacher training and can explain the assessment criteria and help you work on the areas that are most important for your goals."
+  link_text: "Learn more about IELTS"
+  link_href: "/ielts/"
+
+how_lessons_work:
   heading: "How lessons work"
   steps:
     - title: "Start with your goals"
@@ -35,9 +44,17 @@ how_it_works:
     - title: "Focus your next steps"
       body: "We identify what will help you most and decide what to work on next."
 
-why_work_with_me:
-  heading: "Why work with me"
-  body: "Before becoming an English teacher, I worked as an electronics engineer. That experience helps me understand the communication challenges professionals face when explaining technical ideas, working with international colleagues and using English at work."
+about_me:
+  heading: "About me"
+  body:
+    - "I'm an English teacher with over six years of experience. I work mainly with adult professionals and IELTS candidates."
+    - "Before becoming an English teacher, I worked as an electronics engineer. That experience helps me understand the communication challenges professionals face, especially when discussing technical subjects or working with international colleagues."
+  link_text: "Learn more about me"
+  link_href: "/about/"
+
+video:
+  heading: "Video"
+  placeholder: "[Jonathan's introduction video]"
 
 qualifications:
   heading: "Qualifications"
@@ -47,15 +64,6 @@ qualifications:
     - "IELTS teacher training from IDP"
     - "Bachelor's degrees in electronics and mathematics"
     - "Former electronics engineer"
-
-videos:
-  heading: "IELTS session previews"
-  intro: "See how IELTS speaking sessions are structured."
-  items:
-    - title: "Video 1: IELTS Part 1 session"
-      embed_url: "https://www.youtube.com/embed/xlOjvHWKun8"
-    - title: "Video 2: IELTS Part 2 and Part 3 session"
-      embed_url: "https://www.youtube.com/embed/INZqQwQUPJ4"
 
 final_cta:
   heading: "Book a trial lesson and tell me what you use English for."
