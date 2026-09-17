@@ -5,6 +5,31 @@ timestamped transcript that autosaves during class, and an optional
 post-lesson high-accuracy pass through Replicate (whisper-diarization).
 """
 
+import os
+import sys
+
+def _load_env_files():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    for name in (".env.project1.local", ".env.local", ".env"):
+        p = os.path.join(base_dir, name)
+        if not os.path.isfile(p):
+            continue
+        try:
+            with open(p, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line or line.startswith("#") or "=" not in line:
+                        continue
+                    k, v = line.split("=", 1)
+                    k = k.strip()
+                    v = v.strip().strip("'\"")
+                    if k and k not in os.environ:
+                        os.environ[k] = v
+        except Exception:
+            pass
+
+_load_env_files()
+
 import base64
 import collections
 import concurrent.futures
@@ -12,18 +37,28 @@ import hashlib
 import html
 import json
 import math
-import os
-import sys
 import threading
 import time
 import urllib.parse
+import urllib.request
 from datetime import datetime, timezone
 from time import perf_counter
-
-import httpx
-import replicate
-import streamlit as st
-import streamlit.components.v1 as components
+try:
+    import httpx
+except ImportError:
+    httpx = None
+try:
+    import replicate
+except ImportError:
+    replicate = None
+try:
+    import streamlit as st
+    import streamlit.components.v1 as components
+    _HAS_STREAMLIT = True
+except ImportError:
+    st = None
+    components = None
+    _HAS_STREAMLIT = False
 
 import lesson_audio
 import lesson_library
@@ -38,6 +73,8 @@ from feedback_retrospective import (
     merge_retrospective_result,
     resolve_lesson_words,
 )
+from assemblyai_stream import AssemblyAIStreamingClient
+from deepgram_stream import DeepgramStreamingClient
 from gladia_stream import GladiaStreamingClient
 from live_consensus import build_consensus_words, normalize_token
 from live_sentences import (
@@ -50,11 +87,12 @@ from live_sentences import (
     update_feedback_windows,
 )
 
-st.set_page_config(
-    page_title="Lesson Transcriber",
-    layout="wide",
-    initial_sidebar_state="collapsed",
-)
+if _HAS_STREAMLIT and st:
+    st.set_page_config(
+        page_title="Lesson Transcriber",
+        layout="wide",
+        initial_sidebar_state="collapsed",
+    )
 
 try:
     import websocket
@@ -65,7 +103,7 @@ except Exception:
 # Configuration
 # ---------------------------------------------------------------------------
 AUDIO_DIR = "audio"
-APP_EVENT_LOG = os.environ.get("ESL_EVENT_LOG", "/tmp/esl_app_events.log")
+APP_EVENT_LOG = os.environ.get("ESL_EVENT_LOG", os.path.join(AUDIO_DIR, "events.log"))
 LEGACY_AUDIO_EXTS = {".wav", ".m4a"}
 LESSON_AUDIO_EXTS = lesson_library.LESSON_AUDIO_EXTS
 SOURCE_LABELS = {"student": "Student", "teacher": "Teacher"}
@@ -101,16 +139,23 @@ DEEPGRAM_DEFAULT_LANGUAGE = os.environ.get("DEEPGRAM_LANGUAGE", "en")
 DEEPGRAM_KEYTERMS = tuple(
     term.strip() for term in os.environ.get("DEEPGRAM_KEYTERMS", "").split(",") if term.strip()
 )
-DEEPGRAM_SMART_FORMAT = os.environ.get("DEEPGRAM_SMART_FORMAT", "true").lower() == "true"
+DEEPGRAM_SMART_FORMAT = os.environ.get("DEEPGRAM_SMART_FORMAT", "false").lower() == "true"
+DEEPGRAM_FILLER_WORDS = os.environ.get("DEEPGRAM_FILLER_WORDS", "true").lower() == "true"
+DEEPGRAM_ENDPOINTING_MS = int(os.environ.get("DEEPGRAM_ENDPOINTING_MS", "400"))
 
 GLADIA_RESTART_MIN_INTERVAL_S = 1.0
 GLADIA_SEND_STALL_S = 4.0
 
+ASSEMBLYAI_RESTART_MIN_INTERVAL_S = 1.0
+ASSEMBLYAI_SEND_STALL_S = 4.0
+
 RECORDER_COMPONENT_DIR = os.path.join(
     os.path.dirname(__file__), "components", "audio_recorder"
 )
-audio_recorder_component = components.declare_component(
-    "audio_recorder", path=RECORDER_COMPONENT_DIR
+audio_recorder_component = (
+    components.declare_component("audio_recorder", path=RECORDER_COMPONENT_DIR)
+    if components is not None
+    else None
 )
 BACKGROUND_EXECUTOR = concurrent.futures.ThreadPoolExecutor(max_workers=2)
 # Lives in live_runtime so it survives a rerun; app.py's module body re-executes
@@ -162,6 +207,8 @@ class DeepgramStreamingClient:
         language=DEEPGRAM_DEFAULT_LANGUAGE,
         keyterms=DEEPGRAM_KEYTERMS,
         smart_format=DEEPGRAM_SMART_FORMAT,
+        filler_words=DEEPGRAM_FILLER_WORDS,
+        endpointing=DEEPGRAM_ENDPOINTING_MS,
     ):
         self.api_key = api_key
         self.sample_rate = int(sample_rate) if sample_rate else 16000
@@ -169,28 +216,28 @@ class DeepgramStreamingClient:
         self.language = language
         self.keyterms = tuple(keyterms)
         self.smart_format = bool(smart_format)
+        self.filler_words = bool(filler_words)
+        self.endpointing = int(endpointing)
         self.ws = None
         self.thread = None
         self.keepalive_thread = None
         self.stop_event = threading.Event()
         self.connected_event = threading.Event()
         self.lock = threading.Lock()
+        self.pending_chunks = collections.deque(maxlen=600)
+        self.queue_lock = threading.Lock()
+        self.queue_event = threading.Event()
         self.started_at = perf_counter()
         self.last_audio_sent_at = self.started_at
         self.disconnected_since = None
         self.final_words = []
         self.interim_text = ""
         self.error = None
-        # Audio waiting to go out. The script thread only ever appends here;
-        # a sender thread owns the socket. See send_pcm16.
-        self.pending_chunks = collections.deque(maxlen=40)
-        self.queue_lock = threading.Lock()
-        self.queue_event = threading.Event()
-        self.sender_thread = None
-        self.bytes_enqueued_total = 0
         self.send_in_flight_since = None
         self.bytes_sent_total = 0
+        self.bytes_enqueued_total = 0
         self.chunks_received = 0
+        self.sender_thread = None
         self.transcript_events_received = 0
         # Signalled when Deepgram delivers the first is_final=True frame after
         # CloseStream is sent, confirming all final transcripts have arrived.
@@ -206,6 +253,8 @@ class DeepgramStreamingClient:
             ("interim_results", "true"),
             ("punctuate", "true"),
             ("smart_format", str(self.smart_format).lower()),
+            ("filler_words", str(self.filler_words).lower()),
+            ("endpointing", str(self.endpointing)),
         ]
         params.extend(("keyterm", term) for term in self.keyterms)
         return "wss://api.deepgram.com/v1/listen?" + urllib.parse.urlencode(params)
@@ -287,6 +336,7 @@ class DeepgramStreamingClient:
             return
         self.transcript_events_received += 1
         is_final = bool(payload.get("is_final"))
+        speech_final = bool(payload.get("speech_final"))
         if is_final:
             self.final_flush_event.set()
         alternatives = (payload.get("channel") or {}).get("alternatives") or []
@@ -307,6 +357,8 @@ class DeepgramStreamingClient:
                     "start": item.get("start"),
                     "end": item.get("end"),
                     "confidence": item.get("confidence"),
+                    "is_final": True,
+                    "speech_final": speech_final,
                 })
             with self.lock:
                 if records:
@@ -601,6 +653,75 @@ def restart_dead_gladia_stream(source, sample_rate):
     start_gladia_stream(source, sample_rate)
 
 
+def start_assemblyai_stream(source, sample_rate):
+    api_key = os.environ.get("ASSEMBLYAI_API_KEY")
+    if not api_key:
+        return
+    streamers = st.session_state.setdefault("assemblyai_streamers", {})
+    existing = streamers.get(source)
+    if existing and (existing.is_active or existing.is_connecting):
+        return
+    if existing:
+        _retire_assemblyai_streamer(source, existing, block=False)
+    try:
+        streamer = AssemblyAIStreamingClient(
+            api_key=api_key, sample_rate=sample_rate or 16000, on_event=log_event
+        )
+        streamer.start()
+        streamers[source] = streamer
+        st.session_state.setdefault("assemblyai_source_offsets", {}).setdefault(source, 0.0)
+        st.session_state.assemblyai_last_restart_at = perf_counter()
+        log_event("assemblyai_stream_start", source=source, sample_rate=sample_rate)
+    except Exception as e:
+        streamers.pop(source, None)
+        log_event("assemblyai_stream_start_error", source=source, error=str(e))
+
+
+def _retire_assemblyai_streamer(source, streamer, block=True):
+    """Persist a retired AssemblyAI stream without mutating Streamlit state off-thread."""
+    def _store_snapshot():
+        snap = streamer.snapshot()
+        offsets = st.session_state.setdefault("assemblyai_source_offsets", {})
+        offset = offsets.get(source, 0.0)
+        for word in snap["final_words"]:
+            st.session_state.setdefault("lesson_words_assemblyai", []).append({
+                "source": source,
+                "word": word["word"],
+                "start": (word.get("start") or 0.0) + offset,
+                "end": (word.get("end") or 0.0) + offset,
+                "confidence": word.get("confidence"),
+                "is_final": word.get("is_final", True),
+                "word_is_final": word.get("word_is_final", True),
+                "turn_order": word.get("turn_order"),
+            })
+        offsets[source] = offset + streamer.audio_seconds_sent()
+
+    if not block:
+        _store_snapshot()
+        threading.Thread(target=lambda: streamer.close(), daemon=True,
+                         name=f"assemblyai-close-{source}").start()
+        return
+
+    try:
+        streamer.close()
+    except Exception:
+        pass
+    _store_snapshot()
+
+
+def restart_dead_assemblyai_stream(source, sample_rate):
+    now = perf_counter()
+    last_restart = st.session_state.get("assemblyai_last_restart_at")
+    if last_restart is not None and now - last_restart < ASSEMBLYAI_RESTART_MIN_INTERVAL_S:
+        return
+    streamers = st.session_state.setdefault("assemblyai_streamers", {})
+    streamer = streamers.pop(source, None)
+    if streamer:
+        log_event("assemblyai_stream_restart", source=source, last_error=streamer.error)
+        _retire_assemblyai_streamer(source, streamer, block=False)
+    start_assemblyai_stream(source, sample_rate)
+
+
 def end_all_streams():
     dg_streamers = st.session_state.deepgram_streamers
     for source in list(dg_streamers):
@@ -608,6 +729,9 @@ def end_all_streams():
     gl_streamers = st.session_state.get("gladia_streamers") or {}
     for source in list(gl_streamers):
         _retire_gladia_streamer(source, gl_streamers.pop(source), block=True)
+    aai_streamers = st.session_state.get("assemblyai_streamers") or {}
+    for source in list(aai_streamers):
+        _retire_assemblyai_streamer(source, aai_streamers.pop(source), block=True)
     close_lesson_recorders()
     autosave_lesson(force=True)
 
@@ -617,7 +741,8 @@ def handle_audio_chunk(payload):
     if source not in SOURCE_LABELS:
         source = "student"
     pcm16_base64 = payload.get("pcm16_base64")
-    sample_rate = payload.get("sample_rate")
+    sample_rate = payload.get("sample_rate") or 48000
+    seq = payload.get("seq", 0)
     if not pcm16_base64:
         return
     try:
@@ -625,35 +750,11 @@ def handle_audio_chunk(payload):
     except Exception as e:
         log_event("deepgram_chunk_decode_error", source=source, error=str(e))
         return
-    # First, before any transcription handling: transcription can fail and be redone
-    # from the file, but audio not written down is gone for good.
-    record_audio_chunk(source, chunk_bytes, sample_rate)
 
-    # Deepgram stream handling
-    streamer = st.session_state.deepgram_streamers.get(source)
-    if streamer is None:
-        start_deepgram_stream(source, sample_rate)
-        streamer = st.session_state.deepgram_streamers.get(source)
-    elif not streamer.is_active and not streamer.is_connecting:
-        restart_dead_stream(source, sample_rate)
-        streamer = st.session_state.deepgram_streamers.get(source)
-    if streamer is not None:
-        streamer.chunks_received += 1
-        streamer.send_pcm16(chunk_bytes)
-
-    # Gladia stream handling (if GLADIA_API_KEY is available)
-    if os.environ.get("GLADIA_API_KEY"):
-        gl_streamers = st.session_state.setdefault("gladia_streamers", {})
-        gl_streamer = gl_streamers.get(source)
-        if gl_streamer is None:
-            start_gladia_stream(source, sample_rate)
-            gl_streamer = gl_streamers.get(source)
-        elif not gl_streamer.is_active and not gl_streamer.is_connecting:
-            restart_dead_gladia_stream(source, sample_rate)
-            gl_streamer = gl_streamers.get(source)
-        if gl_streamer is not None:
-            gl_streamer.chunks_received += 1
-            gl_streamer.send_pcm16(chunk_bytes)
+    session = live_runtime.get_active_session()
+    if session and session.state == "recording":
+        session.write_chunk(source, seq, chunk_bytes, sample_rate)
+        live_runtime.get_provider_manager().dispatch_audio(source, chunk_bytes, sample_rate)
 
 
 # ---------------------------------------------------------------------------
@@ -661,69 +762,64 @@ def handle_audio_chunk(payload):
 # ---------------------------------------------------------------------------
 def collect_raw_deepgram_words():
     """All finalized Deepgram words so far: retired streams + live streams, sorted."""
-    words = list(st.session_state.get("lesson_words_deepgram", st.session_state.get("lesson_words", [])))
-    for source, streamer in st.session_state.deepgram_streamers.items():
-        snap = streamer.snapshot()
-        offset = st.session_state.source_offsets.get(source, 0.0)
-        for word in snap["final_words"]:
-            words.append({
-                "source": source,
-                "word": word["word"],
-                "start": (word.get("start") or 0.0) + offset,
-                "end": (word.get("end") or 0.0) + offset,
-                "confidence": word.get("confidence"),
-            })
+    if st.session_state.get("lesson_loaded"):
+        return list(st.session_state.get("lesson_words_deepgram", st.session_state.get("lesson_words", [])))
+    words = live_runtime.get_provider_manager().collect_raw_words("deepgram")
+    if not words:
+        words = list(st.session_state.get("lesson_words_deepgram", []))
     words.sort(key=lambda w: (w.get("start") or 0.0))
     return words
 
 
 def collect_raw_gladia_words():
     """All finalized Gladia words so far: retired streams + live streams, sorted."""
-    words = list(st.session_state.get("lesson_words_gladia", []))
-    for source, streamer in (st.session_state.get("gladia_streamers") or {}).items():
-        snap = streamer.snapshot()
-        offset = st.session_state.get("gladia_source_offsets", {}).get(source, 0.0)
-        for word in snap["final_words"]:
-            words.append({
-                "source": source,
-                "word": word["word"],
-                "start": (word.get("start") or 0.0) + offset,
-                "end": (word.get("end") or 0.0) + offset,
-                "confidence": word.get("confidence"),
-            })
+    if st.session_state.get("lesson_loaded"):
+        return list(st.session_state.get("lesson_words_gladia", []))
+    words = live_runtime.get_provider_manager().collect_raw_words("gladia")
+    if not words:
+        words = list(st.session_state.get("lesson_words_gladia", []))
+    words.sort(key=lambda w: (w.get("start") or 0.0))
+    return words
+
+
+def collect_raw_assemblyai_words():
+    """All finalized AssemblyAI words so far: retired streams + live streams, sorted."""
+    if st.session_state.get("lesson_loaded"):
+        return list(st.session_state.get("lesson_words_assemblyai", []))
+    words = live_runtime.get_provider_manager().collect_raw_words("assemblyai")
+    if not words:
+        words = list(st.session_state.get("lesson_words_assemblyai", []))
     words.sort(key=lambda w: (w.get("start") or 0.0))
     return words
 
 
 def get_captured_audio_clock():
-    """Current audio position in seconds, advancing continuously even through silence."""
+    """Current audio position in seconds, advancing continuously based on sample count."""
     if st.session_state.get("lesson_state") == "ended":
         return float("inf")
-    candidates = [0.0]
+    session = live_runtime.get_active_session()
+    if session:
+        return session.get_audio_clock()
     recorders = st.session_state.get("lesson_recorders") or {}
-    for rec in recorders.values():
-        if hasattr(rec, "seconds_captured"):
-            candidates.append(rec.seconds_captured)
-    for source, streamer in st.session_state.get("deepgram_streamers", {}).items():
-        offset = st.session_state.get("source_offsets", {}).get(source, 0.0)
-        candidates.append(offset + streamer.audio_seconds_sent())
-    for source, streamer in (st.session_state.get("gladia_streamers") or {}).items():
-        offset = st.session_state.get("gladia_source_offsets", {}).get(source, 0.0)
-        candidates.append(offset + streamer.audio_seconds_sent())
-    return max(candidates)
+    if recorders:
+        return max((r.seconds_captured for r in recorders.values() if hasattr(r, "seconds_captured")), default=0.0)
+    return 0.0
 
 
 def collect_lesson_words():
-    """All finalized consensus words so far across both providers."""
+    """All finalized consensus words so far across active providers."""
     # When a saved lesson is loaded from disk, lesson_words contains loaded words
     if st.session_state.get("lesson_loaded") and st.session_state.get("lesson_words"):
         return list(st.session_state.lesson_words)
 
     dg_words = collect_raw_deepgram_words()
     gl_words = collect_raw_gladia_words()
+    aai_words = collect_raw_assemblyai_words()
     gladia_key = os.environ.get("GLADIA_API_KEY")
-    gl_streamers = st.session_state.get("gladia_streamers") or {}
-    gladia_active = bool(gladia_key and (gl_streamers or gl_words))
+    gladia_active = bool(gladia_key)
+
+    assemblyai_key = os.environ.get("ASSEMBLYAI_API_KEY")
+    assemblyai_active = bool(assemblyai_key)
 
     # Base clock on continuous captured-audio time, falling back to newest word end
     captured_clock = get_captured_audio_clock()
@@ -731,7 +827,12 @@ def collect_lesson_words():
     audio_clock = max(captured_clock, newest_dg)
 
     return build_consensus_words(
-        dg_words, gl_words, gladia_active=gladia_active, audio_clock=audio_clock
+        dg_words,
+        gl_words,
+        aai_words=aai_words,
+        gladia_active=gladia_active,
+        assemblyai_active=assemblyai_active,
+        audio_clock=audio_clock,
     )
 
 
@@ -748,12 +849,7 @@ def group_turns(words):
 
 
 def interim_by_source():
-    parts = {}
-    for source, streamer in st.session_state.deepgram_streamers.items():
-        snap = streamer.snapshot()
-        if snap["interim"]:
-            parts[source] = snap["interim"]
-    return parts
+    return live_runtime.get_provider_manager().get_interim_text()
 
 
 def build_transcript_text(turns):
@@ -801,6 +897,11 @@ def autosave_lesson(force=False):
         if raw_gl:
             with open(os.path.join(lesson_dir, "words_gladia.json"), "w", encoding="utf-8") as f:
                 json.dump({"version": 2, "words": raw_gl}, f, ensure_ascii=False)
+        # Raw AssemblyAI words saved to words_assemblyai.json
+        raw_aai = collect_raw_assemblyai_words()
+        if raw_aai:
+            with open(os.path.join(lesson_dir, "words_assemblyai.json"), "w", encoding="utf-8") as f:
+                json.dump({"version": 2, "words": raw_aai}, f, ensure_ascii=False)
         feedback = st.session_state.get("live_feedback") or {}
         if feedback:
             with open(os.path.join(lesson_dir, "live_feedback.json"), "w", encoding="utf-8") as f:
@@ -868,6 +969,13 @@ def close_lesson_recorders():
 
 def lesson_recording_status():
     """(seconds, megabytes) captured so far, for the status bar."""
+    session = live_runtime.get_active_session()
+    if session and session.tracks:
+        seconds = session.get_audio_clock()
+        megabytes = sum(
+            os.path.getsize(t.recorder.path) for t in session.tracks.values() if os.path.exists(t.recorder.path)
+        ) / (1024.0 * 1024.0)
+        return seconds, megabytes
     recorders = st.session_state.get("lesson_recorders") or {}
     if not recorders:
         return None
@@ -1051,10 +1159,10 @@ def run_replicate_transcription(audio_path):
     # Whisper large-v3 on a whole lesson can run for many minutes; the SDK's
     # default read timeout is far shorter, so pin it to REPLICATE_TIMEOUT_S.
     # A short connect timeout still fails fast on a dead network.
-    client = replicate.Client(
-        api_token=replicate_token,
-        timeout=httpx.Timeout(REPLICATE_TIMEOUT_S, connect=10.0),
-    )
+    client_kwargs = {"api_token": replicate_token}
+    if httpx is not None:
+        client_kwargs["timeout"] = httpx.Timeout(REPLICATE_TIMEOUT_S, connect=10.0)
+    client = replicate.Client(**client_kwargs)
     try:
         with open(audio_path, "rb") as f:
             output = client.run(
@@ -1132,30 +1240,43 @@ def run_deepgram_prerecorded(audio_path, source):
     with open(audio_path, "rb") as f:
         audio_bytes = f.read()
     try:
-        response = httpx.post(
-            DEEPGRAM_PRERECORDED_URL,
-            params=deepgram_prerecorded_params(),
-            headers={"Authorization": f"Token {api_key}", "Content-Type": content_type},
-            content=audio_bytes,
-            # A whole lesson takes minutes to come back. The connect timeout
-            # stays short so a dead network still fails fast.
-            timeout=httpx.Timeout(DEEPGRAM_PRERECORDED_TIMEOUT_S, connect=10.0),
-        )
+        if httpx is not None:
+            response = httpx.post(
+                DEEPGRAM_PRERECORDED_URL,
+                params=deepgram_prerecorded_params(),
+                headers={"Authorization": f"Token {api_key}", "Content-Type": content_type},
+                content=audio_bytes,
+                timeout=httpx.Timeout(DEEPGRAM_PRERECORDED_TIMEOUT_S, connect=10.0),
+            )
+            status_code = response.status_code
+            response_text = response.text
+            payload = response.json() if status_code == 200 else {}
+        else:
+            query = urllib.parse.urlencode(deepgram_prerecorded_params())
+            req = urllib.request.Request(
+                f"{DEEPGRAM_PRERECORDED_URL}?{query}",
+                data=audio_bytes,
+                headers={"Authorization": f"Token {api_key}", "Content-Type": content_type},
+                method="POST",
+            )
+            with urllib.request.urlopen(req, timeout=DEEPGRAM_PRERECORDED_TIMEOUT_S) as resp:
+                status_code = resp.status
+                response_text = resp.read().decode("utf-8")
+                payload = json.loads(response_text) if status_code == 200 else {}
     except Exception as e:
         log_event("deepgram_prerecorded_error", source=source, error=str(e))
         raise RuntimeError(f"Deepgram request failed for the {source} track: {e}") from e
-    if response.status_code == 401:
+    if status_code == 401:
         raise RuntimeError("Deepgram authentication failed. Set a valid DEEPGRAM_API_KEY.")
-    if response.status_code >= 400:
-        detail = response.text[:300]
+    if status_code >= 400:
+        detail = response_text[:300]
         log_event(
             "deepgram_prerecorded_http_error",
-            source=source, status=response.status_code, detail=detail,
+            source=source, status=status_code, detail=detail,
         )
         raise RuntimeError(
-            f"Deepgram returned {response.status_code} for the {source} track: {detail}"
+            f"Deepgram returned {status_code} for the {source} track: {detail}"
         )
-    payload = response.json()
     words = lesson_library.words_from_prerecorded(payload, source)
     log_event("deepgram_prerecorded_success", source=source, words=len(words))
     return payload, words
@@ -1341,7 +1462,43 @@ def build_synthesis_bundle(lesson_dir, audio_path):
             except Exception:
                 pass
 
-    # 3. Derived Live Consensus viewpoint (words_consensus.json)
+    # 3. Raw AssemblyAI viewpoint (words_assemblyai.json)
+    if lesson_dir:
+        aai_path = os.path.join(lesson_dir, "words_assemblyai.json")
+        if os.path.exists(aai_path):
+            try:
+                with open(aai_path, "r", encoding="utf-8") as f:
+                    aai_payload = json.load(f)
+                aai_words = aai_payload.get("words", []) if isinstance(aai_payload, dict) else aai_payload
+                if aai_words:
+                    viewpoints.append({
+                        "id": "assemblyai_live",
+                        "service": "AssemblyAI universal-3-5-pro (live streaming)",
+                        "granularity": "word",
+                        "speakers": "student and teacher, separated by microphone",
+                        "turns": [
+                            {
+                                "speaker": SOURCE_LABELS.get(turn["source"], str(turn["source"])),
+                                "start": turn["start"],
+                                "end": turn["end"],
+                                "text": turn["text"],
+                                "words": [
+                                    {
+                                        "word": w["word"],
+                                        "start": w.get("start"),
+                                        "end": w.get("end"),
+                                        "confidence": w.get("confidence"),
+                                    }
+                                    for w in turn["words"]
+                                ],
+                            }
+                            for turn in group_turns(aai_words)
+                        ],
+                    })
+            except Exception:
+                pass
+
+    # 4. Derived Live Consensus viewpoint (words_consensus.json)
     if lesson_dir:
         con_path = os.path.join(lesson_dir, "words_consensus.json")
         if os.path.exists(con_path):
@@ -1352,7 +1509,7 @@ def build_synthesis_bundle(lesson_dir, audio_path):
                 if con_words:
                     viewpoints.append({
                         "id": "live_consensus",
-                        "service": "Deepgram + Gladia live consensus reconciliation",
+                        "service": "Multi-provider live consensus reconciliation",
                         "granularity": "word",
                         "speakers": "student and teacher, separated by microphone",
                         "turns": [
@@ -1645,27 +1802,34 @@ DEFAULT_LIVE_FEEDBACK_PROMPT = (
     "involves one of them, the sentence is fine.\n"
     "- A stray word from the other speaker sometimes bleeds into the sentence. "
     "Ignore anything that clearly is not part of the student's own utterance.\n\n"
-    "Be conservative. Report ONLY a clear, local grammar-form error: verb form, "
-    "subject-verb agreement, article/countability, or a fixed-preposition error. "
-    "Do NOT report vocabulary choice, naturalness, incomplete thoughts, discourse, "
-    "pronunciation, or a possible transcription problem. Do NOT write 'probably', "
-    "'likely mean', or otherwise guess the student's intended meaning. If correcting "
-    "the sentence needs a guess or changes more than a short span, return ok.\n\n"
+    "Report ONLY a genuine learner language error: verb tense or form, "
+    "subject-verb agreement, articles, prepositions, plurals, word order, "
+    "missing core sentence elements (subject/verb), or a wrong word choice. "
+    "Report the single most important error. Do NOT report naturalness, informal "
+    "spoken register, or possible transcription problems. Do NOT guess the student's "
+    "intended meaning if it is completely unclear.\n\n"
     "Reply with json only, in exactly this shape:\n"
     '{"verdict": "ok" | "issue", "label": "...", "explanation": "...", '
     '"quoted_span": "...", "replacement": "..."}\n\n'
     "- 'verdict': 'issue' only when there is a real learner error to show.\n"
     "- 'label': the error type in two to four words, lowercase, e.g. "
-    "'past tense', 'missing article'.\n"
+    "'past tense', 'missing article', 'word order'.\n"
     "- 'quoted_span': copy the exact erroneous words from the sentence, maximum five "
-    "words. Never quote words that are not present.\n"
+    "words. If the error cannot be captured in a short span (e.g. global word order "
+    "or missing element), set quoted_span to \"\".\n"
     "- 'explanation': ONE short sentence, at most 15 words, saying plainly what "
     "is wrong. Write it for the teacher to read at a glance mid-lesson.\n"
-    "- 'replacement': one minimal replacement for quoted_span only. Do not rewrite "
-    "the whole sentence or change the student's meaning.\n"
-    "- When 'verdict' is 'ok', use an empty label, an empty explanation and an "
-    "empty quoted_span and replacement."
+    "- 'replacement': one minimal replacement for quoted_span only. If quoted_span "
+    "is \"\", set replacement to \"\".\n"
+    "- CRITICAL: When 'verdict' is 'ok', you MUST set label, explanation, "
+    "quoted_span, and replacement to empty strings (\"\")."
 )
+
+
+def is_legacy_feedback_prompt(prompt_text):
+    """True if prompt uses the legacy 'rewrites' schema instead of 'quoted_span'."""
+    text = str(prompt_text or "").lower()
+    return "rewrites" in text and "quoted_span" not in text
 
 
 def load_persisted_live_feedback_prompt():
@@ -1700,6 +1864,11 @@ def persist_live_feedback_prompt():
         log_event("live_feedback_prompt_save_error", error=str(e))
 
 
+def reset_live_feedback_prompt_to_default():
+    st.session_state.live_feedback_prompt = DEFAULT_LIVE_FEEDBACK_PROMPT
+    persist_live_feedback_prompt()
+
+
 def _contains_normalized_span(sentence, quoted_span):
     """Whether a model-quoted span is a contiguous part of the ASR sentence."""
     sentence_tokens = [normalize_token(token) for token in str(sentence or "").split()]
@@ -1711,6 +1880,50 @@ def _contains_normalized_span(sentence, quoted_span):
     width = len(span_tokens)
     return any(sentence_tokens[i:i + width] == span_tokens
                for i in range(len(sentence_tokens) - width + 1))
+
+
+def derive_span_replacement(sentence, rewrite):
+    """Derive a single contiguous quoted_span and replacement from sentence and rewrite.
+
+    Returns (quoted_span, replacement) if exactly one contiguous token-level
+    difference (<= 5 words) is identified; otherwise returns None.
+    """
+    if not sentence or not rewrite:
+        return None
+    sent_tokens = [w for w in str(sentence).strip().split() if w]
+    rewr_tokens = [w for w in str(rewrite).strip().split() if w]
+    if not sent_tokens or not rewr_tokens:
+        return None
+
+    i = 0
+    while (
+        i < len(sent_tokens)
+        and i < len(rewr_tokens)
+        and normalize_token(sent_tokens[i]) == normalize_token(rewr_tokens[i])
+    ):
+        i += 1
+
+    j_sent = len(sent_tokens) - 1
+    j_rewr = len(rewr_tokens) - 1
+    while (
+        j_sent >= i
+        and j_rewr >= i
+        and normalize_token(sent_tokens[j_sent]) == normalize_token(rewr_tokens[j_rewr])
+    ):
+        j_sent -= 1
+        j_rewr -= 1
+
+    diff_sent = sent_tokens[i : j_sent + 1]
+    diff_rewr = rewr_tokens[i : j_rewr + 1]
+
+    if not diff_sent or len(diff_sent) > 5:
+        return None
+
+    quoted_span = " ".join(diff_sent)
+    replacement = " ".join(diff_rewr)
+    if _contains_normalized_span(sentence, quoted_span):
+        return quoted_span, replacement
+    return None
 
 
 def parse_live_feedback_reply(raw, sentence=None):
@@ -1725,23 +1938,77 @@ def parse_live_feedback_reply(raw, sentence=None):
     data = json.loads(text)
     if not isinstance(data, dict):
         raise ValueError("expected a JSON object")
-    verdict = str(data.get("verdict") or "").strip().lower()
-    if verdict not in ("ok", "issue"):
-        # Treat anything unrecognised as clean rather than showing a broken card.
-        verdict = "issue" if data.get("replacement") else "ok"
+
+    raw_verdict = str(data.get("verdict") or "").strip().lower()
+    label = str(data.get("label") or "").strip()
+    explanation = str(data.get("explanation") or "").strip()
     quoted_span = str(data.get("quoted_span") or "").strip()
     replacement = str(data.get("replacement") or "").strip()
-    explanation = str(data.get("explanation") or "").strip()
-    if verdict == "issue" and not (quoted_span and replacement and explanation):
-        verdict = "ok"
-    if verdict == "issue" and sentence is not None and not _contains_normalized_span(sentence, quoted_span):
-        verdict = "ok"
+
+    raw_rewrites = data.get("rewrites")
+    rewrites = []
+    if isinstance(raw_rewrites, list):
+        rewrites = [str(r).strip() for r in raw_rewrites if str(r).strip()]
+    elif isinstance(data.get("rewrite"), str) and data["rewrite"].strip():
+        rewrites = [data["rewrite"].strip()]
+    rewrite = rewrites[0] if rewrites else ""
+
+    # Determine initial verdict
+    if raw_verdict in ("ok", "issue"):
+        verdict = raw_verdict
+    else:
+        # Unrecognised verdict: mark issue if substantive correction data exists
+        if quoted_span or replacement or rewrite or label or explanation:
+            verdict = "issue"
+        else:
+            verdict = "ok"
+
+    if verdict == "ok":
+        # Sanitize all diagnostic fields to prevent contradictory cards/inspections
+        return {
+            "verdict": "ok",
+            "label": "",
+            "explanation": "",
+            "quoted_span": "",
+            "replacement": "",
+            "rewrite": "",
+            "rewrites": [],
+        }
+
+    # verdict == "issue"
+    # 1. Validate quoted_span if present
+    if quoted_span:
+        if sentence is not None and not _contains_normalized_span(sentence, quoted_span):
+            # Hallucinated span: clear span rather than dropping the issue
+            quoted_span = ""
+            replacement = ""
+
+    # 2. If quoted_span/replacement are missing but rewrite is provided, attempt safe span derivation
+    if not (quoted_span and replacement) and rewrite and sentence:
+        derived = derive_span_replacement(sentence, rewrite)
+        if derived:
+            quoted_span, replacement = derived
+
+    # 3. Guard against completely empty issue payload
+    if not (quoted_span or replacement or rewrite or label or explanation):
+        return {
+            "verdict": "ok",
+            "label": "",
+            "explanation": "",
+            "quoted_span": "",
+            "replacement": "",
+            "rewrite": "",
+            "rewrites": [],
+        }
+
     return {
-        "verdict": verdict,
-        "label": str(data.get("label") or "").strip(),
+        "verdict": "issue",
+        "label": label,
         "explanation": explanation,
         "quoted_span": quoted_span,
         "replacement": replacement,
+        "rewrite": rewrite,
+        "rewrites": rewrites,
     }
 
 
@@ -1878,6 +2145,8 @@ def drain_live_feedback():
                 "explanation": result["explanation"],
                 "quoted_span": result["quoted_span"],
                 "replacement": result["replacement"],
+                "rewrite": result.get("rewrite", ""),
+                "rewrites": result.get("rewrites", []),
             }
         else:
             _record_live_feedback_failure(sentence_id, result.get("error"))
@@ -2035,9 +2304,6 @@ def dispatch_live_feedback(sentences, turns):
         statuses = {w.get("status") for w in sentence.get("words", [])}
         if "pending" in statuses:
             continue
-        if "uncertain" in statuses:
-            cache[sentence_id] = {"status": "skipped", "reason": "uncertain_asr"}
-            continue
         if sentence["word_count"] < LIVE_MIN_WORDS:
             cache[sentence_id] = {"status": "skipped"}
             continue
@@ -2105,19 +2371,23 @@ def init_session_state():
         "transcript_filter": "Both",  # on-screen display filter; never affects capture
         "lesson_dir": None,
         "lesson_loaded": False,  # True when the open lesson came off disk, not a mic
-        "student_name": "",      # whose lesson the next recording belongs to
+        "student_name": "Test",    # whose lesson the next recording belongs to
         "lesson_started_at": None,
         "lesson_active_seconds": 0,
         "lesson_words": [],
         "lesson_words_deepgram": [],
         "lesson_words_gladia": [],
+        "lesson_words_assemblyai": [],
         "source_offsets": {},
         "gladia_source_offsets": {},
+        "assemblyai_source_offsets": {},
         "deepgram_streamers": {},
         "gladia_streamers": {},
+        "assemblyai_streamers": {},
         "lesson_recorders": {},   # source -> TrackRecorder, open for the lesson
         "deepgram_last_restart_at": None,
         "gladia_last_restart_at": None,
+        "assemblyai_last_restart_at": None,
         "autosave_last_at": None,
         "autosave_last_clock": None,
         "last_recorder_event_id": "",
@@ -2149,6 +2419,22 @@ def init_session_state():
         st.session_state.live_feedback_prompt = load_persisted_live_feedback_prompt()
     if "student_roster" not in st.session_state:
         st.session_state.student_roster = lesson_library.load_students()
+    if "student_choice" not in st.session_state:
+        test_entry = next((s for s in st.session_state.student_roster if s.lower() == "test"), "Test")
+        st.session_state.student_choice = test_entry
+
+    try:
+        live_runtime.ensure_ingestion_server()
+    except Exception:
+        pass
+
+    # Seamless re-attach if Streamlit session reconnected mid-lesson
+    active_session = live_runtime.get_active_session()
+    if active_session and active_session.state == "recording":
+        st.session_state.lesson_state = "recording"
+        st.session_state.lesson_dir = active_session.lesson_dir
+        if active_session.student:
+            st.session_state.student_name = active_session.student
 
 
 def parse_recorder_value(value):
@@ -2176,15 +2462,23 @@ def handle_recorder_event(payload):
     if event == "lesson_started":
         st.session_state.lesson_state = "recording"
         st.session_state.lesson_loaded = False
-        close_lesson_recorders()
-        st.session_state.lesson_dir = new_lesson_dir(st.session_state.get("student_name"))
+        session = live_runtime.get_active_session()
+        if session and session.lesson_dir and os.path.isdir(session.lesson_dir):
+            st.session_state.lesson_dir = session.lesson_dir
+            session.student = st.session_state.get("student_name") or ""
+            session.write_manifest()
+        else:
+            st.session_state.lesson_dir = new_lesson_dir(st.session_state.get("student_name"))
+
         st.session_state.lesson_started_at = datetime.now(timezone.utc)
         st.session_state.lesson_active_seconds = 0
         st.session_state.lesson_words = []
         st.session_state.lesson_words_deepgram = []
         st.session_state.lesson_words_gladia = []
+        st.session_state.lesson_words_assemblyai = []
         st.session_state.source_offsets = {}
         st.session_state.gladia_source_offsets = {}
+        st.session_state.assemblyai_source_offsets = {}
         st.session_state.autosave_last_at = None
         st.session_state.autosave_last_clock = None
         st.session_state.replicate_transcript = ""
@@ -2192,15 +2486,33 @@ def handle_recorder_event(payload):
         st.session_state.synthesis_transcript = ""
         st.session_state.synthesis_error = ""
         reset_live_feedback()
-        source_rates = payload.get("sources") or {}
-        for source, rate in source_rates.items():
-            if source in SOURCE_LABELS:
-                start_deepgram_stream(source, rate)
-                if os.environ.get("GLADIA_API_KEY"):
-                    start_gladia_stream(source, rate)
+
+        source_rates = payload.get("sources") or {"student": 48000, "teacher": 48000}
+        capture_mode = payload.get("capture_mode") or "audio_worklet"
+
+        if session is None:
+            new_session = live_runtime.ActiveLessonSession(
+                lesson_dir=st.session_state.lesson_dir,
+                student=st.session_state.get("student_name") or "",
+                capture_mode=capture_mode,
+            )
+            for src, rate in source_rates.items():
+                new_session.add_track(src, int(rate))
+            live_runtime.set_active_session(new_session)
+            live_runtime.get_provider_manager().start_streams(source_rates)
+        else:
+            session.capture_mode = capture_mode
+            session.state = "recording"
+            for src, rate in source_rates.items():
+                if src not in session.tracks:
+                    session.add_track(src, int(rate))
+            session.write_manifest()
+            live_runtime.get_provider_manager().start_streams(source_rates)
+
         log_event("lesson_started", lesson_dir=st.session_state.lesson_dir,
                   student=st.session_state.get("student_name") or "",
-                  sources=list(source_rates))
+                  sources=list(source_rates),
+                  capture_mode=capture_mode)
 
     elif event == "recording_chunk":
         if st.session_state.lesson_state == "recording":
@@ -2209,24 +2521,33 @@ def handle_recorder_event(payload):
     elif event == "lesson_paused":
         st.session_state.lesson_state = "paused"
         st.session_state.lesson_active_seconds = payload.get("active_seconds") or 0
+        session = live_runtime.get_active_session()
+        if session:
+            session.state = "paused"
+            session.write_manifest()
         autosave_lesson(force=True)
         log_event("lesson_paused", active_seconds=st.session_state.lesson_active_seconds)
 
     elif event == "lesson_resumed":
         st.session_state.lesson_state = "recording"
+        session = live_runtime.get_active_session()
+        if session:
+            session.state = "recording"
+            session.write_manifest()
         log_event("lesson_resumed")
 
     elif event == "lesson_ended":
         st.session_state.lesson_active_seconds = payload.get("active_seconds") or 0
-        # No more audio can arrive, so any still-pending consensus span settles.
         st.session_state.lesson_state = "ended"
         saved_audio = save_lesson_audio(payload.get("audio") or {})
+        session = live_runtime.get_active_session()
+        if session:
+            session.close()
+        live_runtime.get_provider_manager().stop_all()
+        live_runtime.set_active_session(None)
         end_all_streams()
         autosave_lesson(force=True)
-        # Point the post-lesson step at this lesson's student track, chosen the
-        # same way the picker chooses it. Read after the streams are closed, so
-        # the continuous recording is final — and so it still resolves when the
-        # browser never delivered its own copy.
+
         lesson_dir = st.session_state.get("lesson_dir")
         tracks = lesson_library.lesson_tracks(lesson_dir) if lesson_dir else {}
         student_track = tracks.get("student") or tracks.get("teacher")
@@ -2267,6 +2588,40 @@ def render_styles():
             padding: 14px 18px; background: #fbfcfd;
             max-height: 60vh; overflow-y: auto;
         }
+        .transcript-header-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 6px;
+        }
+        .copy-transcript-btn {
+            background: #ffffff;
+            border: 1px solid #d0d5dd;
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #344054;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s ease-in-out;
+            box-shadow: 0 1px 2px rgba(16, 24, 40, 0.05);
+        }
+        .copy-transcript-btn:hover {
+            background: #f9fafb;
+            border-color: #b2b8c2;
+            color: #1d2939;
+        }
+        .copy-transcript-btn:active {
+            background: #f2f4f7;
+            transform: translateY(1px);
+        }
+        .copy-transcript-btn.copied {
+            background: #ecfdf3;
+            border-color: #6ce9a6;
+            color: #027a48;
+        }
         .turn { margin: 0 0 10px 0; line-height: 1.5; }
         .turn .ts {
             font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -2287,6 +2642,10 @@ def render_styles():
            cancel it, so an underlined wrapper drew lines straight through the
            feedback card's own text. Keeping the card a sibling of the underline
            is the only way to be rid of it. */
+        .sent {
+            position: relative;
+            display: inline;
+        }
         .sent .sent-text {
             text-decoration: underline;
             text-decoration-thickness: 2px;
@@ -2297,53 +2656,119 @@ def render_styles():
         .sent.checked .sent-text { text-decoration-color: #2e9e6b; }
         .sent.flagged .sent-text { text-decoration-color: #d92d20; }
         .sent.failed  .sent-text { text-decoration-color: #d9a441; }
-        .sent.flagged, .sent.failed { cursor: help; }
+        .sent.flagged, .sent.failed { cursor: pointer; }
         .sent.flagged:hover .sent-text, .sent.failed:hover .sent-text {
-            background: rgba(217, 45, 32, 0.10);
+            background: rgba(217, 45, 32, 0.12);
+            border-radius: 2px;
+        }
+        .sent.active-pinned .sent-text {
+            outline: 2px solid #2b78e4;
+            outline-offset: 2px;
+            border-radius: 3px;
+            background: rgba(43, 120, 228, 0.14) !important;
         }
 
-        /* The card in the transcript is only a data carrier - never shown.
-           A single popup element, parked on <body> and positioned by script,
-           does the display. It has to live outside the pane: the pane scrolls,
-           and anything inside a scroll container is clipped at its edge and
-           cannot be scrolled to, because scrolling drops the hover. */
-        .fb-card { display: none; }
+        /* In-situ card: strictly a data carrier, NEVER rendered directly to prevent duplicate popups. */
+        .fb-card {
+            display: none !important;
+            visibility: hidden !important;
+            height: 0 !important;
+            width: 0 !important;
+            overflow: hidden !important;
+            position: absolute !important;
+            pointer-events: none !important;
+        }
 
+        /* Fixed viewport popup element positioned by script on document.body */
         #fb-popup {
-            display: none; position: fixed; z-index: 9999;
-            max-width: 420px; padding: 11px 13px 12px 13px;
-            background: #ffffff; border: 1px solid #dfe3ea; border-radius: 9px;
-            box-shadow: 0 8px 26px rgba(20, 28, 45, 0.18);
-            font-size: 0.84rem; line-height: 1.45; color: #384152;
-            text-align: left; pointer-events: none;
+            display: none;
+            position: fixed;
+            z-index: 999999;
+            max-width: 440px;
+            min-width: 260px;
+            padding: 10px 14px 13px 14px;
+            background: #ffffff;
+            border: 1px solid #d0d7e2;
+            border-radius: 10px;
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.20), 0 2px 6px rgba(15, 23, 42, 0.08);
+            font-size: 0.85rem;
+            line-height: 1.48;
+            color: #2e384d;
+            text-align: left;
+            pointer-events: auto;
+            user-select: text;
         }
-        #fb-popup.show { display: block; }
-        /* These style the popup's contents. The markup is lifted out of the
-           hidden .fb-card, so the rules must target the popup, not the card. */
-        #fb-popup .fb-label.failed { background: #fdf0d5; color: #8a5a10; }
-        #fb-popup .fb-label {
+        #fb-popup.show {
+            display: block;
+        }
+        #fb-popup.pinned {
+            border-color: #2b78e4;
+            box-shadow: 0 14px 36px rgba(43, 120, 228, 0.22), 0 2px 8px rgba(15, 23, 42, 0.10);
+        }
+        .fb-popup-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 4px;
+            min-height: 18px;
+        }
+        .fb-popup-pin-badge {
+            display: none;
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #175cd3;
+            background: #eff4fe;
+            padding: 1px 7px;
+            border-radius: 999px;
+            margin-right: auto;
+            letter-spacing: 0.03em;
+        }
+        #fb-popup.pinned .fb-popup-pin-badge {
+            display: inline-block;
+        }
+        .fb-popup-close {
+            background: transparent;
+            border: 0;
+            color: #8a93a3;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 0 4px;
+            line-height: 1;
+            border-radius: 4px;
+        }
+        .fb-popup-close:hover {
+            color: #202735;
+            background: #f1f3f7;
+        }
+
+        /* Card / popup contents styling */
+        .fb-card .fb-label.failed, #fb-popup .fb-label.failed { background: #fdf0d5; color: #8a5a10; }
+        .fb-card .fb-label, #fb-popup .fb-label {
             display: inline-block; margin: 0 0 7px 0; padding: 1px 8px;
             border-radius: 999px; background: #fee4e2; color: #b42318;
             font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em;
             text-transform: uppercase;
         }
-        #fb-popup .fb-said {
+        .fb-card .fb-said, #fb-popup .fb-said {
             display: block; color: #8a93a3; font-style: italic;
             margin-bottom: 6px; padding-left: 8px; border-left: 2px solid #e6e9ef;
         }
-        #fb-popup .fb-exp { display: block; color: #596273; margin-bottom: 8px; }
-        #fb-popup .fb-fix {
+        .fb-card .fb-exp, #fb-popup .fb-exp { display: block; color: #596273; margin-bottom: 8px; }
+        .fb-card .fb-fix, #fb-popup .fb-fix {
             display: block; color: #0f5743; margin-top: 4px; padding-left: 15px;
-            text-indent: -15px;
+            text-indent: -15px; font-weight: 600;
         }
-        #fb-popup .fb-fix::before { content: "→ "; color: #98a1b0; }
+        .fb-card .fb-fix::before, #fb-popup .fb-fix::before { content: "→ "; color: #98a1b0; font-weight: normal; }
         .uncertain-word {
             text-decoration: underline dotted #e08b00;
             color: #b54708;
-            background: rgba(224, 139, 0, 0.08);
-            padding: 0 2px;
+            background: rgba(224, 139, 0, 0.10);
+            padding: 0 3px;
             border-radius: 3px;
             cursor: help;
+        }
+        .uncertain-word:hover {
+            background: rgba(224, 139, 0, 0.22);
         }
         .fb-counts {
             font-size: 0.78rem; color: #8a93a3; margin-top: 2px;
@@ -2364,13 +2789,17 @@ def _format_word_html(word_item):
         evidence = word_item.get("evidence") or {}
         dg_info = evidence.get("deepgram") or {}
         gl_info = evidence.get("gladia") or {}
+        aai_info = evidence.get("assemblyai") or {}
         dg_word = dg_info.get("word") if isinstance(dg_info, dict) else None
         gl_word = gl_info.get("word") if isinstance(gl_info, dict) else None
+        aai_word = aai_info.get("word") if isinstance(aai_info, dict) else None
         parts = []
         if dg_word:
             parts.append(f"Deepgram: {dg_word}")
         if gl_word:
             parts.append(f"Gladia: {gl_word}")
+        if aai_word:
+            parts.append(f"AssemblyAI: {aai_word}")
         tooltip = " | ".join(parts) if parts else "Disputed ASR word"
         return f'<span class="uncertain-word" title="{html.escape(tooltip)}">{escaped_token}</span>'
     return escaped_token
@@ -2412,12 +2841,13 @@ def _segment_html(segment):
     if state in ("pending", "checked"):
         return f'<span class="sent {state}"><span class="sent-text">{text}</span></span> '
 
+    sent_id = html.escape(str(segment.get("id") or ""))
     parts = []
     if state == "failed":
         parts.append('<span class="fb-label failed">not checked</span>')
         parts.append(f'<span class="fb-exp">{html.escape(segment.get("error") or "Analysis failed.")}</span>')
         card = f'<span class="fb-card">{"".join(parts)}</span>'
-        return (f'<span class="sent failed">'
+        return (f'<span class="sent failed" data-sent-id="{sent_id}" role="button" tabindex="0" title="Click to pin/lock feedback">'
                 f'<span class="sent-text">{text}</span>{card}</span> ')
 
     if segment.get("label"):
@@ -2432,12 +2862,15 @@ def _segment_html(segment):
         parts.append(f'<span class="fb-exp">{html.escape(segment["explanation"])}</span>')
     quoted_span = segment.get("quoted_span")
     replacement = segment.get("replacement")
+    rewrite = segment.get("rewrite")
     if quoted_span:
         parts.append(f'<span class="fb-said">{html.escape(quoted_span)}</span>')
     if replacement:
         parts.append(f'<span class="fb-fix">{html.escape(replacement)}</span>')
+    elif rewrite:
+        parts.append(f'<span class="fb-fix">{html.escape(rewrite)}</span>')
     card = f'<span class="fb-card">{"".join(parts)}</span>'
-    return (f'<span class="sent flagged">'
+    return (f'<span class="sent flagged" data-sent-id="{sent_id}" role="button" tabindex="0" title="Click to pin/lock feedback">'
             f'<span class="sent-text">{text}</span>{card}</span> ')
 
 
@@ -2484,7 +2917,8 @@ def turn_segments(turn, word_to_sentence, sentences_by_id, feedback, in_flight):
                     "label": entry.get("label"),
                     "explanation": entry.get("explanation"),
                     "quoted_span": entry.get("quoted_span"),
-                    "replacement": entry.get("replacement") or next(
+                    "replacement": entry.get("replacement"),
+                    "rewrite": entry.get("rewrite") or next(
                         iter(entry.get("rewrites") or []), ""
                     ),
                     "sentence": sentence.get("text"),
@@ -2593,11 +3027,11 @@ FEEDBACK_POPUP_SCRIPT = """
 
 
 def install_feedback_popup():
-    """Zero-height component that installs the hover popup in the parent page."""
-    script = FEEDBACK_POPUP_SCRIPT.replace(
-        "__VERSION__", hashlib.md5(FEEDBACK_POPUP_SCRIPT.encode("utf-8")).hexdigest()[:10]
-    )
-    components.html(script, height=0)
+    """Feedback popup is installed via declare_component with pure CSS tooltip fallback."""
+    # st.components.v1.html runs in a null-origin sandbox that cannot access window.parent.
+    # The declared audio_recorder component safely mounts the #fb-popup on the parent document,
+    # and pure CSS rules on .sent .fb-card provide robust, instant hover support.
+    pass
 
 
 def visible_sources():
@@ -2627,6 +3061,16 @@ def _render_transcript_pane():
     shown = visible_sources()
     visible_turns = [t for t in turns if t["source"] in shown]
 
+    raw_transcript = build_transcript_text(visible_turns)
+    escaped_transcript = html.escape(raw_transcript, quote=True)
+    copy_bar = (
+        f'<div class="transcript-header-bar">'
+        f'<button type="button" id="copy-transcript-btn" class="copy-transcript-btn" '
+        f'data-transcript="{escaped_transcript}" title="Copy full transcript to clipboard" '
+        f'onclick="if(navigator.clipboard){{var b=this;navigator.clipboard.writeText(b.getAttribute(\'data-transcript\')).then(function(){{var p=b.innerHTML;b.innerHTML=\'✓ Copied!\';b.classList.add(\'copied\');setTimeout(function(){{b.innerHTML=p;b.classList.remove(\'copied\');}},2000);}});}}">'
+        f'📋 Copy transcript</button></div>'
+    ) if visible_turns else ""
+
     # Annotate once the switch has been armed at any point this lesson. Turning
     # it off must never erase feedback already gathered, nor abandon sentences
     # from the window that have not settled yet.
@@ -2638,7 +3082,7 @@ def _render_transcript_pane():
         if not blocks:
             _render_empty_filter_note(turns, visible_turns)
             return
-        st.markdown(f'<div class="transcript-pane">{"".join(blocks)}</div>',
+        st.markdown(f'{copy_bar}<div class="transcript-pane">{"".join(blocks)}</div>',
                     unsafe_allow_html=True)
         _autosave_if_live()
         return
@@ -2675,7 +3119,7 @@ def _render_transcript_pane():
     if not blocks:
         _render_empty_filter_note(turns, visible_turns)
         return
-    st.markdown(f'<div class="transcript-pane">{"".join(blocks)}</div>',
+    st.markdown(f'{copy_bar}<div class="transcript-pane">{"".join(blocks)}</div>',
                 unsafe_allow_html=True)
     _autosave_if_live()
 
@@ -2975,7 +3419,13 @@ def render_student_picker():
     """Whose lesson the next recording belongs to."""
     live = st.session_state.lesson_state in ("recording", "paused")
     roster = st.session_state.student_roster
+    test_entry = next((s for s in roster if s.lower() == "test"), None)
+    if test_entry and (not roster or roster[0].lower() != "test"):
+        roster = [test_entry] + [s for s in roster if s != test_entry]
+        st.session_state.student_roster = roster
     options = roster + [NEW_STUDENT_OPTION]
+    if "student_choice" not in st.session_state and options:
+        st.session_state.student_choice = options[0]
     pick_col, add_col = st.columns([2, 3])
     with pick_col:
         choice = st.selectbox(
@@ -3254,151 +3704,6 @@ def poll_synthesis_job():
 
 
 # ---------------------------------------------------------------------------
-# Page
-# ---------------------------------------------------------------------------
-render_styles()
-init_session_state()
-poll_replicate_job()
-poll_synthesis_job()
-poll_deepgram_batch_job()
-
-st.title("Lesson Transcriber")
-render_status_bar()
-
-with st.expander(
-    "Load a past lesson",
-    expanded=st.session_state.lesson_state != "recording",
-):
-    render_load_lesson()
-
-render_student_picker()
-
-recorder_value = audio_recorder_component(key="audio_recorder")
-recorder_payload = parse_recorder_value(recorder_value)
-if recorder_payload:
-    handle_recorder_event(recorder_payload)
-
-st.markdown("### Transcript")
-filter_col, live_col, note_col = st.columns([2, 2, 3])
-with filter_col:
-    st.radio(
-        "Show on screen",
-        ["Both", "Student only", "Teacher only"],
-        key="transcript_filter",
-        horizontal=True,
-    )
-with live_col:
-    _has_deepseek = bool(deepseek_api_key())
-    st.toggle(
-        "Live language feedback",
-        key="live_feedback_on",
-        disabled=not _has_deepseek,
-        help=(
-            "Sends each student sentence spoken while this is on to DeepSeek. "
-            "Underline shows the state: grey while checking, green if clean, red "
-            "if an error was found — hover a red one for the fix. Single-word "
-            "replies (\"Yeah.\") are not sent, so they stay unmarked."
-            if _has_deepseek
-            else "Needs DEEPSEEK_API_KEY in the environment."
-        ),
-    )
-    # Mirror the toggle here, where the widget actually exists.
-    mirror_live_feedback_switch()
-    render_live_counts_fragment()
-with note_col:
-    st.caption("Display only — both microphones always record, transcribe, and save to the lesson file.")
-render_transcript_fragment()
-install_feedback_popup()
-
-st.markdown("---")
-render_after_lesson()
-
-with st.expander("Diagnostics", expanded=False):
-    diag = {
-        "lesson_state": st.session_state.lesson_state,
-        "lesson_dir": st.session_state.get("lesson_dir"),
-        "deepgram_key_present": bool(os.environ.get("DEEPGRAM_API_KEY")),
-        "gladia_key_present": bool(os.environ.get("GLADIA_API_KEY")),
-        "replicate_key_present": bool(os.environ.get("REPLICATE_API_TOKEN")),
-        "deepseek_key_present": bool(deepseek_api_key()),
-        "deepseek_model": DEEPSEEK_MODEL,
-        "deepseek_live_model": DEEPSEEK_LIVE_MODEL,
-        "live_feedback_on": st.session_state.live_feedback_on,
-        "live_feedback_calls": st.session_state.live_feedback_calls,
-        "live_feedback_errors": st.session_state.live_feedback_errors,
-        "live_feedback_cached": len(st.session_state.live_feedback),
-        "live_feedback_in_flight": len(st.session_state.live_feedback_futures),
-        "python_executable": sys.executable,
-    }
-    for source, streamer in st.session_state.deepgram_streamers.items():
-        snap = streamer.snapshot()
-        diag[f"{source}_deepgram_stream"] = {
-            "active": streamer.is_active,
-            "error": snap["error"],
-            "bytes_sent": snap["bytes_sent_total"],
-            "chunks_received": snap["chunks_received"],
-            "transcript_events": snap["transcript_events_received"],
-            "sample_rate": snap["sample_rate"],
-        }
-    for source, streamer in (st.session_state.get("gladia_streamers") or {}).items():
-        snap = streamer.snapshot()
-        diag[f"{source}_gladia_stream"] = {
-            "active": streamer.is_active,
-            "error": snap["error"],
-            "bytes_sent": snap["bytes_sent_total"],
-            "chunks_received": snap["chunks_received"],
-            "transcript_events": snap["transcript_events_received"],
-            "sample_rate": snap["sample_rate"],
-        }
-    st.json(diag)
-
-with st.expander("Live feedback prompt (editable)", expanded=False):
-    st.caption(
-        "System prompt for the live per-sentence check. The app parses the reply as "
-        'JSON shaped {"verdict": "ok"|"issue", "label": ..., "explanation": ..., '
-        '"quoted_span": ..., "replacement": ...} — keep that contract or nothing will render. Saved to '
-        f"{LIVE_FEEDBACK_PROMPT_PATH} and reused next time."
-    )
-    st.text_area(
-        "Prompt",
-        key="live_feedback_prompt",
-        height=320,
-        on_change=persist_live_feedback_prompt,
-        label_visibility="collapsed",
-    )
-    prompt_col, rerun_col, model_col = st.columns([1, 1, 2])
-    with prompt_col:
-        if st.button("Reset to default"):
-            st.session_state.live_feedback_prompt = DEFAULT_LIVE_FEEDBACK_PROMPT
-            persist_live_feedback_prompt()
-            st.rerun()
-    with rerun_col:
-        is_rec = st.session_state.lesson_state == "recording"
-        is_running = bool(st.session_state.get("live_feedback_futures")) or (
-            st.session_state.get("retrospective_run")
-            and not st.session_state.retrospective_run.get("is_complete")
-            and bool(st.session_state.get("live_feedback_run_id"))
-        )
-        has_key = bool(deepseek_api_key())
-        if st.button(
-            "⏳ Analysing..." if is_running else "Re-analyse all",
-            disabled=is_rec or is_running or not has_key,
-            help=(
-                "Disabled while recording is active."
-                if is_rec
-                else (
-                    "Analysis in progress..."
-                    if is_running
-                    else ("Needs DEEPSEEK_API_KEY." if not has_key else "Send all student sentences sentence-by-sentence to DeepSeek using the edited prompt (max 400).")
-                )
-            ),
-        ):
-            trigger_reanalyse_all()
-            st.rerun()
-    with model_col:
-        st.caption(f"Model: `{DEEPSEEK_LIVE_MODEL}` (set DEEPSEEK_LIVE_MODEL to change)")
-
-
 def render_deepseek_inspection_window():
     with st.expander("DeepSeek sentence-by-sentence feedback & inspection", expanded=False):
         words = collect_lesson_words()
@@ -3575,9 +3880,12 @@ def render_deepseek_inspection_window():
                     card_bits = []
                     quoted = res.get("quoted_span")
                     repl = res.get("replacement")
+                    rewrite = res.get("rewrite") or next(iter(res.get("rewrites") or []), "")
                     expl = res.get("explanation")
                     if quoted and repl:
                         card_bits.append(f"**Correction**: <span style=\"color:#cf222e; text-decoration:line-through;\">{html.escape(quoted)}</span> &rarr; <span style=\"color:#1a7f37; font-weight:600;\">{html.escape(repl)}</span>")
+                    elif rewrite:
+                        card_bits.append(f"**Suggested sentence**: <span style=\"color:#1a7f37; font-weight:600;\">{html.escape(rewrite)}</span>")
                     if expl:
                         card_bits.append(f"**Explanation**: *{html.escape(expl)}*")
                     st.markdown("<br>".join(card_bits), unsafe_allow_html=True)
@@ -3601,20 +3909,210 @@ def render_deepseek_inspection_window():
                 st.markdown("<div style='margin-bottom:8px; border-bottom:1px solid #ececec;'></div>", unsafe_allow_html=True)
 
 
-render_deepseek_inspection_window()
+# ---------------------------------------------------------------------------
+# Page
+# ---------------------------------------------------------------------------
+def render_app():
+    render_styles()
+    init_session_state()
+    poll_replicate_job()
+    poll_synthesis_job()
+    poll_deepgram_batch_job()
 
-# Keep polling while a background job is running so completion is detected
-# without user interaction. st.rerun() preserves session_state.
-if (
-    st.session_state.replicate_future is not None
-    or st.session_state.synthesis_future is not None
-    or st.session_state.deepgram_batch_future is not None
-    or bool(st.session_state.live_feedback_futures)
-    or (
-        st.session_state.get("retrospective_run")
-        and not st.session_state.retrospective_run.get("is_complete")
-        and bool(st.session_state.get("live_feedback_run_id"))
-    )
-):
-    time.sleep(1)
-    st.rerun()
+    st.title("Lesson Transcriber")
+    render_status_bar()
+
+    with st.expander(
+        "Load a past lesson",
+        expanded=st.session_state.lesson_state != "recording",
+    ):
+        render_load_lesson()
+
+    render_student_picker()
+
+    recorder_value = audio_recorder_component(key="audio_recorder")
+    recorder_payload = parse_recorder_value(recorder_value)
+    if recorder_payload:
+        handle_recorder_event(recorder_payload)
+
+    st.markdown("### Transcript")
+    filter_col, live_col, note_col = st.columns([2, 2, 3])
+    with filter_col:
+        st.radio(
+            "Show on screen",
+            ["Both", "Student only", "Teacher only"],
+            key="transcript_filter",
+            horizontal=True,
+        )
+    with live_col:
+        _has_deepseek = bool(deepseek_api_key())
+        st.toggle(
+            "Live language feedback",
+            key="live_feedback_on",
+            disabled=not _has_deepseek,
+            help=(
+                "Sends each student sentence spoken while this is on to DeepSeek. "
+                "Underline shows the state: grey while checking, green if clean, red "
+                "if an error was found — hover a red one for the fix. Single-word "
+                "replies (\"Yeah.\") are not sent, so they stay unmarked."
+                if _has_deepseek
+                else "Needs DEEPSEEK_API_KEY in the environment."
+            ),
+        )
+        # Mirror the toggle here, where the widget actually exists.
+        mirror_live_feedback_switch()
+        render_live_counts_fragment()
+    with note_col:
+        st.caption("Display only — both microphones always record, transcribe, and save to the lesson file.")
+    render_transcript_fragment()
+    install_feedback_popup()
+
+    st.markdown("---")
+    render_after_lesson()
+
+    with st.expander("Diagnostics", expanded=False):
+        active_sess = live_runtime.get_active_session()
+        pm = live_runtime.get_provider_manager()
+        diag = {
+            "lesson_state": st.session_state.lesson_state,
+            "lesson_dir": st.session_state.get("lesson_dir"),
+            "deepgram_key_present": bool(os.environ.get("DEEPGRAM_API_KEY")),
+            "gladia_key_present": bool(os.environ.get("GLADIA_API_KEY")),
+            "assemblyai_key_present": bool(os.environ.get("ASSEMBLYAI_API_KEY")),
+            "replicate_key_present": bool(os.environ.get("REPLICATE_API_TOKEN")),
+            "deepseek_key_present": bool(deepseek_api_key()),
+            "deepseek_model": DEEPSEEK_MODEL,
+            "deepseek_live_model": DEEPSEEK_LIVE_MODEL,
+            "live_feedback_on": st.session_state.live_feedback_on,
+            "live_feedback_calls": st.session_state.live_feedback_calls,
+            "live_feedback_errors": st.session_state.live_feedback_errors,
+            "live_feedback_cached": len(st.session_state.live_feedback),
+            "live_feedback_in_flight": len(st.session_state.live_feedback_futures),
+            "reconnect_counts": pm.reconnect_counts,
+            "python_executable": sys.executable,
+        }
+        if active_sess:
+            diag["active_session"] = {
+                "capture_mode": active_sess.capture_mode,
+                "audio_clock_s": round(active_sess.get_audio_clock(), 2),
+                "tracks": {
+                    src: {
+                        "samples": t.samples_received,
+                        "last_seq": t.last_seq,
+                        "dropped": t.dropped_chunks,
+                        "duplicates": t.duplicate_chunks,
+                    }
+                    for src, t in active_sess.tracks.items()
+                },
+            }
+        for source, streamer in pm.deepgram_streamers.items():
+            snap = streamer.snapshot()
+            diag[f"{source}_deepgram_stream"] = {
+                "active": streamer.is_active,
+                "error": snap["error"],
+                "bytes_sent": snap["bytes_sent_total"],
+                "chunks_received": snap["chunks_received"],
+                "transcript_events": snap["transcript_events_received"],
+                "sample_rate": snap["sample_rate"],
+            }
+        for source, streamer in pm.gladia_streamers.items():
+            snap = streamer.snapshot()
+            diag[f"{source}_gladia_stream"] = {
+                "active": streamer.is_active,
+                "error": snap["error"],
+                "bytes_sent": snap["bytes_sent_total"],
+                "chunks_received": snap["chunks_received"],
+                "transcript_events": snap["transcript_events_received"],
+                "sample_rate": snap["sample_rate"],
+            }
+        st.json(diag)
+
+    with st.expander("Live feedback prompt (editable)", expanded=False):
+        current_prompt = st.session_state.get("live_feedback_prompt") or ""
+        is_legacy = is_legacy_feedback_prompt(current_prompt)
+        if is_legacy:
+            st.info(
+                "ℹ️ **Legacy prompt format detected**: Your saved prompt uses the `rewrites` schema. "
+                "The system supports this seamlessly, but you can upgrade to the span-level correction format "
+                "(`quoted_span` / `replacement`) or reset to default."
+            )
+        st.caption(
+            "System prompt for the live per-sentence check. The app parses the reply as "
+            'JSON shaped {"verdict": "ok"|"issue", "label": ..., "explanation": ..., '
+            '"quoted_span": ..., "replacement": ...} — saved to '
+            f"{LIVE_FEEDBACK_PROMPT_PATH} and reused next time."
+        )
+        st.text_area(
+            "Prompt",
+            key="live_feedback_prompt",
+            height=320,
+            on_change=persist_live_feedback_prompt,
+            label_visibility="collapsed",
+        )
+        prompt_col, rerun_col, model_col = st.columns([1.4, 1, 1.6])
+        with prompt_col:
+            if is_legacy:
+                btn_col1, btn_col2 = st.columns([1, 1])
+                with btn_col1:
+                    st.button("Reset default", on_click=reset_live_feedback_prompt_to_default)
+                with btn_col2:
+                    st.button("Migrate to span", on_click=reset_live_feedback_prompt_to_default)
+            else:
+                st.button("Reset to default", on_click=reset_live_feedback_prompt_to_default)
+        with rerun_col:
+            is_rec = st.session_state.lesson_state == "recording"
+            is_running = bool(st.session_state.get("live_feedback_futures")) or (
+                st.session_state.get("retrospective_run")
+                and not st.session_state.retrospective_run.get("is_complete")
+                and bool(st.session_state.get("live_feedback_run_id"))
+            )
+            has_key = bool(deepseek_api_key())
+            if st.button(
+                "⏳ Analysing..." if is_running else "Re-analyse all",
+                disabled=is_rec or is_running or not has_key,
+                help=(
+                    "Disabled while recording is active."
+                    if is_rec
+                    else (
+                        "Analysis in progress..."
+                        if is_running
+                        else ("Needs DEEPSEEK_API_KEY." if not has_key else "Send all student sentences sentence-by-sentence to DeepSeek using the edited prompt (max 400).")
+                    )
+                ),
+            ):
+                trigger_reanalyse_all()
+                st.rerun()
+        with model_col:
+            st.caption(f"Model: `{DEEPSEEK_LIVE_MODEL}` (set DEEPSEEK_LIVE_MODEL to change)")
+
+    render_deepseek_inspection_window()
+
+    # Keep polling while a background job is running so completion is detected
+    # without user interaction. st.rerun() preserves session_state.
+    if (
+        st.session_state.replicate_future is not None
+        or st.session_state.synthesis_future is not None
+        or st.session_state.deepgram_batch_future is not None
+        or bool(st.session_state.live_feedback_futures)
+        or (
+            st.session_state.get("retrospective_run")
+            and not st.session_state.retrospective_run.get("is_complete")
+            and bool(st.session_state.get("live_feedback_run_id"))
+        )
+    ):
+        time.sleep(1)
+        st.rerun()
+
+
+def _should_render_page():
+    if __name__ == "__main__":
+        return True
+    try:
+        from streamlit.runtime.scriptrunner import get_script_run_ctx
+        return get_script_run_ctx() is not None
+    except Exception:
+        return False
+
+
+if _should_render_page():
+    render_app()

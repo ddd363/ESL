@@ -165,6 +165,14 @@ class StudentRosterTests(unittest.TestCase):
             f.write("not json{{{")
         self.assertEqual(ll.load_students(self.path), [])
 
+    def test_test_student_is_always_at_the_top(self):
+        for name in ("Zoe", "Ana", "Test", "Maria"):
+            ll.add_student(name, self.path)
+        students = ll.load_students(self.path)
+        self.assertEqual(students[0], "Test")
+        self.assertEqual(students, ["Test", "Ana", "Maria", "Zoe"])
+
+
 
 class SlugTests(unittest.TestCase):
     def test_names_become_safe_folder_components(self):

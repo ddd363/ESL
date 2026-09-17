@@ -216,6 +216,8 @@ def merge_retrospective_result(
                 "explanation": job_result.get("explanation", ""),
                 "quoted_span": job_result.get("quoted_span", ""),
                 "replacement": job_result.get("replacement", ""),
+                "rewrite": job_result.get("rewrite", ""),
+                "rewrites": job_result.get("rewrites", []),
                 "attempts": attempts,
             }
             feedback[sentence_id] = item["result"]
@@ -406,8 +408,13 @@ def format_inspection_markdown(snapshot: Dict[str, Any]) -> str:
         if status == "issue":
             lines.append(f"- **Verdict**: `ISSUE`")
             lines.append(f"- **Error Label**: `{result.get('label', '')}`")
-            lines.append(f"- **Quoted Span**: \"{result.get('quoted_span', '')}\"")
-            lines.append(f"- **Replacement**: \"{result.get('replacement', '')}\"")
+            if result.get("quoted_span") and result.get("replacement"):
+                lines.append(f"- **Quoted Span**: \"{result.get('quoted_span', '')}\"")
+                lines.append(f"- **Replacement**: \"{result.get('replacement', '')}\"")
+            if result.get("rewrite"):
+                lines.append(f"- **Suggested Rewrite**: \"{result.get('rewrite', '')}\"")
+            elif result.get("rewrites"):
+                lines.append(f"- **Suggested Rewrites**: {result.get('rewrites', [])}")
             lines.append(f"- **Explanation**: {result.get('explanation', '')}")
         elif status == "ok":
             lines.append(f"- **Verdict**: `OK (clean)`")

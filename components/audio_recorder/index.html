@@ -156,6 +156,7 @@
           <canvas id="waveformTeacher" width="520" height="70"></canvas>
         </div>
       </div>
+      <div id="deviceWarning" style="color: #b7791f; font-weight: 600; font-size: 13px; margin-top: 6px; display: none;"></div>
       <div id="error"></div>
     </div>
     <script>
@@ -223,12 +224,32 @@
       // Active (unpaused) lesson time, accumulated across pauses.
       let activeMs = 0;
       let lastResumeMs = null;
-      // 0.5 s keeps one chunk per Streamlit rerun cycle (rerun ≈ 200-300 ms),
-      // reducing component-value drops that silence the Deepgram audio pipeline.
+      // 0.5 s keeps chunks responsive
       const LIVE_CHUNK_INTERVAL_SECONDS = 0.5;
+      const INGESTION_SERVER_URL = "http://127.0.0.1:8765";
       // MediaRecorder timeslice: hand back compressed chunks regularly so a
       // whole lesson never sits in one giant buffer.
       const MEDIA_RECORDER_TIMESLICE_MS = 5000;
+
+      const WORKLET_CODE = `
+      class PcmCaptureProcessor extends AudioWorkletProcessor {
+        process(inputs) {
+          const input = inputs[0];
+          if (input && input[0] && input[0].length > 0) {
+            this.port.postMessage(input[0]);
+          }
+          return true;
+        }
+      }
+      registerProcessor('pcm-capture-processor', PcmCaptureProcessor);
+      `;
+      let workletBlobUrl = null;
+      try {
+        const blob = new Blob([WORKLET_CODE], { type: "application/javascript" });
+        workletBlobUrl = URL.createObjectURL(blob);
+      } catch (e) {
+        console.warn("Could not create AudioWorklet Blob URL:", e);
+      }
 
       for (const source of Object.values(sources)) {
         source.selectedDeviceId = "";
@@ -238,6 +259,8 @@
         source.audioContext = null;
         source.mediaStream = null;
         source.processor = null;
+        source.workletNode = null;
+        source.captureMode = "audio_worklet";
         source.input = null;
         source.analyser = null;
         source.waveReference = 0;
@@ -246,6 +269,9 @@
         source.liveChunkBuffers = [];
         source.liveChunkSamples = 0;
         source.liveChunkSeq = 0;
+        source.outboxQueue = [];
+        source.isDraining = false;
+        source.consecutiveFailures = 0;
         source.mediaRecorder = null;
         source.mediaChunks = [];
         source.mediaMimeType = "";
@@ -349,6 +375,14 @@
           }
           source.processor = null;
         }
+        if (source.workletNode) {
+          try {
+            source.workletNode.disconnect();
+          } catch (err) {
+            // ignore
+          }
+          source.workletNode = null;
+        }
         if (source.analyser) {
           try {
             source.analyser.disconnect();
@@ -388,7 +422,40 @@
         source.initPromise = null;
       }
 
+      function loadSavedPreferences() {
+        try {
+          for (const [sourceName, source] of Object.entries(sources)) {
+            const savedId = localStorage.getItem(`esl_${sourceName}_mic`);
+            if (savedId !== null) {
+              source.selectedDeviceId = savedId;
+            }
+            const savedLoop = localStorage.getItem(`esl_${sourceName}_loopback`);
+            if (savedLoop !== null && source.loopbackEl) {
+              source.loopbackEl.checked = savedLoop === "true";
+              source.loopbackTouched = true;
+            }
+          }
+        } catch (e) {
+          // localStorage might be unavailable in some iframe sandboxes
+        }
+      }
+
+      function checkDeviceConflicts() {
+        const studentId = sources.student.selectedDeviceId;
+        const teacherId = sources.teacher.selectedDeviceId;
+        const warningEl = document.getElementById("deviceWarning");
+        if (!warningEl) return;
+        if (studentId && teacherId && studentId === teacherId) {
+          warningEl.style.display = "block";
+          warningEl.textContent = "⚠️ Warning: Student and Teacher are assigned to the same audio device. Choose separate devices to prevent audio crossover.";
+        } else {
+          warningEl.style.display = "none";
+          warningEl.textContent = "";
+        }
+      }
+
       function setMicOptions(source, devices) {
+        const sourceKey = source === sources.student ? "student" : "teacher";
         const previousValue = source.selectedDeviceId || source.select.value || "";
         source.select.innerHTML = "";
         const defaultOption = document.createElement("option");
@@ -403,7 +470,7 @@
           source.select.appendChild(option);
         });
 
-        const hasPrevious = devices.some((device) => device.deviceId === previousValue);
+        const hasPrevious = devices.some((device) => device.deviceId === previousValue && previousValue !== "");
         let nextValue = hasPrevious ? previousValue : "";
         if (!nextValue && source.preferred) {
           for (const pattern of source.preferred) {
@@ -418,6 +485,7 @@
             }
           }
         }
+
         source.selectedDeviceId = nextValue;
         source.select.value = source.selectedDeviceId;
         const selectedDevice = devices.find((device) => device.deviceId === nextValue);
@@ -444,16 +512,67 @@
           : "Room mic mode — echo cancellation on";
       }
 
-      async function refreshMicrophones() {
+      async function refreshMicrophones(promptPermission = false) {
         if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
           return;
         }
         try {
-          const devices = await navigator.mediaDevices.enumerateDevices();
-          const microphones = devices.filter((device) => device.kind === "audioinput");
+          let devices = await navigator.mediaDevices.enumerateDevices();
+          let microphones = devices.filter((device) => device.kind === "audioinput");
+
+          // If device labels are blank (permission not yet granted), request a quick stream to unlock labels
+          const hasEmptyLabels = microphones.length > 0 && !microphones.some((d) => d.label);
+          if ((promptPermission || hasEmptyLabels) && navigator.mediaDevices.getUserMedia) {
+            try {
+              const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+              stream.getTracks().forEach((track) => track.stop());
+              devices = await navigator.mediaDevices.enumerateDevices();
+              microphones = devices.filter((device) => device.kind === "audioinput");
+            } catch (err) {
+              console.warn("Could not request mic permissions for device enumeration:", err);
+            }
+          }
+
+          loadSavedPreferences();
+
           for (const source of Object.values(sources)) {
             setMicOptions(source, microphones);
           }
+
+          // De-duplication guard: If multiple distinct physical/virtual mics exist,
+          // ensure Student and Teacher do not default to the exact same device.
+          if (microphones.length > 1) {
+            if (
+              sources.student.selectedDeviceId === sources.teacher.selectedDeviceId ||
+              (!sources.student.selectedDeviceId && !sources.teacher.selectedDeviceId)
+            ) {
+              const studentMatch = microphones.find((d) =>
+                sources.student.preferred && sources.student.preferred.some((p) => p.test(d.label || ""))
+              );
+              const teacherMatch = microphones.find((d) =>
+                sources.teacher.preferred && sources.teacher.preferred.some((p) => p.test(d.label || "")) &&
+                !(studentMatch && d.deviceId === studentMatch.deviceId)
+              );
+
+              if (studentMatch && teacherMatch && studentMatch.deviceId !== teacherMatch.deviceId) {
+                if (!sources.student.selectedDeviceId || sources.student.selectedDeviceId === sources.teacher.selectedDeviceId) {
+                  sources.student.selectedDeviceId = studentMatch.deviceId;
+                  sources.student.select.value = studentMatch.deviceId;
+                  sources.student.selectedDeviceLabel = studentMatch.label || "";
+                  updateModeHint(sources.student);
+                }
+                if (!sources.teacher.selectedDeviceId || sources.teacher.selectedDeviceId === sources.student.selectedDeviceId) {
+                  sources.teacher.selectedDeviceId = teacherMatch.deviceId;
+                  sources.teacher.select.value = teacherMatch.deviceId;
+                  sources.teacher.selectedDeviceLabel = teacherMatch.label || "";
+                  updateModeHint(sources.teacher);
+                }
+              }
+            }
+          }
+
+          checkDeviceConflicts();
+
           emitEvent("microphones_listed", {
             count: microphones.length,
             student_device_id: sources.student.selectedDeviceId || null,
@@ -627,6 +746,11 @@
         errorEl.textContent = "";
         source.initPromise = (async () => {
           try {
+            // Verify device options are populated with valid labels before opening stream
+            if (!source.selectedDeviceId || !source.selectedDeviceLabel) {
+              await refreshMicrophones(true);
+            }
+
             setStatus(`Requesting ${source.label.toLowerCase()} microphone...`);
             const isLoopback = Boolean(source.loopbackEl && source.loopbackEl.checked);
             const audioConstraints = {};
@@ -648,20 +772,50 @@
             source.input = source.audioContext.createMediaStreamSource(source.mediaStream);
             source.analyser = source.audioContext.createAnalyser();
             source.analyser.fftSize = 2048;
-            source.processor = source.audioContext.createScriptProcessor(4096, 1, 1);
-            source.processor.onaudioprocess = (event) => {
-              if (lessonState !== "recording") {
-                return;
+
+            let captureMode = "script_processor";
+            if (source.audioContext.audioWorklet && workletBlobUrl) {
+              try {
+                await source.audioContext.audioWorklet.addModule(workletBlobUrl);
+                source.workletNode = new AudioWorkletNode(source.audioContext, "pcm-capture-processor");
+                source.workletNode.port.onmessage = (event) => {
+                  if (lessonState !== "recording") {
+                    return;
+                  }
+                  const chunk = new Float32Array(event.data);
+                  source.liveChunkBuffers.push(chunk);
+                  source.liveChunkSamples += chunk.length;
+                  flushLiveChunk(sourceName, false);
+                };
+                source.input.connect(source.analyser);
+                source.analyser.connect(source.workletNode);
+                const muteGain = source.audioContext.createGain();
+                muteGain.gain.value = 0;
+                source.workletNode.connect(muteGain);
+                muteGain.connect(source.audioContext.destination);
+                captureMode = "audio_worklet";
+              } catch (err) {
+                console.warn(`AudioWorklet fallback for ${sourceName}:`, err);
               }
-              const channel = event.inputBuffer.getChannelData(0);
-              const chunk = new Float32Array(channel);
-              source.liveChunkBuffers.push(chunk);
-              source.liveChunkSamples += chunk.length;
-              flushLiveChunk(sourceName, false);
-            };
-            source.input.connect(source.analyser);
-            source.analyser.connect(source.processor);
-            source.processor.connect(source.audioContext.destination);
+            }
+
+            if (captureMode === "script_processor") {
+              source.processor = source.audioContext.createScriptProcessor(4096, 1, 1);
+              source.processor.onaudioprocess = (event) => {
+                if (lessonState !== "recording") {
+                  return;
+                }
+                const channel = event.inputBuffer.getChannelData(0);
+                const chunk = new Float32Array(channel);
+                source.liveChunkBuffers.push(chunk);
+                source.liveChunkSamples += chunk.length;
+                flushLiveChunk(sourceName, false);
+              };
+              source.input.connect(source.analyser);
+              source.analyser.connect(source.processor);
+              source.processor.connect(source.audioContext.destination);
+            }
+            source.captureMode = captureMode;
             source.ready = true;
             setStatus("Ready");
             await refreshMicrophones();
@@ -670,6 +824,7 @@
               sample_rate: source.audioContext.sampleRate,
               device_label: source.selectedDeviceLabel || "default",
               loopback_mode: isLoopback,
+              capture_mode: captureMode,
             });
           } catch (err) {
             errorEl.textContent = `${source.label} microphone access denied or unavailable.`;
@@ -704,14 +859,51 @@
         return new Uint8Array(pcm.buffer);
       }
 
-      function uint8ToBase64(uint8) {
-        let binary = "";
-        const chunkSize = 0x8000;
-        for (let i = 0; i < uint8.length; i += chunkSize) {
-          const chunk = uint8.subarray(i, i + chunkSize);
-          binary += String.fromCharCode.apply(null, chunk);
+      async function drainOutbox(sourceName) {
+        const source = sources[sourceName];
+        if (source.isDraining) {
+          return;
         }
-        return btoa(binary);
+        source.isDraining = true;
+        while (source.outboxQueue.length > 0 && lessonState === "recording") {
+          const item = source.outboxQueue[0];
+          try {
+            const resp = await fetch(`${INGESTION_SERVER_URL}/chunk`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/octet-stream",
+                "X-Track-Id": sourceName,
+                "X-Seq": String(item.seq),
+                "X-Sample-Rate": String(item.sampleRate),
+                "X-Timestamp": String(item.timestamp),
+              },
+              body: item.data,
+            });
+            if (resp.ok) {
+              source.outboxQueue.shift();
+              source.consecutiveFailures = 0;
+            } else {
+              source.consecutiveFailures = (source.consecutiveFailures || 0) + 1;
+              if (source.consecutiveFailures > 5) {
+                setStatus("Audio server connection degraded... Retrying");
+              }
+              await new Promise((r) => setTimeout(r, 400));
+            }
+          } catch (err) {
+            console.warn(`[AudioRecorder] Ingestion POST /chunk failed for ${sourceName}:`, err);
+            source.consecutiveFailures = (source.consecutiveFailures || 0) + 1;
+            if (source.consecutiveFailures > 5) {
+              setStatus("Audio server unreachable... Buffering");
+              if (source.consecutiveFailures === 6) {
+                emitEvent("recorder_error", {
+                  message: `Audio ingestion server on ${INGESTION_SERVER_URL} unreachable. Chunks buffered in memory.`,
+                });
+              }
+            }
+            await new Promise((r) => setTimeout(r, 500));
+          }
+        }
+        source.isDraining = false;
       }
 
       function flushLiveChunk(sourceName, force = false) {
@@ -734,15 +926,18 @@
         if (!pcm16.length) {
           return;
         }
-        streamlitBridge.setComponentValue({
-          event: "recording_chunk",
-          t: Date.now(),
-          source: sourceName,
+        // Cap outbox queue at 60 items (30 seconds of audio)
+        if (source.outboxQueue.length >= 60) {
+          source.outboxQueue.shift();
+        }
+        source.outboxQueue.push({
           seq: source.liveChunkSeq,
-          sample_rate: sampleRate,
-          pcm16_base64: uint8ToBase64(pcm16),
+          data: pcm16,
+          sampleRate: sampleRate,
+          timestamp: Date.now(),
         });
         source.liveChunkSeq += 1;
+        drainOutbox(sourceName);
       }
 
       function blobToBase64(blob) {
@@ -765,11 +960,20 @@
             resolve();
             return;
           }
-          recorder.onstop = () => resolve();
+          let resolved = false;
+          const done = () => {
+            if (!resolved) {
+              resolved = true;
+              resolve();
+            }
+          };
+          recorder.onstop = done;
+          const timeout = setTimeout(done, 1500);
           try {
             recorder.stop();
           } catch (err) {
-            resolve();
+            clearTimeout(timeout);
+            done();
           }
         });
       }
@@ -785,6 +989,7 @@
           source.liveChunkBuffers = [];
           source.liveChunkSamples = 0;
           source.liveChunkSeq = 0;
+          source.outboxQueue = [];
           source.mediaChunks = [];
         }
         errorEl.textContent = "";
@@ -811,17 +1016,31 @@
           setUiState();
           setStatus("Recording lesson... 00:00");
           startTimer();
-          // The meter is cosmetic and sits upstream of lesson_started. If it
-          // ever throws, the emit below never runs, the app never enters the
-          // recording state, and nothing is transcribed at all - with only a
-          // "microphone unavailable" message to go on. Never let that happen.
+
+          // Notify HTTP Ingestion Daemon
+          const sourcesConfig = Object.fromEntries(
+            activeSources.map(([sourceName, source]) => [sourceName, source.audioContext.sampleRate])
+          );
+          const activeModes = activeSources.map(([, s]) => s.captureMode || "script_processor");
+          const modeUsed = activeModes.includes("audio_worklet") ? "audio_worklet" : "script_processor";
+
+          fetch(`${INGESTION_SERVER_URL}/lesson/start`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              capture_mode: modeUsed,
+              sources: sourcesConfig,
+            }),
+          }).catch((err) => console.warn("Could not notify ingestion server of start:", err));
+
           try {
             drawWaveform();
           } catch (err) {
             emitEvent("waveform_error", { message: String(err) });
           }
           emitEvent("lesson_started", {
-            sources: Object.fromEntries(activeSources.map(([sourceName, source]) => [sourceName, source.audioContext.sampleRate])),
+            sources: sourcesConfig,
+            capture_mode: modeUsed,
           });
         } catch (err) {
           errorEl.textContent = "Microphone access denied or unavailable.";
@@ -853,6 +1072,13 @@
         lessonState = "paused";
         setUiState();
         updateTimerStatus();
+
+        fetch(`${INGESTION_SERVER_URL}/lesson/pause`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }).catch((err) => console.warn("Could not notify ingestion server of pause:", err));
+
         emitEvent("lesson_paused", { active_seconds: Math.floor(activeMs / 1000) });
       }
 
@@ -873,6 +1099,13 @@
         lessonState = "recording";
         setUiState();
         updateTimerStatus();
+
+        fetch(`${INGESTION_SERVER_URL}/lesson/resume`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }).catch((err) => console.warn("Could not notify ingestion server of resume:", err));
+
         emitEvent("lesson_resumed", { active_seconds: Math.floor(activeMs / 1000) });
       }
 
@@ -897,30 +1130,45 @@
         }
         clearWaveform();
 
-        const audioPayload = {};
-        for (const [sourceName, source] of activeSources) {
-          await stopMediaRecorder(source);
-          if (source.mediaChunks.length) {
-            const blob = new Blob(source.mediaChunks, { type: source.mediaMimeType || "audio/webm" });
-            try {
-              audioPayload[sourceName] = {
-                b64: await blobToBase64(blob),
-                mime: source.mediaMimeType || "audio/webm",
-                bytes: blob.size,
-              };
-            } catch (err) {
-              emitEvent("lesson_audio_encode_error", { source: sourceName, message: String(err) });
-            }
-          }
-          source.mediaChunks = [];
-        }
+        fetch(`${INGESTION_SERVER_URL}/lesson/end`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({}),
+        }).catch((err) => console.warn("Could not notify ingestion server of end:", err));
 
-        setStatus("Lesson ended");
-        emitEvent("lesson_ended", {
-          active_seconds: totalActiveSeconds,
-          sources: activeSources.map(([sourceName]) => sourceName),
-          audio: audioPayload,
-        });
+        const audioPayload = {};
+        try {
+          for (const [sourceName, source] of activeSources) {
+            await stopMediaRecorder(source);
+            if (source.mediaChunks.length) {
+              const blob = new Blob(source.mediaChunks, { type: source.mediaMimeType || "audio/webm" });
+              // Guard: omit giant base64 payloads to avoid freezing/disconnecting Streamlit WebSocket;
+              // server-side TrackRecorder already continuously records full Ogg/Opus audio to disk.
+              if (blob.size <= 10 * 1024 * 1024) {
+                try {
+                  audioPayload[sourceName] = {
+                    b64: await blobToBase64(blob),
+                    mime: source.mediaMimeType || "audio/webm",
+                    bytes: blob.size,
+                  };
+                } catch (err) {
+                  emitEvent("lesson_audio_encode_error", { source: sourceName, message: String(err) });
+                }
+              }
+            }
+            source.mediaChunks = [];
+          }
+        } finally {
+          for (const [, source] of Object.entries(sources)) {
+            cleanupSource(source);
+          }
+          setStatus("Lesson ended");
+          emitEvent("lesson_ended", {
+            active_seconds: totalActiveSeconds,
+            sources: activeSources.map(([sourceName]) => sourceName),
+            audio: audioPayload,
+          });
+        }
       }
 
       for (const [sourceName, source] of Object.entries(sources)) {
@@ -930,6 +1178,9 @@
               return;
             }
             source.loopbackTouched = true;
+            try {
+              localStorage.setItem(`esl_${sourceName}_loopback`, String(source.loopbackEl.checked));
+            } catch (e) {}
             // The constraint is applied at capture time, so drop any open stream.
             cleanupSource(source);
             updateModeHint(source);
@@ -944,7 +1195,11 @@
             return;
           }
           source.selectedDeviceId = event.target.value || "";
+          try {
+            localStorage.setItem(`esl_${sourceName}_mic`, source.selectedDeviceId);
+          } catch (e) {}
           cleanupSource(source);
+          checkDeviceConflicts();
           emitEvent("microphone_selected", { source: sourceName, selected_device_id: source.selectedDeviceId || null });
           setStatus("Ready to start");
           errorEl.textContent = "";
@@ -978,6 +1233,277 @@
         streamlitBridge.setFrameHeight(document.documentElement.scrollHeight);
       }
 
+      // Floating feedback popup installer on parent document (runs with same-origin privileges)
+      function setupParentFeedbackPopup() {
+        try {
+          const win = window.parent;
+          if (!win || !win.document) return;
+          const doc = win.document;
+
+          let pop = doc.getElementById("fb-popup");
+          if (!pop) {
+            pop = doc.createElement("div");
+            pop.id = "fb-popup";
+            pop.innerHTML = `
+              <div class="fb-popup-header">
+                <span class="fb-popup-pin-badge">📌 Pinned</span>
+                <button type="button" class="fb-popup-close" title="Close (or press Esc)">✕</button>
+              </div>
+              <div class="fb-popup-body"></div>
+            `;
+            doc.body.appendChild(pop);
+          }
+
+          let currentSentId = null;
+          let currentSentEl = null;
+          let isPinned = false;
+          let hideTimer = null;
+          let isMouseOverPopup = false;
+          let isMouseOverSent = false;
+
+          const popBody = pop.querySelector(".fb-popup-body");
+          const closeBtn = pop.querySelector(".fb-popup-close");
+
+          function clearActivePinnedClass() {
+            doc.querySelectorAll(".sent.active-pinned").forEach((el) => {
+              el.classList.remove("active-pinned");
+            });
+          }
+
+          function hide(force = false) {
+            if (isPinned && !force) return;
+            isPinned = false;
+            pop.className = "";
+            clearActivePinnedClass();
+            currentSentId = null;
+            currentSentEl = null;
+            if (hideTimer) {
+              clearTimeout(hideTimer);
+              hideTimer = null;
+            }
+          }
+
+          function scheduleHide(ms = 350) {
+            if (isPinned) return;
+            if (hideTimer) clearTimeout(hideTimer);
+            hideTimer = setTimeout(() => {
+              if (!isMouseOverSent && !isMouseOverPopup && !isPinned) {
+                hide();
+              }
+            }, ms);
+          }
+
+          function reposition() {
+            if (!currentSentEl || !doc.body.contains(currentSentEl)) return;
+            const pane = doc.querySelector(".transcript-pane");
+            let box = null;
+            if (pane) {
+              const r = pane.getBoundingClientRect();
+              box = { left: r.left, right: r.right, top: r.top, bottom: r.bottom };
+            } else {
+              box = { left: 8, right: win.innerWidth - 8, top: 8, bottom: win.innerHeight - 8 };
+            }
+
+            const s = currentSentEl.getBoundingClientRect();
+            // If the sentence is scrolled completely out of view:
+            if (s.bottom < box.top || s.top > box.bottom) {
+              if (!isPinned) hide();
+              return;
+            }
+
+            const pad = 8;
+            pop.style.maxWidth = Math.max(260, Math.min(460, box.right - box.left - 2 * pad)) + "px";
+            const w = pop.offsetWidth, h = pop.offsetHeight;
+
+            let left = Math.min(Math.max(s.left, box.left + pad), box.right - w - pad);
+            let top = s.bottom + 6;
+            if (top + h > box.bottom - pad) {
+              top = s.top - h - 6;
+            }
+            top = Math.min(top, box.bottom - h - pad);
+            top = Math.max(top, box.top + pad);
+            pop.style.left = Math.round(left) + "px";
+            pop.style.top = Math.round(top) + "px";
+          }
+
+          function show(sent, pin = false) {
+            if (hideTimer) {
+              clearTimeout(hideTimer);
+              hideTimer = null;
+            }
+            const card = sent.querySelector(".fb-card");
+            if (!card) return;
+
+            currentSentEl = sent;
+            currentSentId = sent.getAttribute("data-sent-id") || sent.textContent.trim().slice(0, 40);
+
+            if (popBody) {
+              popBody.innerHTML = card.innerHTML;
+            } else {
+              pop.innerHTML = card.innerHTML;
+            }
+
+            if (pin) {
+              isPinned = true;
+              clearActivePinnedClass();
+              sent.classList.add("active-pinned");
+              pop.className = "show pinned";
+            } else {
+              if (!isPinned) {
+                pop.className = "show";
+              }
+            }
+
+            reposition();
+          }
+
+          // Close button click
+          if (closeBtn && !closeBtn.__bound) {
+            closeBtn.__bound = true;
+            closeBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              hide(true);
+            });
+          }
+
+          // Mouse entering/leaving popup
+          if (!pop.__bound) {
+            pop.__bound = true;
+            pop.addEventListener("mouseenter", () => {
+              isMouseOverPopup = true;
+              if (hideTimer) {
+                clearTimeout(hideTimer);
+                hideTimer = null;
+              }
+            });
+            pop.addEventListener("mouseleave", () => {
+              isMouseOverPopup = false;
+              scheduleHide(350);
+            });
+          }
+
+          if (!win.__fbPopupInstalled) {
+            win.__fbPopupInstalled = true;
+
+            // Delegated mouseover for sentences
+            doc.addEventListener("mouseover", function (e) {
+              const t = e.target;
+              if (!t || !t.closest) return;
+              const sent = t.closest(".sent.flagged, .sent.failed");
+              if (sent) {
+                isMouseOverSent = true;
+                if (!isPinned || sent !== currentSentEl) {
+                  show(sent, false);
+                }
+              }
+            }, true);
+
+            // Delegated mouseout for sentences
+            doc.addEventListener("mouseout", function (e) {
+              const t = e.target;
+              if (!t || !t.closest) return;
+              const sent = t.closest(".sent.flagged, .sent.failed");
+              if (sent) {
+                isMouseOverSent = false;
+                scheduleHide(350);
+              }
+            }, true);
+
+            // Delegated click for pinning
+            doc.addEventListener("click", function (e) {
+              const t = e.target;
+              if (!t || !t.closest) return;
+              // If click is inside popup, don't dismiss
+              if (pop.contains(t)) return;
+
+              const sent = t.closest(".sent.flagged, .sent.failed");
+              if (sent) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (isPinned && currentSentEl === sent) {
+                  hide(true); // Toggle off if clicked again
+                } else {
+                  show(sent, true); // Pin it!
+                }
+                return;
+              }
+
+              // Clicked elsewhere on document
+              if (isPinned) {
+                hide(true);
+              }
+            }, true);
+
+            // Escape key unpins
+            win.addEventListener("keydown", function (e) {
+              if (e.key === "Escape") {
+                hide(true);
+              }
+            }, true);
+
+            // Scroll in transcript pane updates position
+            doc.addEventListener("scroll", function (e) {
+              if (pop.classList.contains("show")) {
+                reposition();
+              }
+            }, true);
+
+            win.addEventListener("resize", function () {
+              if (pop.classList.contains("show")) {
+                reposition();
+              }
+            });
+
+            // MutationObserver: Streamlit fragment auto-refreshes every 500ms.
+            // When the DOM updates, find the matching sentence and re-anchor!
+            const observer = new MutationObserver(function () {
+              if (pop.classList.contains("show") && currentSentId) {
+                const updatedSent = doc.querySelector(`.sent[data-sent-id="${currentSentId}"]`);
+                if (updatedSent) {
+                  currentSentEl = updatedSent;
+                  if (isPinned) {
+                    updatedSent.classList.add("active-pinned");
+                  }
+                  // Update body content if card changed
+                  const card = updatedSent.querySelector(".fb-card");
+                  if (card && popBody && popBody.innerHTML !== card.innerHTML) {
+                    popBody.innerHTML = card.innerHTML;
+                  }
+                  reposition();
+                } else if (!isPinned && !isMouseOverPopup) {
+                  // Only hide if sentence vanished and mouse isn't in popup
+                  hide(true);
+                }
+              }
+            });
+
+            observer.observe(doc.body, { childList: true, subtree: true });
+          }
+
+          doc.addEventListener("click", (e) => {
+            const btn = e.target && e.target.closest ? e.target.closest("#copy-transcript-btn, .copy-transcript-btn") : null;
+            if (!btn) return;
+            const text = btn.getAttribute("data-transcript") || "";
+            if (!text) return;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(() => {
+                const prevHtml = btn.innerHTML;
+                btn.innerHTML = "✓ Copied!";
+                btn.classList.add("copied");
+                setTimeout(() => {
+                  btn.innerHTML = prevHtml;
+                  btn.classList.remove("copied");
+                }, 2000);
+              }).catch((err) => {
+                console.warn("Clipboard copy failed:", err);
+              });
+            }
+          });
+        } catch (e) {
+          console.warn("Could not install parent feedback popup:", e);
+        }
+      }
+
       streamlitBridge.setComponentReady();
       updateFrameHeight();
       emitEvent("component_ready");
@@ -985,8 +1511,10 @@
       setUiState();
       clearWaveform();
       refreshMicrophones();
+      setupParentFeedbackPopup();
       new ResizeObserver(updateFrameHeight).observe(document.documentElement);
       setTimeout(updateFrameHeight, 250);
+      setTimeout(setupParentFeedbackPopup, 500);
     </script>
   </body>
 </html>

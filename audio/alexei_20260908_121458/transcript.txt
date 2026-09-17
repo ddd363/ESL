@@ -1,0 +1,654 @@
+Lesson: alexei_20260908_121458
+Saved: 2026-09-08 13:12:57
+
+[00:00] Student: with my English is. But the interview was in Russian, and actually, I didn't care too much. I wasn't preparing specifically for it. So it it wasn't a big deal for me. But now when I when I think after ten years, almost ten years, so Everything has changed. I heard they also ask engineers, software engineers to solve complex problems, which which has nothing to do with the real job. Something theoretical like like, writing an implementation of some complex data structure, like SEV self self-balanced. set binary tree,
+
+[00:20] Teacher: Yeah.
+
+[00:29] Teacher: Yes.
+
+[00:32] Teacher: Yeah.
+
+[00:39] Teacher: Okay. Yeah.
+
+[00:43] Teacher: Yeah. Yeah. Yes.
+
+[00:54] Teacher: Yeah.
+
+[01:00] Student: something very Thank you. yeah, something very useless. No one writes their own data structures nowadays. They use libraries for the. Everything is already written. You have to focus on a business logic, not on this basic stuff. But still, they do it. Yeah.
+
+[01:00] Teacher: Exactly. Actually, that's a big example. Yeah. Yeah. That's right.
+
+[01:08] Teacher: Hmm.
+
+[01:12] Teacher: Yeah. For sure. Yeah. Yeah. Yeah. Yeah.
+
+[01:18] Teacher: Yeah. Yeah. Yeah. I know. I know. Yeah. Yeah. Yeah. That's true. They do. And, yeah. They often do it.
+
+[01:28] Student: you But one of one of my, okay, relatives, No. Not, he's not, real. Just a mate. He told me he was passing an interview recently to some big company, and they asked him to prepare an AI agent before they start the interview? They gave him three days to to get prepared. And then when the interview has started, they asked him to show the harness for that AI agent, like, how he designed skills and sub subagents, infrastructure, everything. And then they asked him to solve a problem with the help of the AI agent. And he succeeded. And they said, well, cool. That's what we need,
+
+[01:31] Teacher: Yep.
+
+[01:37] Teacher: Ah.
+
+[01:39] Teacher: Okay. Sure.
+
+[01:56] Teacher: Oh, interesting. Ah, okay.
+
+[02:13] Teacher: Hmm.
+
+[02:17] Teacher: Yeah.
+
+[02:22] Teacher: Interesting.
+
+[02:29] Student: actually. So they don't ask to write the code anymore. They ask to they ask to set up AI for writing the code.
+
+[02:29] Teacher: Yeah.
+
+[02:34] Teacher: Mmm.
+
+[02:38] Teacher: Yep. Good. Sounds good, actually. Yeah.
+
+[02:42] Student: Uh. I didn't know. Because this this technology this technology is so new. We don't know yet the result. But in one of my projects, I I work with a code base, which is not maintained by me, but I had to do some changes there. And I was trying to figure out how it works. And reading the code, reading through the code, I realized that it was edited by AI a lot for last year maybe. And as as the result, they got they they made this code really really difficult for understanding. And I can imagine how it works when when you are
+
+[02:44] Teacher: No? Okay. Why? Yeah.
+
+[02:50] Teacher: Sure.
+
+[03:08] Teacher: Okay.
+
+[03:11] Teacher: Yeah.
+
+[03:17] Teacher: you Thank you.
+
+[03:23] Teacher: Okay. Hey.
+
+[03:26] Teacher: Yeah.
+
+[03:37] Teacher: Hmm.
+
+[03:42] Student: when when you're working on small tasks with a limited context, you ask AI to prepare the full request, the changes in the code, and the changes are touching a very small amount of files. In the project. And then a a human should review the changes. And he sees small changes that change small things. but he has no a big picture. of it. So how these small changes contribute to big picture? Do they follow the architectural decisions or they don't? It doesn't know. And the AI agent which does these changes, which did these changes, it doesn't actually care about the architecture, about the main idea of a project, how should it be. evolve. So these
+
+[03:51] Teacher: Hmm.
+
+[03:58] Teacher: Yeah. Okay. Yeah.
+
+[04:03] Teacher: Yeah.
+
+[04:16] Teacher: Yep.
+
+[04:20] Teacher: Yes. Peace.
+
+[04:41] Teacher: Hmm.
+
+[04:43] Student: small changes, they accumulate And then months later, you get a messy code base, which is difficult to understand. So that's why I'm not sure about how how profitable it is to use AI. When you are working on a prototype, for example, and you need a fast result, it's it's great. It is good to use AI because it can generate a lot of code in a short period of time. But when you are maintaining a complex project, you you got to be really careful, I think. And the the problem with AI is that you cannot blame it. You cannot fire it. You cannot
+
+[04:53] Teacher: Okay.
+
+[05:08] Teacher: Yeah. Sure. Yeah.
+
+[05:15] Teacher: Yeah.
+
+[05:18] Teacher: Yeah.
+
+[05:25] Teacher: Yeah. Sure.
+
+[05:32] Teacher: Yeah. I agree. Yeah.
+
+[05:42] Teacher: Hmm.
+
+[05:43] Student: like, punish it. So AI doesn't care about the result, actually. It tries to do its best, but if it fails, nothing is happening. To him.
+
+[05:47] Teacher: Yeah.
+
+[05:51] Teacher: Yeah.
+
+[05:53] Teacher: Thank you.
+
+[05:57] Teacher: Man, it's a super annoying when you catch it out, and it's just like, oh, sorry. You're absolutely right. I shouldn't have done that. You're like, no. Oh, man. I I...
+
+[06:05] Student: Yeah. Yeah. Yeah.
+
+[06:11] Student: So sorry for for, uh, like, going out of the main topic. or yeah. Yeah.
+
+[06:17] Teacher: No. No. I I see what you mean. I think I agree with you. But I I guess I think maybe that could that's why what could be interesting if the companies are checking, because they're, for example, checking that people are using the skills, the AI tools well, maybe. Because anyone, even myself, can just open the program and say, do this and try and do that. And not have really an overall... maybe, like, management of the... of the coding agents. I had just done when I, I am not coming from a programming background, so I'm just like. just keep doing it until it works. You know? Which is a bad that's example of bad technique. So maybe if the company's uh interviewing people and they are sort of trying to make sure that the candidates are
+
+[06:29] Student: you
+
+[06:42] Student: you
+
+[07:07] Student: Thank you.
+
+[07:11] Student: you you
+
+[07:18] Teacher: using the tools well. Responsibly, perhaps. That could be not so bad. Yeah. But no. Yeah. But, Yeah. We don't know.
+
+[07:26] Student: Yeah. But we we we we don't know yet how to what does it mean actually to... what does it mean to use AI responsibly? How how to make it? Because this technology is so new to us. It is a new tool. We have no we have no idea what's the right approach. Overall, programming is a quite... new industry. Say, compare it compare it to to the art of building. Right? People built buildings, roads, bridges for thousands of years. And they they have tried so many approaches, many materials, many technologies. because they they know what could go wrong and what's what's the best way
+
+[07:36] Teacher: you Ah. Yeah. Thank you. Hmm.
+
+[07:52] Teacher: Yeah. Sure.
+
+[07:59] Teacher: Yeah. Okay.
+
+[08:08] Teacher: Yeah. That's. it.
+
+[08:17] Teacher: Okay.
+
+[08:26] Student: to build. what you need to build. Right? And and programming has maybe eighty years history, maybe even less. So it's still it's still a very new industry, and people are still learning how to write the code. And.
+
+[08:29] Teacher: Okay. Yes. Yeah.
+
+[08:38] Teacher: Yeah. Okay. Sure.
+
+[08:44] Teacher: Hmm.
+
+[08:50] Teacher: Mmm.
+
+[08:54] Student: yeah, And the and new tools appear like, every day. New frameworks, new new languages. Okay. Maybe languages do not appear every day, but at least a few new languages appear every year. So there the the industry is is still evolving, so no one knows how to write how to write a good book. code. And now especially with with AI, how to explain AI. I want wanna have a good code in a result, but what's the good code is, it's difficult to measure. Right? You can't explain what is a good bridge. Right? It should...
+
+[09:01] Teacher: Yeah. Yeah.
+
+[09:07] Teacher: Sure. There are still, yeah. Yeah. Yeah. Yeah.
+
+[09:16] Teacher: Yes.
+
+[09:21] Teacher: Yes.
+
+[09:29] Teacher: Mmm.
+
+[09:36] Teacher: Yeah. Yeah. Sure. It's almost philosophical. Right? I think. if you're looking at functionality or if you're looking at the design structure kind of
+
+[09:41] Student: All right.
+
+[09:44] Student: All right. the pro- Yeah.
+
+[09:50] Student: Yeah. You you you can't you can have some requirements that that could be measured. For example, their the response time of the first page should be less than one hundred milliseconds. That's that's a clear requirement. But the requirement to the code to make it extendable, simple for understanding, it's difficult to to measure it. Right? And it's also difficult to measure. the amount of job. done by software engineer. For example, when you want to measure how much the worker did when he was building a wall. a wall of bricks. You can count the amount of bricks, Right? You can you can amount the the
+
+[09:59] Teacher: Mmm.
+
+[10:08] Teacher: Okay. Yep. Yep. Yep. Yep. Okay. you.
+
+[10:23] Teacher: Hmm. Yes.
+
+[10:44] Teacher: Okay. Yeah. Yeah. Yeah. Yes. Yes.
+
+[10:50] Teacher: Yeah. Yeah.
+
+[10:51] Student: volume of bricks he installed. But what about the programmer? One line of code could cost to your company, like, ten million dollars. And ten million lines of code could be just a waste of time. So you you have no... idea. So it's it's difficult. Maybe it is philosophical. I I don't know. And. Yeah. yeah. So.
+
+[11:02] Teacher: Mmm. Hmm Mmm.
+
+[11:10] Teacher: Yeah. It's...
+
+[11:21] Teacher: Yes. Yeah. Yeah. Yeah. Okay. Let's get back to it. But, no, I I see what you're saying for sure. I see what you're saying. And it's there it's true. Yeah. Okay. We we're talking about this. This is useful because you can also think about this in your case. I think it's going gonna be useful for you to get into a habit of phrasing things in this way. Situation, you are working at your company. you Know, as your in your job position and so on. Task. You are picking up this messy code base.
+
+[11:21] Student: let's get back to our main topic. maybe. you you you
+
+[11:41] Student: um Thank you.
+
+[11:54] Student: Yeah.
+
+[12:00] Teacher: which has been uh, destr- corrupted you you you Yes. A big pile of slop. Okay. And action, what what was your action in that? Case? What did you do?
+
+[12:01] Student: Mhmm.
+
+[12:05] Student: It a a a a a a generator, which was a a big AS slope.
+
+[12:16] Student: Yeah. Thank you.
+
+[12:21] Student: Well, I was... okay. My first attempt was just to ask an agent. How it works. And he he replied me with a like, a really big amount of text, full full full of full of terms. I'm not I'm not familiar with. Yeah. So I just...
+
+[12:31] Teacher: Okay.
+
+[12:38] Teacher: Yeah. Oh, man. Okay. Sure. I I can. Yeah. I heard it so much. Yeah. Okay. Yeah. Yeah. Yeah.
+
+[12:52] Student: when AI answers you, with text, you need a method to validate it says true. So, and if it answers with a big amount of text, you just cannot validate it. Right? Because you have so many things to check to understand if if what he's saying is right or wrong. So I decided another. approach. I just started reading the code manually. From from the very top to bottom, like from controllers layer. Through the business logic to gateway layer. And I built a a a diagram in our meter board. Just to yeah. And then then the picture became pretty clear. after doing after doing this investigation manually, I figured
+
+[12:54] Teacher: Yeah.
+
+[12:59] Teacher: Yes. Okay. Yep.
+
+[13:06] Teacher: Yep.
+
+[13:21] Teacher: Okay.
+
+[13:32] Teacher: Okay.
+
+[13:47] Teacher: Okay. BAM Yep.
+
+[13:52] Student: out how everything works actually. Almost, Almost. Because some parts of the code were still quite confusing. And then I decided to reach out to guys who made these changes. They said, oh, we did it with the help of AI. So we are not sure how it works. Their answer was, they didn't which is ridiculous, because the author the the author of the changes should be at least, at least he he should understand what the AI did when they prepared this. Sad. pull request changes. change yeah. So, anyway, as a as a result as a result, I shared this knowledge with my team because, actually, my manager asked me, like, in this microservice, how what's what's the logic to... to do some some stuff.
+
+[14:00] Teacher: Yep.
+
+[14:05] Teacher: Yep.
+
+[14:09] Teacher: Sure. Sure. Sure. Yeah. Yeah. Yeah. Okay.
+
+[14:30] Teacher: Yep. Yep.
+
+[14:34] Teacher: That's true. you Yep.
+
+[14:52] Student: Yeah. And I explained to him and to my my team because since, like, last last week, we own this microservice. Actually, it was handed over to us. Which which is a lot of fun, I think. Because we we we started to own a messy piece of code. Anyway anyway, I shared I shared my knowledge in a form of presentation to my team. explained them what's the architecture, what was the initial idea, of the architecture of this project before engineers started using AI to contribute to it, how it evolved, what we get what we have now. How it works. and what requires refactoring. Manual refactoring, of course. Uh, so yeah, that's great. neat.
+
+[15:05] Teacher: Okay. Uh-huh. Okay. you Ah, okay. Yep.
+
+[15:34] Teacher: Yeah.
+
+[15:43] Teacher: Okay. it. Yeah.
+
+[15:52] Teacher: Wait. So what was the result if you had to summarize the results? In one sentence?
+
+[15:53] Student: Thank you.
+
+[15:59] Student: One sentence So I've I've got the understanding of how this messy piece of code actually works.
+
+[16:00] Teacher: Yeah.
+
+[16:07] Teacher: Yes. Okay. At this this point, you have got the understanding, but it hasn't been you haven't implemented it. At this point in time.
+
+[16:09] Student: you Thank you. Yeah. At this point, I didn't do any any changes so far.
+
+[16:18] Teacher: Yeah. Sure. Sure. Okay. Okay. got Yeah. it. Yeah. I see. I see. So the result is that you... I guess, you deter you decided that it's going gonna be more efficient to just ride it again. You figured out how it works, and it's going to be easier to just ride it again.
+
+[16:37] Student: Not not to write it again. To, like, make some changes into existing code base to make it more pure Thank you.
+
+[16:39] Teacher: Okay.
+
+[16:44] Teacher: Ah. you Alright. right. Yeah. Sure. Yeah. Yeah. Refactoring. Okay. That's good. Yeah. So you you decided that that's the optimal Right. Yeah. Okay. Then I guess the result is that... you've reached that you've reached this decision that that's the optimal. path. so go ahead. Yeah. Okay. Yeah. That's interesting. So okay. I what if I asked you something like, if I mentioned the question was like, can you describe a time you were handed a messy code base? Or something. Can you describe a time you were handed a messy project and you try to tell me that whole situation you just described? But, like, in one to two minutes. As as one, now that I have all the context,
+
+[16:50] Student: We call it re refactoring.
+
+[16:54] Student: yeah Yeah.
+
+[17:12] Student: um Thank you.
+
+[17:26] Student: you you you
+
+[17:44] Teacher: it's useful to practice this situation, I think. Yeah. Because I already, I you explained a lot of context. So now you can just explain. yeah. Okay.
+
+[17:45] Student: All right.
+
+[17:51] Student: Okay.
+
+[17:54] Student: Yeah. Okay. Let me try. So the question is, the describe a situation when I when I. you hand- HENDED.
+
+[17:58] Teacher: Yeah. Okay.
+
+[18:04] Teacher: Yeah. like... Yeah. When you were were handed a messy project, or something. Handed, like, when you were given, when when you were assigned to, like, a... messy or difficult project. Yeah. Something like that. Yeah.
+
+[18:22] Student: Okay.
+
+[18:25] Student: Okay. Let me try. So, on my previous job, in Miro, Yeah. I was working working in content compliance team, and we were working on the feature which is called bring your own AI when customers can set up, API keys. For using AI feature through their AI agents. Not owned not not hosted by Miro, but they're using their AI models, their AI uh suppliers. So all the logic was executed through the microservice written in Python, called Cori API. And its logic was not non-deterministic for us. So once my manager figured out that when he set up a key to
+
+[18:27] Teacher: Good.
+
+[19:01] Teacher: Yep. Yep.
+
+[19:25] Student: use Google and Google AI and to generate ask it to generate an image. It turned out the Google model is not called, but some other, say, OpenAI model was called. So he asked me to explain how this Core AI Bye. Cori AI API microservice pick a provider for model a call. So that's the situation and the task. And the task. So my first attempt was to use an AI agent to do the investigation for me and explain the logic, how the model is picked. So I just asked it to explain. And it replied after a couple of minutes, it replied with a huge amount of... text. Explaining the logic behind the provider picking. And
+
+[19:38] Teacher: Okay.
+
+[19:52] Teacher: Okay.
+
+[19:55] Teacher: Yes. Okay. Yes.
+
+[20:25] Student: it was difficult to validate if it was saying true or not. So I decided to do the investigation by myself.
+
+[20:35] Student: I just opened the IDE and started research from the controllers level to the gateway layer. Yeah, and drawing a diagram manually. called diagram. And yeah, after a few hours of investigation, and talking to AI, of course, to validate my every step, I've got I've got a complete high level picture of how this Core AI API microservice works and how its architecture looks like. And, also, I I've... noticed some parts that require refactoring because the code there was difficult to understand. And, yeah, at the end I made a presentation for my manager and for the entire team of engineers. So now
+
+[20:50] Teacher: Hmm.
+
+[21:01] Teacher: Yeah.
+
+[21:11] Teacher: Yeah. Yeah.
+
+[21:35] Student: everyone had a context. How this service works. That's pretty neat.
+
+[21:43] Teacher: Yes. Yeah. Okay. Sure. Yeah. Yeah.
+
+[21:46] Student: you
+
+[21:48] Teacher: Yeah. Good. I guess. I see. The results, you could probably I feel strengthen in the results. to say, like, now we have, like, a clear plan forward or, you know yeah. Yeah. Yeah. Something like that at the end would yeah.
+
+[22:00] Student: Yeah. Yeah. Yeah. Also, I I I have to say that I will say I have created APIC an API in Jira and some tasks there on how to refactor the code. And then we have planned to do it in the next quarter. I don't know. But that's actually not true. That's not true. We did not, at least yet. Yeah.
+
+[22:09] Teacher: Um Yeah. Yeah. Yeah. Yeah.
+
+[22:15] Teacher: Yes. Yeah. Okay. Yeah. Exactly. Okay. Fair enough. Fair enough. Yeah. Usually. yeah. Of course, usually, when they're asking these questions, you would talk about things that have been implemented. So this is a. sort of unusual situation maybe where you you know, Later, you would say, and then I implemented it, and it was so good. You know? Yeah. Okay. But that's good. Okay. I can give you some feedback on that, I guess. uh Probably, the main thing is just in an interview, I think you would want to sort of compact this. a bit. Compact this information. Yes. Yes. Of course. Of course. Some of the Exactly. Yeah.
+
+[22:30] Student: Thank you.
+
+[22:39] Student: Yeah. Maybe.
+
+[22:44] Student: Yeah. Yeah.
+
+[23:03] Student: Of course. Of course. I I think before the interview, before the interview, I have to... like, prepare a couple such stories and bake them.
+
+[23:15] Teacher: Exactly. Yeah. Yeah. Yeah. Exactly. Okay. That's right. I think we can work on that. Yeah?
+
+[23:21] Student: Yeah. And after after such a story, they should also ask some questions. Like, for example, why didn't you try to, uh, tune your AI agent to answer more, with with more clear, to give more clear answer? Why didn't you, like, try to go... further with the AI why why you decided to make everything manually. For example, that could be a question.
+
+[23:28] Teacher: Yeah. Follow. up.
+
+[23:33] Teacher: Yes.
+
+[23:38] Teacher: Yep. That's right.
+
+[23:49] Teacher: Good.
+
+[24:02] Teacher: Yeah. Yeah. Yeah. Exactly. Yes. Yeah. Yeah. That's right. Yes.
+
+[24:04] Student: And.
+
+[24:10] Student: Thank you.
+
+[24:12] Teacher: Okay. By the way, you're your grammar was good. Yeah. Your grammar in this answer was great, actually. Referring to the tenses. I had been, you know, you said, like, I was working on or something. Or I've like, for the situations that your information you've uncovered that is still relevant now. Yeah. Your tenses were all correct anyway. Just I wanted to say that. Yes? Okay.
+
+[24:39] Student: By Uh, the way. All right.
+
+[24:43] Student: I think. well, I I don't know which sense to use for the maybe I know. Maybe I do it unintentionally. I mean, I do it correct. But, actually, I I don't know what's the correct, how how to how to structure my sentences correctly. When I'm talking about something which was happening in the past, like, when I was working on a project in the past. for a long time or when I have completed something, in the past. like, should I use have in the in the last phrase? When I completed it or when I have complete? I I don't know. Maybe you can give some examples of tenses that should be used when I'm talking about my last experience. Like, about something that was
+
+[24:47] Teacher: Okay. Yeah.
+
+[24:54] Teacher: Alright. All Thank you?
+
+[25:10] Teacher: Yes.
+
+[25:20] Teacher: Yeah.
+
+[25:36] Teacher: Yeah.
+
+[25:41] Teacher: Okay.
+
+[25:43] Student: happening to me, a like, couple of years ago. Happening was happening and happening still or was happening and completed in the past, like, I think you you got my question.
+
+[25:53] Teacher: Yes.
+
+[25:57] Teacher: I can do it. I can do it. I think you're you're in your answer, you you used them correctly. Like, if it's finished in the past, uh, I was working on that, you know, I was working on. It depends. Yeah. Okay. Okay. I I will do that for you. Yeah. But for example, in this this story you just told me, you know, I when you talk about what you've uncovered, like, I have found out or I... I've because it's like it happened in the past but it's still relevant. To you now. Like, this information, you have found out this information, but you haven't acted on it. If you...
+
+[26:01] Student: Thank you.
+
+[26:07] Student: Mhmm.
+
+[26:11] Student: you Thank you.
+
+[26:39] Student: Mhmm.
+
+[26:50] Teacher: if it's finished, it would change. And it also depends on your points of reference to some degree. But I will prepare. I will do it like that. Let me just prepare some something for you for True. that. which will, yeah, be useful for you. Good. Okay. Cool. We can do that. I do have a table that has all of them, but it it it will be too much. I think. Yeah. Okay. I I I have a a few minute, a three minute video. I think we should just watch that. because It won't take a lot of time, and it will explain this. It's not a listening exercise. Actually. it's just talking about this method. but I think it's too. useful to three minutes, I think it will it will be useful just to watch that. And then yeah.
+
+[27:06] Student: Mhmm. That would be nice.
+
+[27:18] Student: you Okay. Is it with
+
+[27:40] Student: Yeah. Okay.
+
+[27:46] Teacher: Okay. I'll just share that. It's from a recruitment agency. How to use the STAR method. He's from Australia. By the way.
+
+[27:47] Student: you you you Okay.
+
+[27:58] Teacher: So I hope you can understand him Ha well. ha ha. Okay. Yep.
+
+[28:08] Teacher: It's working.
+
+[28:12] Teacher: No. Why is it not working? you can't You can way?
+
+[28:16] Student: I I I can hear that guy. And this I I can. I can. And the actually, the the sound in the in the beginning was like someone is doing some renovation, one of your neighbors. I mean, he's like someone is draining the wall. Can you hear? Did you hear that?
+
+[28:33] Teacher: Really? I no. aren't Why here? I hear it? Oh, man. applications. Hold on a second.
+
+[28:39] Student: No?
+
+[28:46] Teacher: Let me just make sure it works outside of Prickly.
+
+[28:49] Student: Mhmm. Thank you.
+
+[28:52] Teacher: Huh. I don't... uh, wait a second. Sorry. Technical.
+
+[28:55] Student: you Now No is it worries? at all.
+
+[29:05] Teacher: technical troubles. Thank you.
+
+[29:12] Teacher: All Alright. That's so weird. Okay. Let's do it. Let's just watch that. Share. uh Windows.
+
+[29:26] Teacher: Whatever. I'll uh just you can watch it. It's only three minutes long, because so I'll just play it for you. Yep. And then yep. I'll play it now. Okay. I can't hear anything. So if it if yeah.
+
+[29:31] Student: Uh-huh.
+
+[29:34] Student: Okay.
+
+[29:52] Teacher: you you you you Thank you.
+
+[29:53] Student: Thank you.
+
+[30:17] Student: Thank you.
+
+[30:33] Student: you
+
+[30:57] Student: Thank you. Thank you.
+
+[31:01] Student: you you
+
+[32:05] Student: Thank you.
+
+[33:12] Teacher: Huh.
+
+[33:13] Student: Okay.
+
+[33:14] Teacher: Yes. Cool. I watched it separately. ah Yeah. That's interesting. Right?
+
+[33:24] Teacher: you Yeah. What what are your that? thoughts on it? Actually.
+
+[33:24] Student: Kind of. you you you uh uh uh uh um Oh, so the first thing I'd like to say is I understood maybe seventy% percent of what they were saying. Yeah. That that lady was so fluent. And There.
+
+[33:42] Teacher: Okay. I was wondering about that. Yeah. Yeah. Okay.
+
+[33:48] Teacher: Yeah. Yeah. Thank Okay.
+
+[33:52] Student: I I didn't get everything. Like, to the very detail of what she was saying.
+
+[33:57] Teacher: Yeah.
+
+[34:02] Teacher: Yes. Okay.
+
+[34:05] Student: And, you know, the this guy, he says, the first answer is a good one. The second is so-so, so. Because of some reasons. But for me, both answers are pretty ugly. Because the first the her first speech was sound quite unnatural. I I understand. That's that's yeah, that that's that's a not the real interview. So that's why she is she's just actor. an actress. She has never been working as a as a recruit manager. What what's your position a as recruit manager or a hiring re like, human resources manager? something like that?
+
+[34:12] Teacher: Yeah.
+
+[34:15] Teacher: Okay.
+
+[34:34] Teacher: It did it did sound on it, yeah Sure. Yeah. Yeah.
+
+[34:44] Teacher: No. Yeah.
+
+[34:48] Teacher: Okay. Sure. Something like...
+
+[34:55] Teacher: I forgot which actually. Yeah. Something like that. Something like that. Yeah.
+
+[35:00] Student: Yeah.
+
+[35:03] Student: Anyway. uh That's all they only sounded quite artificial and screwed there. it. Yeah. Yeah. And yeah. And I hope I will never hear a question. that would sound exactly like that. Like, tell me tell me about your tell me about the situation when you handle it. A complex, difficult, a difficult project. And what what you you Bye.
+
+[35:04] Teacher: Yes.
+
+[35:13] Teacher: Scripted. Yeah. No. It was. I suppose it did it did. It was pre-prepared prepared to yeah. Yeah.
+
+[35:28] Teacher: you Ha ha ha.
+
+[35:33] Teacher: Yeah.
+
+[35:43] Teacher: A difficult Man, I feel it's similar as the what I asked you earlier, like, when you were handed like, messy code, difficult project, You know? It's almost it's almost the question you talked about. before. Yeah. I see. I I agree with you. It it sounded fake. It sounded scripted. and uh you know,
+
+[36:04] Student: Yeah.
+
+[36:10] Student: Yeah. I it reminds me it reminds me the time when I was working Nestlé. in Nestle. We had okay. We had a lot of procedures, like, how to make the work in a workshop more safe. And one of the rituals was... it was kind of some one on one eld ld eldits something like that. So you approached all the yeah. Yeah. So you approach to a worker in a workshop. And start asking them questions And before before you come to the checklist, you need to have some kind a nice of breaker icebreaker. And they they gave us examples of icebreakers, like, hello. you How are doing recently? Blah, blah, blah. And then they said, you you
+
+[36:27] Teacher: Okay. you Yeah.
+
+[36:38] Teacher: Audit, Orders. Okay. Yeah. Yeah.
+
+[36:46] Teacher: Yeah. Yeah. Yeah. Yeah. Yeah.
+
+[36:57] Teacher: Okay.
+
+[37:02] Teacher: Okay. Yeah.
+
+[37:10] Student: now split into pairs and like, train this icebreaker thing, because it's very important to establish the the connection between people. And when it was my turn... when it was my turn, I just start started talking to Uh, to a girl that was in my say, a couple, a pair.
+
+[37:17] Teacher: Ah, Yeah. Yep. Yep. Yep.
+
+[37:23] Teacher: Yes.
+
+[37:38] Teacher: P yeah. Yes.
+
+[37:40] Student: And we we started just to talk like, naturally, like people do. And, like, fifteen minutes, fifteen seconds, not minutes, fifteen, twenty seconds later, the facilitator of the workshop. told me, stop talking. Just start icebreaker. And I said, man, what do you think I'm doing here? I'm doing an icebreaker. you
+
+[37:45] Teacher: Yes. Yes. Yes.
+
+[38:06] Teacher: Yeah. Yeah. Yeah. Ha Sure. you you You Yes. Yes. I see your point. Yeah. Yeah. Yeah. It's true. Yeah. Yeah. You shouldn't. uh have fully scripted answers. It's gonna sound weird uh if you practically recounting them word for word as well in this interview situation, I think. But, uh, it's yeah. For it. uh Hmm.
+
+[38:17] Student: So... Thank you.
+
+[38:24] Student: Thank you.
+
+[38:42] Student: Yeah. I I see I I think it's good to keep in mind key points and then... I just need some practice to learn how to feel fill the gaps between these points, key parts, how how to connect key points one to one to another. I.
+
+[38:59] Teacher: Yeah. Yeah. That's right.
+
+[39:05] Teacher: Yeah. I think the most, you yeah. Exactly. The most useful thing would be, like, thinking about the different types of questions they ask, thinking about, like, what you would talk about if they ask that. Like, what would I talk, what's an example of that? What's some time this happened? And Thinking about the key points and then answering in real time so that your answer is, like. natural at that moment. But the situation, you've you've your thought about all of these four points. Yeah. the And, uh, one other thing, the video was highlighting, I guess, I think it's a little bit it's important. It's like the way that you phrase the results. One of the things that was talking about, she in the first example, even though it's unnatural and all of that, she phrased the result like it was really everything her action was really effective. You know? The result
+
+[39:15] Student: Uh-huh. Thank you.
+
+[39:21] Student: you
+
+[39:33] Student: Mhmm.
+
+[40:05] Student: you
+
+[40:05] Teacher: was was clear. And in the second one, it was sort of like she was describing the same situation, but the result was, like, understated, basically. Yeah. She was like, we haven't had any problems since then. It was like, she just she she had solved the problem, and it hadn't occurred again, but the phrasing just could have been stronger, basically. That's that was one of it the points I was making. So yeah.
+
+[40:32] Student: Yeah. I I think it's very important to provide results with numbers. Like, our AI era grew up by three% hundred percent after after what I did. you you Thank you.
+
+[40:37] Teacher: Old Storm. Also yeah. Yep. Yeah.
+
+[40:45] Teacher: Yes. Yeah. I have to decreased. Oh, right. Yeah. Yeah. Yeah. Yeah. Exactly. Yeah. It That's right. That is good to use. Numbers. If you have this data, that's perfect. Yeah. We could look at another example. Wait a second.
+
+[41:05] Student: Thank you.
+
+[41:09] Student: Thank you.
+
+[41:11] Teacher: I have got some... maybe... Hey. okay. Maybe maybe going it's to gonna be useful to just look at some of the kinds of questions you might have to think about. Uh...
+
+[41:25] Teacher: For this, Hmm.
+
+[41:32] Teacher: Yeah. These are some...
+
+[41:37] Teacher: examples that you might need to think about. Tell me about a time you of disagreed with a decision. Tell me about a project that didn't go as planned. I think that's one that's quite common because they yeah. Check your problem solving skills.
+
+[41:40] Student: Thank you.
+
+[41:49] Student: Mhmm.
+
+[41:53] Student: Mhmm.
+
+[41:54] Teacher: Describe a professional achievement you're proud of. Tell me about a difficult basically, there are, like, these type of questions are focused on problem solving. Right? Something didn't go well. And they want to hear, that's why want they to wanna hear.
+
+[41:57] Student: Oh, okay.
+
+[42:06] Student: Yeah. Thank you.
+
+[42:15] Teacher: how did you deal with this difficulty? What what actions did you take? And the results should be, like? everything everything was smooth. So I don't know. Off the top of your head, uh straight like, out of your mind, would you have examples if asked I ask you, tell me about a project that didn't go as planned? Do you have something you would that would come up for you?
+
+[42:43] Student: I need some time to think, but basically, more or less, every project.
+
+[42:46] Teacher: Yes. Like, sure. Yep.
+
+[42:50] Teacher: Heh Yeah.
+
+[42:52] Student: doesn't go as planned in in in different okay, different scale, different in in some okay. I forgot the word. Anyway, yeah. Yeah. Yeah. More I mean, more or less. Some of them is go as not planned more, some of them less. So, yeah, the requirements are changing. So I need some example.
+
+[42:56] Teacher: Hmm.
+
+[43:06] Teacher: To to on different scales is that's good. Yeah. To different scales. Yeah. Yep. Yep. Yeah. Yep.
+
+[43:16] Teacher: Yes.
+
+[43:23] Teacher: Sure. Yeah.
+
+[43:27] Teacher: That's when you would choose an example for you that that has a really good result, basically. So you think of the best example in terms of how it makes you look. Yeah. Yeah. Like, marketing bit. a little it's a little, it's a kind of marketing, I guess.
+
+[43:27] Student: Okay.
+
+[43:30] Student: you you you Mhmm. Thank you.
+
+[43:50] Teacher: Yes.
+
+[43:51] Student: Yeah. It it is.
+
+[43:55] Student: uh Don't I don't think we have actually enough time to cover this. Right? But I should should think and get prepared for the next lesson.
+
+[44:03] Teacher: Yeah. We don't have enough time to answer it. So I thought we could...
+
+[44:13] Teacher: Yeah. Perhaps I can share a list. of these kind of questions, and you can just think about what you would talk about. I think maybe just number five because that's so common. And a difficult colleague that I don't know. I situation mean, that is common enough. To have some sort of difficulty from uh, occasionally with people. So Yeah, Okay. I'll share a list, and maybe you can just think about what you would talk about and how you would talk about it in terms of these four points. So that next time when we meet, you can practice, like, giving me the, or answering answering the question. Yeah.
+
+[44:18] Student: Thank you.
+
+[44:22] Student: Uh-huh.
+
+[44:35] Student: you you Thank you.
+
+[45:05] Student: Okay.
+
+[45:05] Teacher: Yeah. I can also, I will prepare this list of tenses that you that you mentioned so that we can do that at the same time. Yeah. Okay. That does sound good. Yeah. Let's do that. And yeah, I have some more information. I can send that through to you if you want. So you can maybe read it if you have time or... or not. Okay.
+
+[45:13] Student: Okay. Okay. Sounds good. you
+
+[45:30] Student: Yeah. Please send and may maybe I read. will I cannot promise because I tough, have to tough, tough stuff skittle. you Thank you.
+
+[45:33] Teacher: Good.
+
+[45:36] Teacher: Yeah. Yeah. you Sure.
+
+[45:40] Teacher: That's cool. We can do it in class as well. Yeah. Okay, then. That sounds good. Good. Then, yeah, let's finish here, and I'll see you next time. Tuesday. On Thursday. Yes. All Cool. right. Alright. Yeah. Have a good day. See you.
+
+[45:52] Student: Thursday. Yeah. See you. Ben. Bye bye.
+
+[46:00] Teacher: you you Thank you.
+
+[46:13] Teacher: you
+
+[46:35] Teacher: you
+
+[46:51] Teacher: you
+
+[48:25] Teacher: Thank you. you
+
+[48:47] Teacher: you
+
+[50:05] Teacher: Peace.
+
+[53:12] Teacher: you you Okay.
+
+[53:33] Teacher: you Thank you.
+
+[53:39] Teacher: you
+
+[53:52] Teacher: you
+
+[54:31] Teacher: you
+
+[55:16] Teacher: you Thank you.
+
+[55:33] Teacher: you
+
+[56:01] Teacher: you Thank you.
+
+[56:09] Teacher: you
+
+[56:19] Teacher: Thank you.
+
+[56:27] Teacher: Thank you. you you you you
+
+[57:03] Teacher: you Thank you.
+
+[57:11] Teacher: you you you Thank you. Thank you. Thank you. you you Thank you.

@@ -13,9 +13,11 @@ render loop.
 
 import hashlib
 
-LIVE_SENTENCE_GAP_S = 2.0        # silence inside one speaker that ends a sentence
-LIVE_SENTENCE_MAX_WORDS = 40     # hard cut for runaway unpunctuated speech
+LIVE_SENTENCE_GAP_S = 2.0        # silence after terminal punctuation that confirms boundary
+LIVE_SENTENCE_HARD_GAP_S = 6.0   # long silence that ends a sentence even without terminal punctuation
+LIVE_SENTENCE_MAX_WORDS = 100    # hard cut ceiling for runaway unpunctuated speech
 
+CLOSING_QUOTES = "\"\'”’»)]}"
 SENTENCE_END = (".", "?", "!", "…")
 
 # Tokens ending in "." that do not end the sentence. Bare initials ("B." while
@@ -28,27 +30,26 @@ SENTENCE_ABBREV = {
 
 def ends_sentence(token):
     """True when this token closes a sentence rather than just carrying a dot."""
-    if not token.endswith(SENTENCE_END):
+    if not token or not isinstance(token, str):
         return False
-    if token.lower() in SENTENCE_ABBREV:
+    tok = token.strip().rstrip(CLOSING_QUOTES)
+    if not tok.endswith(SENTENCE_END):
         return False
-    if len(token) == 2 and token[0].isalpha() and token.endswith("."):
+    if tok.lower() in SENTENCE_ABBREV:
+        return False
+    if len(tok) == 2 and tok[0].isalpha() and tok.endswith("."):
         return False
     return True
 
 
 def split_sentences(words, source, gap_s=LIVE_SENTENCE_GAP_S,
+                    hard_gap_s=LIVE_SENTENCE_HARD_GAP_S,
                     max_words=LIVE_SENTENCE_MAX_WORDS):
     """Sentence records for one source, derived deterministically from `words`.
 
-    A sentence is cut on a silence gap, on terminal punctuation, or at a hard
-    word ceiling. The id carries a hash of the text, so a late-arriving word that
-    re-shapes a sentence yields a new id — and therefore a fresh analysis —
-    rather than leaving stale feedback attached to text that no longer matches.
-
-    The returned records hold references to the very same word dicts that were
-    passed in, which is what lets the renderer map words back to sentences by
-    object identity.
+    A sentence is cut on terminal punctuation, on a silence gap following terminal
+    punctuation, on a hard silence gap (>= 6s) for abandoned thoughts, or at a hard
+    word ceiling. Mid-thought pauses without terminal punctuation do not fragment the sentence.
     """
     sentences = []
     buffer = []
@@ -62,12 +63,18 @@ def split_sentences(words, source, gap_s=LIVE_SENTENCE_GAP_S,
             buffer.clear()
             return
         start = buffer[0].get("start") or 0.0
-        digest = hashlib.md5(text.encode("utf-8")).hexdigest()[:8]
+        end = buffer[-1].get("end") or start
+        first_word_id = buffer[0].get("word_id") or f"{source}:{start:.3f}"
+        sentence_id = f"sent:{first_word_id}" if not str(first_word_id).startswith("sent:") else first_word_id
+        revision_id = hashlib.md5(text.encode("utf-8")).hexdigest()[:8]
         sentences.append({
-            "id": f"{source}:{start:.2f}:{digest}",
+            "id": f"{sentence_id}:{revision_id}",
+            "sentence_id": sentence_id,
+            "revision_id": revision_id,
+            "revision": revision_id,
             "source": source,
             "start": start,
-            "end": buffer[-1].get("end") or start,
+            "end": end,
             "text": text,
             "words": list(buffer),
             "word_count": len(buffer),
@@ -82,7 +89,8 @@ def split_sentences(words, source, gap_s=LIVE_SENTENCE_GAP_S,
             continue
         if buffer:
             gap = (word.get("start") or 0.0) - (buffer[-1].get("end") or 0.0)
-            if gap > gap_s:
+            last_token = (buffer[-1].get("word") or "").strip()
+            if (gap > gap_s and ends_sentence(last_token)) or gap > hard_gap_s:
                 flush()
         buffer.append(word)
         if ends_sentence(token) or len(buffer) >= max_words:
@@ -127,8 +135,9 @@ def low_confidence_words(sentence, threshold):
     seen = set()
     out = []
     for word in sentence["words"]:
+        is_uncertain = word.get("status") == "uncertain"
         confidence = word.get("confidence")
-        if confidence is None or confidence >= threshold:
+        if not is_uncertain and (confidence is None or confidence >= threshold):
             continue
         token = (word.get("word") or "").strip().strip(".,?!…")
         if token and token.lower() not in seen:

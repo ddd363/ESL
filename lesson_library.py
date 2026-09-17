@@ -233,6 +233,10 @@ def load_students(path=STUDENTS_PATH):
         if cleaned and key not in seen:
             seen.add(key)
             ordered.append(cleaned)
+    test_entry = next((n for n in ordered if n.lower() == "test"), None)
+    if test_entry:
+        ordered.remove(test_entry)
+        ordered.insert(0, test_entry)
     return ordered
 
 
@@ -259,6 +263,10 @@ def add_student(name, path=STUDENTS_PATH):
             return roster, existing
     roster.append(cleaned)
     roster.sort(key=str.lower)
+    test_entry = next((n for n in roster if n.lower() == "test"), None)
+    if test_entry:
+        roster.remove(test_entry)
+        roster.insert(0, test_entry)
     save_students(roster, path)
     return roster, cleaned
 

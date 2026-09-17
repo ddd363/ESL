@@ -38,11 +38,15 @@ class EndsSentenceTests(unittest.TestCase):
         for token in ("done.", "really?", "stop!", "well…"):
             self.assertTrue(ends_sentence(token), token)
 
+    def test_terminal_punctuation_inside_quotes(self):
+        for token in ('said."', "why?'", "done!”", "yes.’", "well…”", "right?)"):
+            self.assertTrue(ends_sentence(token), token)
+
     def test_plain_word_does_not(self):
         self.assertFalse(ends_sentence("because"))
 
     def test_abbreviation_does_not(self):
-        for token in ("Mr.", "etc.", "e.g.", "vs."):
+        for token in ("Mr.", "etc.", "e.g.", "vs.", 'Mr."', "etc.'"):
             self.assertFalse(ends_sentence(token), token)
 
     def test_bare_initial_does_not(self):
@@ -60,6 +64,25 @@ class SplitSentencesTests(unittest.TestCase):
         texts = [s["text"] for s in split_sentences(words, "student")]
         self.assertEqual(texts, ["I am late.", "You are early."])
 
+    def test_splits_on_quote_enclosed_terminal_punctuation(self):
+        words = utterance(['He', 'said,', '"I', 'will', 'come."', 'Then', 'he', 'left.'])
+        texts = [s["text"] for s in split_sentences(words, "student")]
+        self.assertEqual(texts, ['He said, "I will come."', "Then he left."])
+
+    def test_sentence_revision_safety_on_late_terminal_punctuation(self):
+        words_initial = utterance(["I", "want", "to", "go", "now"])
+        s1 = split_sentences(words_initial, "student")
+        self.assertEqual(len(s1), 1)
+        base_id = s1[0]["sentence_id"]
+        rev1 = s1[0]["revision_id"]
+
+        words_revised = utterance(["I", "want", "to", "go", "now."])
+        s2 = split_sentences(words_revised, "student")
+        self.assertEqual(len(s2), 1)
+        self.assertEqual(s2[0]["sentence_id"], base_id)
+        self.assertNotEqual(s2[0]["revision_id"], rev1)
+        self.assertEqual(s2[0]["text"], "I want to go now.")
+
     def test_splits_on_a_silence_gap(self):
         words = utterance(["I", "went", "there"]) + utterance(["then", "we", "left"], start=20.0)
         texts = [s["text"] for s in split_sentences(words, "student")]
@@ -75,11 +98,24 @@ class SplitSentencesTests(unittest.TestCase):
         texts = [s["text"] for s in split_sentences(words, "student")]
         self.assertEqual(texts, ["The letter B. is silent."])
 
+    def test_mid_sentence_pause_without_full_stop_does_not_fragment(self):
+        # A 3.5s pause without terminal punctuation must NOT cut the sentence.
+        words = (
+            utterance(["And", "in", "picnic,", "I", "think", "it", "is", "good", "to"])
+            + utterance(["volunteer", "because", "I", "love", "people."], start=7.0)
+        )
+        sentences = split_sentences(words, "student")
+        self.assertEqual(len(sentences), 1)
+        self.assertEqual(
+            sentences[0]["text"],
+            "And in picnic, I think it is good to volunteer because I love people.",
+        )
+
     def test_hard_ceiling_cuts_runaway_speech(self):
-        words = utterance(["and"] * 95, step=0.35)
+        words = utterance(["and"] * 220, step=0.35)
         sentences = split_sentences(words, "student")
         self.assertTrue(len(sentences) >= 2)
-        self.assertTrue(all(s["word_count"] <= 40 for s in sentences))
+        self.assertTrue(all(s["word_count"] <= 100 for s in sentences))
 
     def test_ignores_the_other_source(self):
         words = utterance(["hello."], source="teacher") + utterance(["hi."], start=5.0)

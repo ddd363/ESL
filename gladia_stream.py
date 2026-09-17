@@ -35,6 +35,19 @@ def _noop_log(event, **kwargs):
     pass
 
 
+def _get_sslopt():
+    sslopt = {}
+    try:
+        import certifi
+        import ssl
+        cafile = certifi.where()
+        sslopt["ca_certs"] = cafile
+        sslopt["context"] = ssl.create_default_context(cafile=cafile)
+    except Exception:
+        pass
+    return sslopt
+
+
 class GladiaStreamingClient:
     def __init__(
         self,
@@ -66,7 +79,7 @@ class GladiaStreamingClient:
         self.seen_utterance_ids = set()
 
         # Audio waiting to go out via background sender thread
-        self.pending_chunks = collections.deque(maxlen=40)
+        self.pending_chunks = collections.deque(maxlen=600)
         self.queue_lock = threading.Lock()
         self.queue_event = threading.Event()
         self.sender_thread = None
@@ -100,6 +113,11 @@ class GladiaStreamingClient:
                 "receive_partial_transcripts": True,
                 "receive_final_transcripts": True,
             },
+            "realtime_processing": {
+                "words_accurate_timestamps": True,
+            },
+            "endpointing": 0.8,
+            "maximum_duration_without_endpointing": 25,
         }
         data = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(
@@ -111,7 +129,15 @@ class GladiaStreamingClient:
             },
             method="POST",
         )
-        with urllib.request.urlopen(req, timeout=GLADIA_INIT_TIMEOUT_S) as resp:
+        ssl_ctx = None
+        try:
+            import certifi
+            import ssl
+            ssl_ctx = ssl.create_default_context(cafile=certifi.where())
+        except Exception:
+            pass
+
+        with urllib.request.urlopen(req, timeout=GLADIA_INIT_TIMEOUT_S, context=ssl_ctx) as resp:
             resp_body = resp.read().decode("utf-8")
             res_json = json.loads(resp_body)
             self.session_id = res_json.get("id")
@@ -187,6 +213,8 @@ class GladiaStreamingClient:
                     "start": item.get("start"),
                     "end": item.get("end"),
                     "confidence": item.get("confidence"),
+                    "is_final": True,
+                    "utterance_id": utterance_id,
                 })
             with self.lock:
                 if records:
@@ -226,7 +254,8 @@ class GladiaStreamingClient:
                 on_error=self._on_error,
                 on_close=self._on_close,
             )
-            self.ws.run_forever(ping_interval=15, ping_timeout=8)
+            sslopt = _get_sslopt()
+            self.ws.run_forever(ping_interval=15, ping_timeout=8, sslopt=sslopt)
 
         self.thread = threading.Thread(target=_connect_and_run, daemon=True, name="gladia-ws")
         self.thread.start()
@@ -285,6 +314,8 @@ class GladiaStreamingClient:
                 self.send_in_flight_since = perf_counter()
                 try:
                     ws_app.send(chunk_bytes, opcode=2)
+                    if self.bytes_sent_total == 0:
+                        self._log("gladia_stream_first_chunk_sent", bytes=len(chunk_bytes))
                 except Exception as e:
                     self.send_in_flight_since = None
                     with self.lock:

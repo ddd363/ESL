@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "lesson_dir": "audio/lesson_20260904_141440",
+  "student": "dmitri",
+  "status": "ended",
+  "started_at": "2026-09-04T07:14:15.639805+00:00",
+  "capture_mode": "audio_worklet",
+  "audio_clock_s": 19.55,
+  "tracks": {
+    "student": {
+      "sample_rate": 48000,
+      "samples_received": 938496,
+      "last_seq": 38,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 28
+    },
+    "teacher": {
+      "sample_rate": 48000,
+      "samples_received": 938496,
+      "last_seq": 38,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 28
+    }
+  }
+}

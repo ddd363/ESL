@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "lesson_dir": "audio/new-chinese-girl_20260912_121304",
+  "student": "new chinese girl",
+  "status": "recording",
+  "started_at": "2026-09-12T05:13:04.392401+00:00",
+  "capture_mode": "audio_worklet",
+  "audio_clock_s": 0.0,
+  "tracks": {
+    "student": {
+      "sample_rate": 48000,
+      "samples_received": 0,
+      "last_seq": -1,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 0
+    },
+    "teacher": {
+      "sample_rate": 48000,
+      "samples_received": 0,
+      "last_seq": -1,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 0
+    }
+  }
+}

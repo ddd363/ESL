@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "lesson_dir": "audio/ms-an_20260914_140256",
+  "student": "Ms An",
+  "status": "recording",
+  "started_at": "2026-09-14T07:02:56.823272+00:00",
+  "capture_mode": "audio_worklet",
+  "audio_clock_s": 0.0,
+  "tracks": {
+    "student": {
+      "sample_rate": 48000,
+      "samples_received": 0,
+      "last_seq": -1,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 0
+    },
+    "teacher": {
+      "sample_rate": 48000,
+      "samples_received": 0,
+      "last_seq": -1,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 0
+    }
+  }
+}

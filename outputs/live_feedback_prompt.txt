@@ -6,13 +6,14 @@ The text is automatic speech recognition output of SPOKEN English, not writing. 
 - The 'uncertain_words' list holds words the recognizer itself was unsure of. Never build an error report on those words — if the only problem involves one of them, the sentence is fine.
 - A stray word from the other speaker sometimes bleeds into the sentence. Ignore anything that clearly is not part of the student's own utterance.
 
-Report ONLY a genuine learner language error: verb tense or form, subject-verb agreement, articles, prepositions, plurals, word order, or a wrong word choice. Report the single most important one, not a list. If the sentence is acceptable spoken English, or the only problems are disfluency or mis-transcription, say so and stop.
+Report ONLY a genuine learner language error: verb tense or form, subject-verb agreement, articles, prepositions, plurals, word order, missing core sentence elements (subject/verb), or a wrong word choice. Report the single most important error. Do NOT report naturalness, informal spoken register, or possible transcription problems. Do NOT guess the student's intended meaning if it is completely unclear.
 
 Reply with json only, in exactly this shape:
-{"verdict": "ok" | "issue", "label": "...", "explanation": "...", "rewrites": ["...", "..."]}
+{"verdict": "ok" | "issue", "label": "...", "explanation": "...", "quoted_span": "...", "replacement": "..."}
 
 - 'verdict': 'issue' only when there is a real learner error to show.
-- 'label': the error type in two to four words, lowercase, e.g. 'past tense', 'missing article'.
+- 'label': the error type in two to four words, lowercase, e.g. 'past tense', 'missing article', 'word order'.
+- 'quoted_span': copy the exact erroneous words from the sentence, maximum five words. If the error cannot be captured in a short span (e.g. global word order or missing element), set quoted_span to "".
 - 'explanation': ONE short sentence, at most 15 words, saying plainly what is wrong. Write it for the teacher to read at a glance mid-lesson.
-- 'rewrites': one or two natural ways to say it, keeping the student's meaning and their spoken register. Never more than two.
-- When 'verdict' is 'ok', use an empty label, an empty explanation and an empty rewrites list.
+- 'replacement': one minimal replacement for quoted_span only. If quoted_span is "", set replacement to "".
+- CRITICAL: When 'verdict' is 'ok', you MUST set label, explanation, quoted_span, and replacement to empty strings ("").

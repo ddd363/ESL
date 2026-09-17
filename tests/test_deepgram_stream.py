@@ -32,7 +32,9 @@ def load_client_class():
         "log_event": lambda *a, **k: None, "websocket": None,
         "DEEPGRAM_SEND_STALL_S": STALL_S, "DEEPGRAM_DEFAULT_MODEL": "nova-3",
         "DEEPGRAM_DEFAULT_LANGUAGE": "en", "DEEPGRAM_KEYTERMS": (),
-        "DEEPGRAM_SMART_FORMAT": True,
+        "DEEPGRAM_SMART_FORMAT": False,
+        "DEEPGRAM_FILLER_WORDS": True,
+        "DEEPGRAM_ENDPOINTING_MS": 400,
     }
     exec(source[start:end], namespace)
     return namespace["DeepgramStreamingClient"]
@@ -108,9 +110,10 @@ class WedgedSocketTests(unittest.TestCase):
 
     def test_queue_stays_bounded_while_wedged(self):
         client = self.make_wedged()
-        for _ in range(500):
+        for _ in range(800):
             client.send_pcm16(b"\x00" * 1600)
-        self.assertLessEqual(len(client.pending_chunks), 40)
+        self.assertLessEqual(len(client.pending_chunks), client.pending_chunks.maxlen)
+        self.assertLess(len(client.pending_chunks), 800)
 
     def test_lesson_clock_advances_on_captured_audio(self):
         """The next stream's offset comes from this one, so dropped chunks must

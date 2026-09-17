@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "lesson_dir": "audio/tomasz_20260905_162535",
+  "student": "tomasz",
+  "status": "ended",
+  "started_at": "2026-09-05T09:25:35.031657+00:00",
+  "capture_mode": "audio_worklet",
+  "audio_clock_s": 2746.81,
+  "tracks": {
+    "student": {
+      "sample_rate": 48000,
+      "samples_received": 131846656,
+      "last_seq": 5478,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 0
+    },
+    "teacher": {
+      "sample_rate": 48000,
+      "samples_received": 131846656,
+      "last_seq": 5478,
+      "dropped_chunks": 0,
+      "duplicate_chunks": 0
+    }
+  }
+}
