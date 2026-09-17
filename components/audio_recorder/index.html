@@ -1483,7 +1483,15 @@
           doc.addEventListener("click", (e) => {
             const btn = e.target && e.target.closest ? e.target.closest("#copy-transcript-btn, .copy-transcript-btn") : null;
             if (!btn) return;
-            const text = btn.getAttribute("data-transcript") || "";
+            let text = btn.getAttribute("data-transcript") || "";
+            const b64 = btn.getAttribute("data-b64") || "";
+            if (!text && b64) {
+              try {
+                text = decodeURIComponent(escape(atob(b64)));
+              } catch (err) {
+                text = atob(b64);
+              }
+            }
             if (!text) return;
             if (navigator.clipboard && navigator.clipboard.writeText) {
               navigator.clipboard.writeText(text).then(() => {

@@ -86,6 +86,12 @@ from live_sentences import (
     split_sentences,
     update_feedback_windows,
 )
+from deepseek_consensus import (
+    DEEPSEEK_UTTERANCE_MODEL,
+    build_utterance_candidates_payload,
+    make_utterance_key,
+    run_deepseek_utterance_job,
+)
 
 if _HAS_STREAMLIT and st:
     st.set_page_config(
@@ -910,6 +916,10 @@ def autosave_lesson(force=False):
                     "feedback": feedback,
                     "windows": st.session_state.get("live_feedback_windows") or [],
                 }, f, ensure_ascii=False)
+        deepseek_utts = st.session_state.get("deepseek_utterances") or {}
+        if deepseek_utts:
+            with open(os.path.join(lesson_dir, "deepseek_utterances.json"), "w", encoding="utf-8") as f:
+                json.dump({"version": 1, "utterances": deepseek_utts}, f, ensure_ascii=False)
         st.session_state.autosave_last_at = now
         st.session_state.autosave_last_clock = datetime.now().strftime("%H:%M:%S")
     except Exception as e:
@@ -2349,6 +2359,68 @@ def live_feedback_counts():
             len(st.session_state.live_feedback_futures) + retrying, skipped)
 
 
+def mirror_deepseek_consensus_switch():
+    if "deepseek_consensus_on" in st.session_state:
+        st.session_state.deepseek_consensus_switch = bool(st.session_state.deepseek_consensus_on)
+
+
+def deepseek_consensus_is_on():
+    return bool(st.session_state.get("deepseek_consensus_switch", False))
+
+
+def drain_deepseek_utterances():
+    """Drain completed DeepSeek utterance jobs into cache."""
+    futures = st.session_state.get("deepseek_utterance_futures") or {}
+    cache = st.session_state.get("deepseek_utterances") or {}
+    for utt_id in [k for k, f in futures.items() if f.done()]:
+        future = futures.pop(utt_id)
+        if future.cancelled():
+            continue
+        try:
+            res = future.result()
+            if res.get("ok") and res.get("utterance"):
+                cache[utt_id] = res["utterance"]
+        except Exception as e:
+            log_event("deepseek_utterance_drain_error", id=utt_id, error=str(e))
+    st.session_state.deepseek_utterances = cache
+
+
+def dispatch_deepseek_utterances(turns, dg_words, gl_words, aai_words):
+    """Submit settled turns to DeepSeek for utterance determination."""
+    if not deepseek_consensus_is_on():
+        return
+    api_key = deepseek_api_key()
+    if not api_key:
+        return
+    try:
+        client = live_feedback_client(api_key)
+    except Exception as e:
+        log_event("deepseek_utterance_client_error", error=str(e))
+        return
+    futures = st.session_state.get("deepseek_utterance_futures")
+    if futures is None:
+        futures = {}
+        st.session_state.deepseek_utterance_futures = futures
+    cache = st.session_state.get("deepseek_utterances")
+    if cache is None:
+        cache = {}
+        st.session_state.deepseek_utterances = cache
+
+    recording = st.session_state.get("lesson_state") == "recording"
+    target_turns = turns[:-1] if (recording and len(turns) > 1) else turns
+
+    for turn in target_turns:
+        if len(futures) >= 5:
+            break
+        utt_id = make_utterance_key(turn["source"], turn["start"], turn["end"], turn["text"])
+        if utt_id in cache or utt_id in futures:
+            continue
+        payload = build_utterance_candidates_payload(turn, dg_words, gl_words, aai_words)
+        futures[utt_id] = BACKGROUND_EXECUTOR.submit(
+            run_deepseek_utterance_job, utt_id, client, payload, DEEPSEEK_UTTERANCE_MODEL
+        )
+
+
 def reset_live_feedback():
     st.session_state.live_feedback = {}
     st.session_state.live_feedback_futures = {}
@@ -2411,6 +2483,10 @@ def init_session_state():
         "retrospective_run": None,      # immutable snapshot for retrospective prompt evaluation
         "live_feedback_calls": 0,
         "live_feedback_errors": 0,
+        "deepseek_consensus_on": False,
+        "deepseek_consensus_switch": False,
+        "deepseek_utterances": {},
+        "deepseek_utterance_futures": {},
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -2485,6 +2561,8 @@ def handle_recorder_event(payload):
         st.session_state.replicate_error = ""
         st.session_state.synthesis_transcript = ""
         st.session_state.synthesis_error = ""
+        st.session_state.deepseek_utterances = {}
+        st.session_state.deepseek_utterance_futures = {}
         reset_live_feedback()
 
         source_rates = payload.get("sources") or {"student": 48000, "teacher": 48000}
@@ -3051,6 +3129,7 @@ def _render_transcript_pane():
     # Always drain, even with the switch just turned off, so in-flight jobs land
     # in the cache instead of leaking futures.
     drain_live_feedback()
+    drain_deepseek_utterances()
     # Track the switch before any early return: arming during a silence has to
     # open the window there, or the next thing said falls outside it.
     now_audio = newest_word_end(words)
@@ -3061,13 +3140,28 @@ def _render_transcript_pane():
     shown = visible_sources()
     visible_turns = [t for t in turns if t["source"] in shown]
 
+    # DeepSeek utterance consensus: when toggled on, reconcile turns using DeepSeek
+    if deepseek_consensus_is_on():
+        try:
+            dg_words = collect_raw_deepgram_words()
+            gl_words = collect_raw_gladia_words()
+            aai_words = collect_raw_assemblyai_words()
+            dispatch_deepseek_utterances(turns, dg_words, gl_words, aai_words)
+            cached_utts = st.session_state.get("deepseek_utterances") or {}
+            for t in visible_turns:
+                utt_id = make_utterance_key(t["source"], t["start"], t["end"], t["text"])
+                if utt_id in cached_utts:
+                    t["text"] = cached_utts[utt_id]
+                    t["words"] = None
+        except Exception as e:
+            log_event("deepseek_consensus_render_error", error=str(e))
+
     raw_transcript = build_transcript_text(visible_turns)
-    escaped_transcript = html.escape(raw_transcript, quote=True)
+    b64_transcript = base64.b64encode(raw_transcript.encode("utf-8")).decode("ascii") if visible_turns else ""
     copy_bar = (
         f'<div class="transcript-header-bar">'
         f'<button type="button" id="copy-transcript-btn" class="copy-transcript-btn" '
-        f'data-transcript="{escaped_transcript}" title="Copy full transcript to clipboard" '
-        f'onclick="if(navigator.clipboard){{var b=this;navigator.clipboard.writeText(b.getAttribute(\'data-transcript\')).then(function(){{var p=b.innerHTML;b.innerHTML=\'✓ Copied!\';b.classList.add(\'copied\');setTimeout(function(){{b.innerHTML=p;b.classList.remove(\'copied\');}},2000);}});}}">'
+        f'data-b64="{b64_transcript}" title="Copy full transcript to clipboard">'
         f'📋 Copy transcript</button></div>'
     ) if visible_turns else ""
 
@@ -3082,7 +3176,9 @@ def _render_transcript_pane():
         if not blocks:
             _render_empty_filter_note(turns, visible_turns)
             return
-        st.markdown(f'{copy_bar}<div class="transcript-pane">{"".join(blocks)}</div>',
+        if copy_bar:
+            st.markdown(copy_bar, unsafe_allow_html=True)
+        st.markdown(f'<div class="transcript-pane">{"".join(blocks)}</div>',
                     unsafe_allow_html=True)
         _autosave_if_live()
         return
@@ -3119,7 +3215,9 @@ def _render_transcript_pane():
     if not blocks:
         _render_empty_filter_note(turns, visible_turns)
         return
-    st.markdown(f'{copy_bar}<div class="transcript-pane">{"".join(blocks)}</div>',
+    if copy_bar:
+        st.markdown(copy_bar, unsafe_allow_html=True)
+    st.markdown(f'<div class="transcript-pane">{"".join(blocks)}</div>',
                 unsafe_allow_html=True)
     _autosave_if_live()
 
@@ -3243,6 +3341,18 @@ def load_lesson_into_session(lesson_dir):
     st.session_state.deepgram_batch_error = ""
     st.session_state.deepgram_batch_note = ""
     st.session_state.replicate_audio_path = tracks.get("student") or tracks.get("teacher")
+
+    # Load DeepSeek utterances if previously computed and saved
+    deepseek_path = os.path.join(lesson_dir, "deepseek_utterances.json")
+    if os.path.exists(deepseek_path):
+        try:
+            with open(deepseek_path, "r", encoding="utf-8") as f:
+                d_data = json.load(f)
+            st.session_state.deepseek_utterances = d_data.get("utterances", {})
+        except Exception:
+            st.session_state.deepseek_utterances = {}
+    else:
+        st.session_state.deepseek_utterances = {}
 
     reset_live_feedback()
     st.session_state.live_feedback = feedback
@@ -3936,7 +4046,7 @@ def render_app():
         handle_recorder_event(recorder_payload)
 
     st.markdown("### Transcript")
-    filter_col, live_col, note_col = st.columns([2, 2, 3])
+    filter_col, consensus_col, live_col, note_col = st.columns([2, 2, 2, 2])
     with filter_col:
         st.radio(
             "Show on screen",
@@ -3944,6 +4054,21 @@ def render_app():
             key="transcript_filter",
             horizontal=True,
         )
+    with consensus_col:
+        _has_deepseek = bool(deepseek_api_key())
+        st.toggle(
+            "DeepSeek utterance consensus",
+            key="deepseek_consensus_on",
+            disabled=not _has_deepseek,
+            help=(
+                "Uses DeepSeek to reconcile candidate words and probabilities from Deepgram, "
+                "Gladia, and AssemblyAI into the most likely verbatim utterances. "
+                "Toggle off to use the deterministic consensus algorithm."
+                if _has_deepseek
+                else "Needs DEEPSEEK_API_KEY in the environment."
+            ),
+        )
+        mirror_deepseek_consensus_switch()
     with live_col:
         _has_deepseek = bool(deepseek_api_key())
         st.toggle(
@@ -3983,6 +4108,9 @@ def render_app():
             "deepseek_key_present": bool(deepseek_api_key()),
             "deepseek_model": DEEPSEEK_MODEL,
             "deepseek_live_model": DEEPSEEK_LIVE_MODEL,
+            "deepseek_consensus_on": st.session_state.get("deepseek_consensus_on", False),
+            "deepseek_utterances_cached": len(st.session_state.get("deepseek_utterances") or {}),
+            "deepseek_utterances_in_flight": len(st.session_state.get("deepseek_utterance_futures") or {}),
             "live_feedback_on": st.session_state.live_feedback_on,
             "live_feedback_calls": st.session_state.live_feedback_calls,
             "live_feedback_errors": st.session_state.live_feedback_errors,

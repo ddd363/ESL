@@ -124,6 +124,7 @@ class ActiveLessonSession:
         self.tracks: Dict[str, TrackState] = {}
         self.lock = threading.RLock()
         self.manifest_path = os.path.join(lesson_dir, "session_manifest.json")
+        os.makedirs(self.lesson_dir, exist_ok=True)
         self.write_manifest()
 
     def add_track(self, source: str, sample_rate: int):
