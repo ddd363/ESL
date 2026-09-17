@@ -58,6 +58,12 @@ class TestHoverTipsRendering(unittest.TestCase):
         self.assertIn('class="speaker">Student:</span>', turn_html)
         self.assertIn('class="sent flagged"', turn_html)
 
+    def test_turn_html_unprocessed_deepseek_star(self):
+        turn_html_pending = _turn_html("student", 12.5, "He go home.", unprocessed_deepseek=True)
+        self.assertIn('[00:12]<span class="deepseek-unprocessed" title="DeepSeek processing pending">*</span>', turn_html_pending)
+        turn_html_done = _turn_html("student", 12.5, "He go home.", unprocessed_deepseek=False)
+        self.assertNotIn('*', turn_html_done)
+
     def test_uncertain_word_tooltip_html(self):
         word_item = {
             "word": "weather",

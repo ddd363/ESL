@@ -40419,3 +40419,545 @@
 {"ts": "2026-09-17T17:14:12.127015+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 84, "received": 169, "gap": 85}
 {"ts": "2026-09-17T17:14:12.626383+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 85, "received": 170, "gap": 85}
 {"ts": "2026-09-17T17:14:12.627656+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 85, "received": 170, "gap": 85}
+{"ts": "2026-09-17T17:28:33.227106+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_c_viy6sd/lesson_test_123/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:28:33.228304+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 1, "received": 3, "gap": 2}
+{"ts": "2026-09-17T17:28:33.516799+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_c_viy6sd/lesson_test_123/student.ogg", "bytes": 19200, "seconds": 0.2, "bytes_queued": 19200, "dropped_chunks": 0, "size_on_disk": 207, "error": null}
+{"ts": "2026-09-17T17:28:43.462813+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_03d6p8dz/lesson_chaos_001/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:28:43.469891+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_03d6p8dz/lesson_chaos_001/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:28:43.473145+00:00", "event": "deepgram_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-17T17:28:43.473852+00:00", "event": "deepgram_stream_unavailable", "reason": "websocket_client_missing"}
+{"ts": "2026-09-17T17:28:43.474142+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 50, "received": 55, "gap": 5}
+{"ts": "2026-09-17T17:28:43.626796+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_03d6p8dz/lesson_chaos_001/student.ogg", "bytes": 499200, "seconds": 5.2, "bytes_queued": 499200, "dropped_chunks": 0, "size_on_disk": 15075, "error": null}
+{"ts": "2026-09-17T17:28:43.631151+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_03d6p8dz/lesson_chaos_001/teacher.ogg", "bytes": 480000, "seconds": 5.0, "bytes_queued": 480000, "dropped_chunks": 0, "size_on_disk": 14515, "error": null}
+{"ts": "2026-09-17T17:29:54.825846+00:00", "event": "lesson_recorder_close", "source": "student", "path": "audio/lesson_20260918_001329/student.ogg", "bytes": 90983936, "seconds": 947.7, "bytes_queued": 90983936, "dropped_chunks": 0, "size_on_disk": 3371087, "error": null}
+{"ts": "2026-09-17T17:29:54.830654+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "audio/lesson_20260918_001329/teacher.ogg", "bytes": 90983936, "seconds": 947.7, "bytes_queued": 90983936, "dropped_chunks": 0, "size_on_disk": 4939957, "error": null}
+{"ts": "2026-09-17T17:29:54.832748+00:00", "event": "lesson_ended_ingestion"}
+{"ts": "2026-09-17T17:29:55.150726+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T17:29:55.161191+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:29:55.190609+00:00", "event": "deepgram_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T17:29:55.205974+00:00", "event": "deepgram_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T17:29:55.229832+00:00", "event": "lesson_audio_saved", "path": "audio/lesson_20260918_001329/student.webm", "bytes": 5418930}
+{"ts": "2026-09-17T17:29:55.267721+00:00", "event": "lesson_audio_saved", "path": "audio/lesson_20260918_001329/teacher.webm", "bytes": 8391816}
+{"ts": "2026-09-17T17:29:55.274971+00:00", "event": "lesson_ended", "lesson_dir": "audio/lesson_20260918_001329", "active_seconds": 985, "audio_files": ["audio/lesson_20260918_001329/student.webm", "audio/lesson_20260918_001329/teacher.webm"]}
+{"ts": "2026-09-17T17:29:56.363673+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T17:29:56.673790+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:29:57.096937+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:29:57.369106+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:29:59.810224+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:29:59.815487+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:29:59.960723+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/lesson_20260918_002959/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:29:59.961307+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/test_20260918_002959/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:29:59.967141+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/lesson_20260918_002959/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:29:59.968625+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/test_20260918_002959/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:29:59.992941+00:00", "event": "lesson_started_ingestion", "lesson_dir": "audio/lesson_20260918_002959", "student": "", "sources": {"student": 48000, "teacher": 48000}}
+{"ts": "2026-09-17T17:29:59.994430+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260918_002959", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-17T17:30:00.719937+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 1, "received": 2058, "gap": 2057}
+{"ts": "2026-09-17T17:30:00.721389+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 1, "received": 2058, "gap": 2057}
+{"ts": "2026-09-17T17:30:01.145632+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:30:01.159318+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:30:01.182721+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:30:01.185409+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:30:01.211259+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 2, "received": 2059, "gap": 2057}
+{"ts": "2026-09-17T17:30:01.211887+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 2, "received": 2059, "gap": 2057}
+{"ts": "2026-09-17T17:30:01.725665+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 3, "received": 2060, "gap": 2057}
+{"ts": "2026-09-17T17:30:01.726157+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 3, "received": 2060, "gap": 2057}
+{"ts": "2026-09-17T17:30:02.214044+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 4, "received": 2061, "gap": 2057}
+{"ts": "2026-09-17T17:30:02.214647+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 4, "received": 2061, "gap": 2057}
+{"ts": "2026-09-17T17:30:02.479181+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:30:02.486282+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:30:02.487285+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:30:02.487619+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-17T17:30:02.489944+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:30:02.490651+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-17T17:30:02.734452+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 5, "received": 2062, "gap": 2057}
+{"ts": "2026-09-17T17:30:02.735068+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 5, "received": 2062, "gap": 2057}
+{"ts": "2026-09-17T17:30:03.215959+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 6, "received": 2063, "gap": 2057}
+{"ts": "2026-09-17T17:30:03.216639+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 6, "received": 2063, "gap": 2057}
+{"ts": "2026-09-17T17:30:03.736006+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 7, "received": 2064, "gap": 2057}
+{"ts": "2026-09-17T17:30:03.737912+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 7, "received": 2064, "gap": 2057}
+{"ts": "2026-09-17T17:30:04.224116+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 8, "received": 2065, "gap": 2057}
+{"ts": "2026-09-17T17:30:04.225509+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 8, "received": 2065, "gap": 2057}
+{"ts": "2026-09-17T17:30:04.722347+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 9, "received": 2066, "gap": 2057}
+{"ts": "2026-09-17T17:30:04.724622+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 9, "received": 2066, "gap": 2057}
+{"ts": "2026-09-17T17:30:05.225816+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 10, "received": 2067, "gap": 2057}
+{"ts": "2026-09-17T17:30:05.228306+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 10, "received": 2067, "gap": 2057}
+{"ts": "2026-09-17T17:30:05.731466+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 11, "received": 2068, "gap": 2057}
+{"ts": "2026-09-17T17:30:05.733910+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 11, "received": 2068, "gap": 2057}
+{"ts": "2026-09-17T17:30:05.914390+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:30:06.224389+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 12, "received": 2069, "gap": 2057}
+{"ts": "2026-09-17T17:30:06.225653+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 12, "received": 2069, "gap": 2057}
+{"ts": "2026-09-17T17:30:06.726762+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 13, "received": 2070, "gap": 2057}
+{"ts": "2026-09-17T17:30:06.727514+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 13, "received": 2070, "gap": 2057}
+{"ts": "2026-09-17T17:30:07.238948+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 14, "received": 2071, "gap": 2057}
+{"ts": "2026-09-17T17:30:07.240045+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 14, "received": 2071, "gap": 2057}
+{"ts": "2026-09-17T17:30:07.741669+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 15, "received": 2072, "gap": 2057}
+{"ts": "2026-09-17T17:30:07.742752+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 15, "received": 2072, "gap": 2057}
+{"ts": "2026-09-17T17:30:08.241033+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 16, "received": 2073, "gap": 2057}
+{"ts": "2026-09-17T17:30:08.242071+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 16, "received": 2073, "gap": 2057}
+{"ts": "2026-09-17T17:30:08.743413+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 17, "received": 2074, "gap": 2057}
+{"ts": "2026-09-17T17:30:08.744050+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 17, "received": 2074, "gap": 2057}
+{"ts": "2026-09-17T17:30:09.262662+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 18, "received": 2075, "gap": 2057}
+{"ts": "2026-09-17T17:30:09.263537+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 18, "received": 2075, "gap": 2057}
+{"ts": "2026-09-17T17:30:09.744557+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 19, "received": 2076, "gap": 2057}
+{"ts": "2026-09-17T17:30:09.745556+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 19, "received": 2076, "gap": 2057}
+{"ts": "2026-09-17T17:30:10.272438+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 20, "received": 2077, "gap": 2057}
+{"ts": "2026-09-17T17:30:10.273599+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 20, "received": 2077, "gap": 2057}
+{"ts": "2026-09-17T17:30:10.747778+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 21, "received": 2078, "gap": 2057}
+{"ts": "2026-09-17T17:30:10.748427+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 21, "received": 2078, "gap": 2057}
+{"ts": "2026-09-17T17:30:11.273077+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 22, "received": 2079, "gap": 2057}
+{"ts": "2026-09-17T17:30:11.274487+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 22, "received": 2079, "gap": 2057}
+{"ts": "2026-09-17T17:30:11.759757+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 23, "received": 2080, "gap": 2057}
+{"ts": "2026-09-17T17:30:11.760396+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 23, "received": 2080, "gap": 2057}
+{"ts": "2026-09-17T17:30:12.316485+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 24, "received": 2081, "gap": 2057}
+{"ts": "2026-09-17T17:30:12.317022+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 24, "received": 2081, "gap": 2057}
+{"ts": "2026-09-17T17:30:12.755310+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 25, "received": 2082, "gap": 2057}
+{"ts": "2026-09-17T17:30:12.756847+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 25, "received": 2082, "gap": 2057}
+{"ts": "2026-09-17T17:30:13.255337+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 26, "received": 2083, "gap": 2057}
+{"ts": "2026-09-17T17:30:13.258146+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 26, "received": 2083, "gap": 2057}
+{"ts": "2026-09-17T17:30:13.765343+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 27, "received": 2084, "gap": 2057}
+{"ts": "2026-09-17T17:30:13.766092+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 27, "received": 2084, "gap": 2057}
+{"ts": "2026-09-17T17:30:14.272380+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 28, "received": 2085, "gap": 2057}
+{"ts": "2026-09-17T17:30:14.274040+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 28, "received": 2085, "gap": 2057}
+{"ts": "2026-09-17T17:30:14.771782+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 29, "received": 2086, "gap": 2057}
+{"ts": "2026-09-17T17:30:14.774047+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 29, "received": 2086, "gap": 2057}
+{"ts": "2026-09-17T17:30:15.271270+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 30, "received": 2087, "gap": 2057}
+{"ts": "2026-09-17T17:30:15.271800+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 30, "received": 2087, "gap": 2057}
+{"ts": "2026-09-17T17:30:15.772487+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 31, "received": 2088, "gap": 2057}
+{"ts": "2026-09-17T17:30:15.774611+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 31, "received": 2088, "gap": 2057}
+{"ts": "2026-09-17T17:30:16.328204+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 32, "received": 2089, "gap": 2057}
+{"ts": "2026-09-17T17:30:16.329284+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 32, "received": 2089, "gap": 2057}
+{"ts": "2026-09-17T17:30:16.773546+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 33, "received": 2090, "gap": 2057}
+{"ts": "2026-09-17T17:30:16.774612+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 33, "received": 2090, "gap": 2057}
+{"ts": "2026-09-17T17:30:17.333067+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 34, "received": 2091, "gap": 2057}
+{"ts": "2026-09-17T17:30:17.335394+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 34, "received": 2091, "gap": 2057}
+{"ts": "2026-09-17T17:30:17.783405+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 35, "received": 2092, "gap": 2057}
+{"ts": "2026-09-17T17:30:17.784614+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 35, "received": 2092, "gap": 2057}
+{"ts": "2026-09-17T17:30:18.278283+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 36, "received": 2093, "gap": 2057}
+{"ts": "2026-09-17T17:30:18.278866+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 36, "received": 2093, "gap": 2057}
+{"ts": "2026-09-17T17:30:18.890811+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 37, "received": 2094, "gap": 2057}
+{"ts": "2026-09-17T17:30:18.892617+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 37, "received": 2094, "gap": 2057}
+{"ts": "2026-09-17T17:30:19.279594+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 38, "received": 2095, "gap": 2057}
+{"ts": "2026-09-17T17:30:19.280120+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 38, "received": 2095, "gap": 2057}
+{"ts": "2026-09-17T17:30:19.869001+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 39, "received": 2096, "gap": 2057}
+{"ts": "2026-09-17T17:30:19.870864+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 39, "received": 2096, "gap": 2057}
+{"ts": "2026-09-17T17:30:20.282849+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 40, "received": 2097, "gap": 2057}
+{"ts": "2026-09-17T17:30:20.283916+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 40, "received": 2097, "gap": 2057}
+{"ts": "2026-09-17T17:30:20.794304+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 41, "received": 2098, "gap": 2057}
+{"ts": "2026-09-17T17:30:20.795705+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 41, "received": 2098, "gap": 2057}
+{"ts": "2026-09-17T17:30:21.295773+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 42, "received": 2099, "gap": 2057}
+{"ts": "2026-09-17T17:30:21.296551+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 42, "received": 2099, "gap": 2057}
+{"ts": "2026-09-17T17:30:21.797652+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 43, "received": 2100, "gap": 2057}
+{"ts": "2026-09-17T17:30:21.798578+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 43, "received": 2100, "gap": 2057}
+{"ts": "2026-09-17T17:30:22.308215+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 44, "received": 2101, "gap": 2057}
+{"ts": "2026-09-17T17:30:22.309343+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 44, "received": 2101, "gap": 2057}
+{"ts": "2026-09-17T17:30:22.875016+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 45, "received": 2102, "gap": 2057}
+{"ts": "2026-09-17T17:30:22.876865+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 45, "received": 2102, "gap": 2057}
+{"ts": "2026-09-17T17:30:23.306236+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 46, "received": 2103, "gap": 2057}
+{"ts": "2026-09-17T17:30:23.307460+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 46, "received": 2103, "gap": 2057}
+{"ts": "2026-09-17T17:30:23.805447+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 47, "received": 2104, "gap": 2057}
+{"ts": "2026-09-17T17:30:23.808007+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 47, "received": 2104, "gap": 2057}
+{"ts": "2026-09-17T17:30:24.304793+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 48, "received": 2105, "gap": 2057}
+{"ts": "2026-09-17T17:30:24.305412+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 48, "received": 2105, "gap": 2057}
+{"ts": "2026-09-17T17:30:24.810892+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 49, "received": 2106, "gap": 2057}
+{"ts": "2026-09-17T17:30:24.812085+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 49, "received": 2106, "gap": 2057}
+{"ts": "2026-09-17T17:30:25.314599+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 50, "received": 2107, "gap": 2057}
+{"ts": "2026-09-17T17:30:25.315128+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 50, "received": 2107, "gap": 2057}
+{"ts": "2026-09-17T17:30:25.809900+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 51, "received": 2108, "gap": 2057}
+{"ts": "2026-09-17T17:30:25.811483+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 51, "received": 2108, "gap": 2057}
+{"ts": "2026-09-17T17:30:26.309359+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 52, "received": 2109, "gap": 2057}
+{"ts": "2026-09-17T17:30:26.310146+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 52, "received": 2109, "gap": 2057}
+{"ts": "2026-09-17T17:30:26.811471+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 53, "received": 2110, "gap": 2057}
+{"ts": "2026-09-17T17:30:26.812603+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 53, "received": 2110, "gap": 2057}
+{"ts": "2026-09-17T17:30:27.323052+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 54, "received": 2111, "gap": 2057}
+{"ts": "2026-09-17T17:30:27.323961+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 54, "received": 2111, "gap": 2057}
+{"ts": "2026-09-17T17:30:27.824664+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 55, "received": 2112, "gap": 2057}
+{"ts": "2026-09-17T17:30:27.825821+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 55, "received": 2112, "gap": 2057}
+{"ts": "2026-09-17T17:30:28.324543+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 56, "received": 2113, "gap": 2057}
+{"ts": "2026-09-17T17:30:28.325058+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 56, "received": 2113, "gap": 2057}
+{"ts": "2026-09-17T17:30:28.827154+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 57, "received": 2114, "gap": 2057}
+{"ts": "2026-09-17T17:30:28.829307+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 57, "received": 2114, "gap": 2057}
+{"ts": "2026-09-17T17:30:29.337224+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 58, "received": 2115, "gap": 2057}
+{"ts": "2026-09-17T17:30:29.338475+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 58, "received": 2115, "gap": 2057}
+{"ts": "2026-09-17T17:30:29.829953+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 59, "received": 2116, "gap": 2057}
+{"ts": "2026-09-17T17:30:29.831821+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 59, "received": 2116, "gap": 2057}
+{"ts": "2026-09-17T17:30:30.382820+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 60, "received": 2117, "gap": 2057}
+{"ts": "2026-09-17T17:30:30.387657+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 60, "received": 2117, "gap": 2057}
+{"ts": "2026-09-17T17:30:30.833064+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 61, "received": 2118, "gap": 2057}
+{"ts": "2026-09-17T17:30:30.834379+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 61, "received": 2118, "gap": 2057}
+{"ts": "2026-09-17T17:30:31.353213+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 62, "received": 2119, "gap": 2057}
+{"ts": "2026-09-17T17:30:31.355042+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 62, "received": 2119, "gap": 2057}
+{"ts": "2026-09-17T17:30:31.837443+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 63, "received": 2120, "gap": 2057}
+{"ts": "2026-09-17T17:30:31.838602+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 63, "received": 2120, "gap": 2057}
+{"ts": "2026-09-17T17:30:32.337807+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 64, "received": 2121, "gap": 2057}
+{"ts": "2026-09-17T17:30:32.338543+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 64, "received": 2121, "gap": 2057}
+{"ts": "2026-09-17T17:30:32.529322+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-17T17:30:32.529427+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-17T17:30:32.531612+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T17:30:32.531691+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T17:30:32.840322+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 65, "received": 2122, "gap": 2057}
+{"ts": "2026-09-17T17:30:32.841245+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 65, "received": 2122, "gap": 2057}
+{"ts": "2026-09-17T17:30:33.338845+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 66, "received": 2123, "gap": 2057}
+{"ts": "2026-09-17T17:30:33.339514+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 66, "received": 2123, "gap": 2057}
+{"ts": "2026-09-17T17:30:33.361148+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-17T17:30:33.361752+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-17T17:30:33.883619+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 67, "received": 2124, "gap": 2057}
+{"ts": "2026-09-17T17:30:33.884562+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 67, "received": 2124, "gap": 2057}
+{"ts": "2026-09-17T17:30:34.356568+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 68, "received": 2125, "gap": 2057}
+{"ts": "2026-09-17T17:30:34.358298+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 68, "received": 2125, "gap": 2057}
+{"ts": "2026-09-17T17:30:34.861331+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 69, "received": 2126, "gap": 2057}
+{"ts": "2026-09-17T17:30:34.861920+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 69, "received": 2126, "gap": 2057}
+{"ts": "2026-09-17T17:30:35.355659+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 70, "received": 2127, "gap": 2057}
+{"ts": "2026-09-17T17:30:35.356593+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 70, "received": 2127, "gap": 2057}
+{"ts": "2026-09-17T17:30:35.451407+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:30:35.593123+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:30:35.863465+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 71, "received": 2128, "gap": 2057}
+{"ts": "2026-09-17T17:30:35.865198+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 71, "received": 2128, "gap": 2057}
+{"ts": "2026-09-17T17:30:36.357271+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 72, "received": 2129, "gap": 2057}
+{"ts": "2026-09-17T17:30:36.358035+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 72, "received": 2129, "gap": 2057}
+{"ts": "2026-09-17T17:30:36.859702+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 73, "received": 2130, "gap": 2057}
+{"ts": "2026-09-17T17:30:36.861153+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 73, "received": 2130, "gap": 2057}
+{"ts": "2026-09-17T17:30:37.359384+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 74, "received": 2131, "gap": 2057}
+{"ts": "2026-09-17T17:30:37.360183+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 74, "received": 2131, "gap": 2057}
+{"ts": "2026-09-17T17:30:37.988423+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 75, "received": 2132, "gap": 2057}
+{"ts": "2026-09-17T17:30:37.990237+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 75, "received": 2132, "gap": 2057}
+{"ts": "2026-09-17T17:30:38.362366+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 76, "received": 2133, "gap": 2057}
+{"ts": "2026-09-17T17:30:38.363072+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 76, "received": 2133, "gap": 2057}
+{"ts": "2026-09-17T17:30:38.863882+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 77, "received": 2134, "gap": 2057}
+{"ts": "2026-09-17T17:30:38.864704+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 77, "received": 2134, "gap": 2057}
+{"ts": "2026-09-17T17:30:39.381346+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 78, "received": 2135, "gap": 2057}
+{"ts": "2026-09-17T17:30:39.381986+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 78, "received": 2135, "gap": 2057}
+{"ts": "2026-09-17T17:30:39.871875+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 79, "received": 2136, "gap": 2057}
+{"ts": "2026-09-17T17:30:39.873582+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 79, "received": 2136, "gap": 2057}
+{"ts": "2026-09-17T17:30:40.371847+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 80, "received": 2137, "gap": 2057}
+{"ts": "2026-09-17T17:30:40.373224+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 80, "received": 2137, "gap": 2057}
+{"ts": "2026-09-17T17:30:40.882067+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 81, "received": 2138, "gap": 2057}
+{"ts": "2026-09-17T17:30:40.883071+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 81, "received": 2138, "gap": 2057}
+{"ts": "2026-09-17T17:30:41.424728+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 83, "received": 2139, "gap": 2056}
+{"ts": "2026-09-17T17:30:41.425245+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 83, "received": 2139, "gap": 2056}
+{"ts": "2026-09-17T17:30:42.388486+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 84, "received": 2141, "gap": 2057}
+{"ts": "2026-09-17T17:30:42.389112+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 84, "received": 2141, "gap": 2057}
+{"ts": "2026-09-17T17:30:42.887623+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 85, "received": 2142, "gap": 2057}
+{"ts": "2026-09-17T17:30:42.888709+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 85, "received": 2142, "gap": 2057}
+{"ts": "2026-09-17T17:30:43.393221+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 86, "received": 2143, "gap": 2057}
+{"ts": "2026-09-17T17:30:43.403322+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 86, "received": 2143, "gap": 2057}
+{"ts": "2026-09-17T17:30:44.082788+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 87, "received": 2144, "gap": 2057}
+{"ts": "2026-09-17T17:30:44.090701+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 87, "received": 2144, "gap": 2057}
+{"ts": "2026-09-17T17:30:44.391060+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 88, "received": 2145, "gap": 2057}
+{"ts": "2026-09-17T17:30:44.391853+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 88, "received": 2145, "gap": 2057}
+{"ts": "2026-09-17T17:30:44.892011+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 89, "received": 2146, "gap": 2057}
+{"ts": "2026-09-17T17:30:44.892978+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 89, "received": 2146, "gap": 2057}
+{"ts": "2026-09-17T17:30:45.392385+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 90, "received": 2147, "gap": 2057}
+{"ts": "2026-09-17T17:30:45.393583+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 90, "received": 2147, "gap": 2057}
+{"ts": "2026-09-17T17:30:45.894137+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 91, "received": 2148, "gap": 2057}
+{"ts": "2026-09-17T17:30:45.894865+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 91, "received": 2148, "gap": 2057}
+{"ts": "2026-09-17T17:30:46.495566+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 92, "received": 2149, "gap": 2057}
+{"ts": "2026-09-17T17:30:46.496421+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 92, "received": 2149, "gap": 2057}
+{"ts": "2026-09-17T17:30:46.896484+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 93, "received": 2150, "gap": 2057}
+{"ts": "2026-09-17T17:30:46.897149+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 93, "received": 2150, "gap": 2057}
+{"ts": "2026-09-17T17:30:47.409356+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 94, "received": 2151, "gap": 2057}
+{"ts": "2026-09-17T17:30:47.410355+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 94, "received": 2151, "gap": 2057}
+{"ts": "2026-09-17T17:30:47.909611+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 95, "received": 2152, "gap": 2057}
+{"ts": "2026-09-17T17:30:47.910232+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 95, "received": 2152, "gap": 2057}
+{"ts": "2026-09-17T17:30:48.411581+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 96, "received": 2153, "gap": 2057}
+{"ts": "2026-09-17T17:30:48.412180+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 96, "received": 2153, "gap": 2057}
+{"ts": "2026-09-17T17:30:48.938142+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 97, "received": 2154, "gap": 2057}
+{"ts": "2026-09-17T17:30:48.939452+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 97, "received": 2154, "gap": 2057}
+{"ts": "2026-09-17T17:30:49.414414+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 98, "received": 2155, "gap": 2057}
+{"ts": "2026-09-17T17:30:49.415023+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 98, "received": 2155, "gap": 2057}
+{"ts": "2026-09-17T17:30:49.915398+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 99, "received": 2156, "gap": 2057}
+{"ts": "2026-09-17T17:30:49.915902+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 99, "received": 2156, "gap": 2057}
+{"ts": "2026-09-17T17:30:50.420628+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 100, "received": 2157, "gap": 2057}
+{"ts": "2026-09-17T17:30:50.421489+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 100, "received": 2157, "gap": 2057}
+{"ts": "2026-09-17T17:30:50.920078+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 101, "received": 2158, "gap": 2057}
+{"ts": "2026-09-17T17:30:50.921118+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 101, "received": 2158, "gap": 2057}
+{"ts": "2026-09-17T17:30:51.421778+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 102, "received": 2159, "gap": 2057}
+{"ts": "2026-09-17T17:30:51.422627+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 102, "received": 2159, "gap": 2057}
+{"ts": "2026-09-17T17:30:51.922566+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 103, "received": 2160, "gap": 2057}
+{"ts": "2026-09-17T17:30:51.923424+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 103, "received": 2160, "gap": 2057}
+{"ts": "2026-09-17T17:30:52.423607+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 104, "received": 2161, "gap": 2057}
+{"ts": "2026-09-17T17:30:52.425209+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 104, "received": 2161, "gap": 2057}
+{"ts": "2026-09-17T17:30:52.924540+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 105, "received": 2162, "gap": 2057}
+{"ts": "2026-09-17T17:30:52.925617+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 105, "received": 2162, "gap": 2057}
+{"ts": "2026-09-17T17:30:53.424516+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 106, "received": 2163, "gap": 2057}
+{"ts": "2026-09-17T17:30:53.425026+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 106, "received": 2163, "gap": 2057}
+{"ts": "2026-09-17T17:30:53.938191+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 107, "received": 2164, "gap": 2057}
+{"ts": "2026-09-17T17:30:53.942186+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 107, "received": 2164, "gap": 2057}
+{"ts": "2026-09-17T17:30:54.440291+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 108, "received": 2165, "gap": 2057}
+{"ts": "2026-09-17T17:30:54.440956+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 108, "received": 2165, "gap": 2057}
+{"ts": "2026-09-17T17:30:54.939518+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 109, "received": 2166, "gap": 2057}
+{"ts": "2026-09-17T17:30:54.940362+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 109, "received": 2166, "gap": 2057}
+{"ts": "2026-09-17T17:30:55.441237+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 110, "received": 2167, "gap": 2057}
+{"ts": "2026-09-17T17:30:55.441852+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 110, "received": 2167, "gap": 2057}
+{"ts": "2026-09-17T17:30:56.050799+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 111, "received": 2168, "gap": 2057}
+{"ts": "2026-09-17T17:30:56.052459+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 111, "received": 2168, "gap": 2057}
+{"ts": "2026-09-17T17:30:56.442693+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 112, "received": 2169, "gap": 2057}
+{"ts": "2026-09-17T17:30:56.443171+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 112, "received": 2169, "gap": 2057}
+{"ts": "2026-09-17T17:30:56.946774+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 113, "received": 2170, "gap": 2057}
+{"ts": "2026-09-17T17:30:56.947298+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 113, "received": 2170, "gap": 2057}
+{"ts": "2026-09-17T17:30:57.445314+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 114, "received": 2171, "gap": 2057}
+{"ts": "2026-09-17T17:30:57.445846+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 114, "received": 2171, "gap": 2057}
+{"ts": "2026-09-17T17:30:57.956724+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 115, "received": 2172, "gap": 2057}
+{"ts": "2026-09-17T17:30:57.957572+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 115, "received": 2172, "gap": 2057}
+{"ts": "2026-09-17T17:30:58.453377+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 116, "received": 2173, "gap": 2057}
+{"ts": "2026-09-17T17:30:58.454359+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 116, "received": 2173, "gap": 2057}
+{"ts": "2026-09-17T17:31:06.647732+00:00", "event": "ingestion_server_started", "host": "127.0.0.1", "port": 8765}
+{"ts": "2026-09-17T17:31:37.768477+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/lesson_20260918_003137/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:31:37.780224+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/lesson_20260918_003137/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:31:37.807748+00:00", "event": "lesson_started_ingestion", "lesson_dir": "audio/lesson_20260918_003137", "student": "", "sources": {"student": 48000, "teacher": 48000}}
+{"ts": "2026-09-17T17:31:37.810852+00:00", "event": "lesson_started", "lesson_dir": "audio/lesson_20260918_003137", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-17T17:31:38.782810+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:31:38.782881+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:31:39.952410+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:31:39.952991+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T17:31:40.213982+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:31:40.214524+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T17:43:24.830126+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_l22fw098/lesson_test_123/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:43:24.831799+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 1, "received": 3, "gap": 2}
+{"ts": "2026-09-17T17:43:25.070104+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_l22fw098/lesson_test_123/student.ogg", "bytes": 19200, "seconds": 0.2, "bytes_queued": 19200, "dropped_chunks": 0, "size_on_disk": 207, "error": null}
+{"ts": "2026-09-17T17:43:34.615289+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_76zse_xr/lesson_chaos_001/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:43:34.620045+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_76zse_xr/lesson_chaos_001/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:43:34.621093+00:00", "event": "deepgram_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-17T17:43:34.621680+00:00", "event": "deepgram_stream_unavailable", "reason": "websocket_client_missing"}
+{"ts": "2026-09-17T17:43:34.621941+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 50, "received": 55, "gap": 5}
+{"ts": "2026-09-17T17:43:34.748011+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_76zse_xr/lesson_chaos_001/student.ogg", "bytes": 499200, "seconds": 5.2, "bytes_queued": 499200, "dropped_chunks": 0, "size_on_disk": 15075, "error": null}
+{"ts": "2026-09-17T17:43:34.752114+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_76zse_xr/lesson_chaos_001/teacher.ogg", "bytes": 480000, "seconds": 5.0, "bytes_queued": 480000, "dropped_chunks": 0, "size_on_disk": 14515, "error": null}
+{"ts": "2026-09-17T17:46:48.351418+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_kyr71vhw/lesson_test_123/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:46:48.353582+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 1, "received": 3, "gap": 2}
+{"ts": "2026-09-17T17:46:48.638387+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_kyr71vhw/lesson_test_123/student.ogg", "bytes": 19200, "seconds": 0.2, "bytes_queued": 19200, "dropped_chunks": 0, "size_on_disk": 207, "error": null}
+{"ts": "2026-09-17T17:46:58.426096+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_3vxte9kz/lesson_chaos_001/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:46:58.430269+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_3vxte9kz/lesson_chaos_001/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:46:58.431450+00:00", "event": "deepgram_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-17T17:46:58.432107+00:00", "event": "deepgram_stream_unavailable", "reason": "websocket_client_missing"}
+{"ts": "2026-09-17T17:46:58.432389+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 50, "received": 55, "gap": 5}
+{"ts": "2026-09-17T17:46:58.580796+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_3vxte9kz/lesson_chaos_001/student.ogg", "bytes": 499200, "seconds": 5.2, "bytes_queued": 499200, "dropped_chunks": 0, "size_on_disk": 15075, "error": null}
+{"ts": "2026-09-17T17:46:58.585457+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_3vxte9kz/lesson_chaos_001/teacher.ogg", "bytes": 480000, "seconds": 5.0, "bytes_queued": 480000, "dropped_chunks": 0, "size_on_disk": 14515, "error": null}
+{"ts": "2026-09-17T17:47:42.099288+00:00", "event": "ingestion_server_started", "host": "127.0.0.1", "port": 8765}
+{"ts": "2026-09-17T17:47:51.917956+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/lesson_20260918_004751/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:47:51.930682+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/lesson_20260918_004751/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:47:51.978124+00:00", "event": "lesson_started_ingestion", "lesson_dir": "audio/lesson_20260918_004751", "student": "", "sources": {"student": 48000, "teacher": 48000}}
+{"ts": "2026-09-17T17:47:51.978292+00:00", "event": "lesson_started", "lesson_dir": "audio/lesson_20260918_004751", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-17T17:47:52.949186+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:47:52.974749+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:47:54.185523+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:47:54.186203+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T17:47:54.414445+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:47:54.415021+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T17:50:16.168036+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_p5gi2v0i/lesson_test_123/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:50:16.169735+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 1, "received": 3, "gap": 2}
+{"ts": "2026-09-17T17:50:16.459484+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_p5gi2v0i/lesson_test_123/student.ogg", "bytes": 19200, "seconds": 0.2, "bytes_queued": 19200, "dropped_chunks": 0, "size_on_disk": 207, "error": null}
+{"ts": "2026-09-17T17:50:26.198251+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_fbefni48/lesson_chaos_001/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:50:26.203239+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_fbefni48/lesson_chaos_001/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:50:26.204242+00:00", "event": "deepgram_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-17T17:50:26.204577+00:00", "event": "deepgram_stream_unavailable", "reason": "websocket_client_missing"}
+{"ts": "2026-09-17T17:50:26.204698+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 50, "received": 55, "gap": 5}
+{"ts": "2026-09-17T17:50:26.324985+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_fbefni48/lesson_chaos_001/student.ogg", "bytes": 499200, "seconds": 5.2, "bytes_queued": 499200, "dropped_chunks": 0, "size_on_disk": 15075, "error": null}
+{"ts": "2026-09-17T17:50:26.329217+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_fbefni48/lesson_chaos_001/teacher.ogg", "bytes": 480000, "seconds": 5.0, "bytes_queued": 480000, "dropped_chunks": 0, "size_on_disk": 14515, "error": null}
+{"ts": "2026-09-17T17:52:28.908874+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:52:29.349144+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:52:29.682503+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:52:35.930634+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-17T17:52:36.087550+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/test_20260918_005235/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:52:36.094868+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/test_20260918_005235/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:52:36.117283+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260918_005235", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-17T17:52:37.295067+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:52:37.299546+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:52:38.254638+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:52:38.459005+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:53:05.599052+00:00", "event": "ingestion_server_started", "host": "127.0.0.1", "port": 8765}
+{"ts": "2026-09-17T17:53:12.656395+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/lesson_20260918_005312/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:53:12.670167+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/lesson_20260918_005312/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:53:12.712598+00:00", "event": "lesson_started_ingestion", "lesson_dir": "audio/lesson_20260918_005312", "student": "", "sources": {"student": 48000, "teacher": 48000}}
+{"ts": "2026-09-17T17:53:12.712882+00:00", "event": "lesson_started", "lesson_dir": "audio/lesson_20260918_005312", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-17T17:53:13.540485+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 1, "received": 74, "gap": 73}
+{"ts": "2026-09-17T17:53:13.541657+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 1, "received": 74, "gap": 73}
+{"ts": "2026-09-17T17:53:13.654809+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:53:13.863064+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:53:14.023508+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 2, "received": 75, "gap": 73}
+{"ts": "2026-09-17T17:53:14.024393+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 2, "received": 75, "gap": 73}
+{"ts": "2026-09-17T17:53:14.556376+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 3, "received": 76, "gap": 73}
+{"ts": "2026-09-17T17:53:14.558585+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 3, "received": 76, "gap": 73}
+{"ts": "2026-09-17T17:53:14.669095+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:53:14.669757+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T17:53:14.895668+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:53:14.895971+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T17:53:15.026712+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 4, "received": 77, "gap": 73}
+{"ts": "2026-09-17T17:53:15.027644+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 4, "received": 77, "gap": 73}
+{"ts": "2026-09-17T17:53:15.527677+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 5, "received": 78, "gap": 73}
+{"ts": "2026-09-17T17:53:15.529319+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 5, "received": 78, "gap": 73}
+{"ts": "2026-09-17T17:53:16.028591+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 6, "received": 79, "gap": 73}
+{"ts": "2026-09-17T17:53:16.030005+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 6, "received": 79, "gap": 73}
+{"ts": "2026-09-17T17:53:16.531740+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 7, "received": 80, "gap": 73}
+{"ts": "2026-09-17T17:53:16.532397+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 7, "received": 80, "gap": 73}
+{"ts": "2026-09-17T17:53:17.031692+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 8, "received": 81, "gap": 73}
+{"ts": "2026-09-17T17:53:17.032791+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 8, "received": 81, "gap": 73}
+{"ts": "2026-09-17T17:53:17.538790+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 9, "received": 82, "gap": 73}
+{"ts": "2026-09-17T17:53:17.540022+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 9, "received": 82, "gap": 73}
+{"ts": "2026-09-17T17:53:18.038801+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 10, "received": 83, "gap": 73}
+{"ts": "2026-09-17T17:53:18.041828+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 10, "received": 83, "gap": 73}
+{"ts": "2026-09-17T17:53:18.538789+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 11, "received": 84, "gap": 73}
+{"ts": "2026-09-17T17:53:18.542196+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 11, "received": 84, "gap": 73}
+{"ts": "2026-09-17T17:53:19.038316+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 12, "received": 85, "gap": 73}
+{"ts": "2026-09-17T17:53:19.039301+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 12, "received": 85, "gap": 73}
+{"ts": "2026-09-17T17:53:19.539480+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 13, "received": 86, "gap": 73}
+{"ts": "2026-09-17T17:53:19.540740+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 13, "received": 86, "gap": 73}
+{"ts": "2026-09-17T17:53:20.041129+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 14, "received": 87, "gap": 73}
+{"ts": "2026-09-17T17:53:20.041666+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 14, "received": 87, "gap": 73}
+{"ts": "2026-09-17T17:53:20.541186+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 15, "received": 88, "gap": 73}
+{"ts": "2026-09-17T17:53:20.542060+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 15, "received": 88, "gap": 73}
+{"ts": "2026-09-17T17:53:21.042462+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 16, "received": 89, "gap": 73}
+{"ts": "2026-09-17T17:53:21.043316+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 16, "received": 89, "gap": 73}
+{"ts": "2026-09-17T17:53:21.543413+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 17, "received": 90, "gap": 73}
+{"ts": "2026-09-17T17:53:21.544268+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 17, "received": 90, "gap": 73}
+{"ts": "2026-09-17T17:53:22.044995+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 18, "received": 91, "gap": 73}
+{"ts": "2026-09-17T17:53:22.045884+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 18, "received": 91, "gap": 73}
+{"ts": "2026-09-17T17:53:22.546781+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 19, "received": 92, "gap": 73}
+{"ts": "2026-09-17T17:53:22.547449+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 19, "received": 92, "gap": 73}
+{"ts": "2026-09-17T17:53:23.047410+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 20, "received": 93, "gap": 73}
+{"ts": "2026-09-17T17:53:23.048428+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 20, "received": 93, "gap": 73}
+{"ts": "2026-09-17T17:53:23.549753+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 21, "received": 94, "gap": 73}
+{"ts": "2026-09-17T17:53:23.551048+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 21, "received": 94, "gap": 73}
+{"ts": "2026-09-17T17:53:24.053548+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 22, "received": 95, "gap": 73}
+{"ts": "2026-09-17T17:53:24.054667+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 22, "received": 95, "gap": 73}
+{"ts": "2026-09-17T17:53:24.555059+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 23, "received": 96, "gap": 73}
+{"ts": "2026-09-17T17:53:24.557726+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 23, "received": 96, "gap": 73}
+{"ts": "2026-09-17T17:53:25.054420+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 24, "received": 97, "gap": 73}
+{"ts": "2026-09-17T17:53:25.057273+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 24, "received": 97, "gap": 73}
+{"ts": "2026-09-17T17:53:25.635446+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 25, "received": 98, "gap": 73}
+{"ts": "2026-09-17T17:53:25.636893+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 25, "received": 98, "gap": 73}
+{"ts": "2026-09-17T17:53:26.060749+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 26, "received": 99, "gap": 73}
+{"ts": "2026-09-17T17:53:26.064293+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 26, "received": 99, "gap": 73}
+{"ts": "2026-09-17T17:53:26.592303+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 27, "received": 100, "gap": 73}
+{"ts": "2026-09-17T17:53:26.593951+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 27, "received": 100, "gap": 73}
+{"ts": "2026-09-17T17:53:27.058676+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 28, "received": 101, "gap": 73}
+{"ts": "2026-09-17T17:53:27.060701+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 28, "received": 101, "gap": 73}
+{"ts": "2026-09-17T17:53:27.593588+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 29, "received": 102, "gap": 73}
+{"ts": "2026-09-17T17:53:27.595802+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 29, "received": 102, "gap": 73}
+{"ts": "2026-09-17T17:53:28.061625+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 30, "received": 103, "gap": 73}
+{"ts": "2026-09-17T17:53:28.062610+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 30, "received": 103, "gap": 73}
+{"ts": "2026-09-17T17:53:28.562545+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 31, "received": 104, "gap": 73}
+{"ts": "2026-09-17T17:53:28.563989+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 31, "received": 104, "gap": 73}
+{"ts": "2026-09-17T17:53:29.064639+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 32, "received": 105, "gap": 73}
+{"ts": "2026-09-17T17:53:29.065715+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 32, "received": 105, "gap": 73}
+{"ts": "2026-09-17T17:53:29.565287+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 33, "received": 106, "gap": 73}
+{"ts": "2026-09-17T17:53:29.566230+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 33, "received": 106, "gap": 73}
+{"ts": "2026-09-17T17:53:30.066097+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 34, "received": 107, "gap": 73}
+{"ts": "2026-09-17T17:53:30.067010+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 34, "received": 107, "gap": 73}
+{"ts": "2026-09-17T17:53:30.572850+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 35, "received": 108, "gap": 73}
+{"ts": "2026-09-17T17:53:30.573770+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 35, "received": 108, "gap": 73}
+{"ts": "2026-09-17T17:53:31.072411+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 36, "received": 109, "gap": 73}
+{"ts": "2026-09-17T17:53:31.074308+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 36, "received": 109, "gap": 73}
+{"ts": "2026-09-17T17:53:31.571656+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 37, "received": 110, "gap": 73}
+{"ts": "2026-09-17T17:53:31.573042+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 37, "received": 110, "gap": 73}
+{"ts": "2026-09-17T17:53:32.071777+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 38, "received": 111, "gap": 73}
+{"ts": "2026-09-17T17:53:32.073048+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 38, "received": 111, "gap": 73}
+{"ts": "2026-09-17T17:53:32.573964+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 39, "received": 112, "gap": 73}
+{"ts": "2026-09-17T17:53:32.577196+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 39, "received": 112, "gap": 73}
+{"ts": "2026-09-17T17:53:33.076276+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 40, "received": 113, "gap": 73}
+{"ts": "2026-09-17T17:53:33.077255+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 40, "received": 113, "gap": 73}
+{"ts": "2026-09-17T17:53:33.575957+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 41, "received": 114, "gap": 73}
+{"ts": "2026-09-17T17:53:33.576839+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 41, "received": 114, "gap": 73}
+{"ts": "2026-09-17T17:53:34.077288+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 42, "received": 115, "gap": 73}
+{"ts": "2026-09-17T17:53:34.078092+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 42, "received": 115, "gap": 73}
+{"ts": "2026-09-17T17:53:34.577376+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 43, "received": 116, "gap": 73}
+{"ts": "2026-09-17T17:53:34.578266+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 43, "received": 116, "gap": 73}
+{"ts": "2026-09-17T17:53:35.079313+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 44, "received": 117, "gap": 73}
+{"ts": "2026-09-17T17:53:35.081467+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 44, "received": 117, "gap": 73}
+{"ts": "2026-09-17T17:53:35.621472+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 45, "received": 118, "gap": 73}
+{"ts": "2026-09-17T17:53:35.623587+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 45, "received": 118, "gap": 73}
+{"ts": "2026-09-17T17:53:36.086680+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 46, "received": 119, "gap": 73}
+{"ts": "2026-09-17T17:53:36.088221+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 46, "received": 119, "gap": 73}
+{"ts": "2026-09-17T17:53:36.588911+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 47, "received": 120, "gap": 73}
+{"ts": "2026-09-17T17:53:36.589932+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 47, "received": 120, "gap": 73}
+{"ts": "2026-09-17T17:53:37.087597+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 48, "received": 121, "gap": 73}
+{"ts": "2026-09-17T17:53:37.088806+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 48, "received": 121, "gap": 73}
+{"ts": "2026-09-17T17:53:37.587796+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 49, "received": 122, "gap": 73}
+{"ts": "2026-09-17T17:53:37.588704+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 49, "received": 122, "gap": 73}
+{"ts": "2026-09-17T17:53:38.087460+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 50, "received": 123, "gap": 73}
+{"ts": "2026-09-17T17:53:38.088816+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 50, "received": 123, "gap": 73}
+{"ts": "2026-09-17T17:53:38.589452+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 51, "received": 124, "gap": 73}
+{"ts": "2026-09-17T17:53:38.590297+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 51, "received": 124, "gap": 73}
+{"ts": "2026-09-17T17:53:39.090328+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 52, "received": 125, "gap": 73}
+{"ts": "2026-09-17T17:53:39.092456+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 52, "received": 125, "gap": 73}
+{"ts": "2026-09-17T17:53:39.590929+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 53, "received": 126, "gap": 73}
+{"ts": "2026-09-17T17:53:39.592951+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 53, "received": 126, "gap": 73}
+{"ts": "2026-09-17T17:53:40.093054+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 54, "received": 127, "gap": 73}
+{"ts": "2026-09-17T17:53:40.093670+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 54, "received": 127, "gap": 73}
+{"ts": "2026-09-17T17:53:40.601941+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 55, "received": 128, "gap": 73}
+{"ts": "2026-09-17T17:53:40.603446+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 55, "received": 128, "gap": 73}
+{"ts": "2026-09-17T17:53:41.095627+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 56, "received": 129, "gap": 73}
+{"ts": "2026-09-17T17:53:41.096615+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 56, "received": 129, "gap": 73}
+{"ts": "2026-09-17T17:53:41.597273+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 57, "received": 130, "gap": 73}
+{"ts": "2026-09-17T17:53:41.598202+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 57, "received": 130, "gap": 73}
+{"ts": "2026-09-17T17:53:42.097905+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 58, "received": 131, "gap": 73}
+{"ts": "2026-09-17T17:53:42.099139+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 58, "received": 131, "gap": 73}
+{"ts": "2026-09-17T17:53:42.695765+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 59, "received": 132, "gap": 73}
+{"ts": "2026-09-17T17:53:42.697756+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 59, "received": 132, "gap": 73}
+{"ts": "2026-09-17T17:53:43.103619+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 60, "received": 133, "gap": 73}
+{"ts": "2026-09-17T17:53:43.104959+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 60, "received": 133, "gap": 73}
+{"ts": "2026-09-17T17:53:43.604293+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 61, "received": 134, "gap": 73}
+{"ts": "2026-09-17T17:53:43.605118+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 61, "received": 134, "gap": 73}
+{"ts": "2026-09-17T17:53:44.103736+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 62, "received": 135, "gap": 73}
+{"ts": "2026-09-17T17:53:44.105328+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 62, "received": 135, "gap": 73}
+{"ts": "2026-09-17T17:53:44.747940+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 63, "received": 136, "gap": 73}
+{"ts": "2026-09-17T17:53:44.749027+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 63, "received": 136, "gap": 73}
+{"ts": "2026-09-17T17:53:45.106158+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 64, "received": 137, "gap": 73}
+{"ts": "2026-09-17T17:53:45.107102+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 64, "received": 137, "gap": 73}
+{"ts": "2026-09-17T17:53:45.607888+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 65, "received": 138, "gap": 73}
+{"ts": "2026-09-17T17:53:45.608547+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 65, "received": 138, "gap": 73}
+{"ts": "2026-09-17T17:53:46.108500+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 66, "received": 139, "gap": 73}
+{"ts": "2026-09-17T17:53:46.110169+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 66, "received": 139, "gap": 73}
+{"ts": "2026-09-17T17:53:46.610309+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 67, "received": 140, "gap": 73}
+{"ts": "2026-09-17T17:53:46.611560+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 67, "received": 140, "gap": 73}
+{"ts": "2026-09-17T17:53:47.111386+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 68, "received": 141, "gap": 73}
+{"ts": "2026-09-17T17:53:47.112321+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 68, "received": 141, "gap": 73}
+{"ts": "2026-09-17T17:53:47.613007+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 69, "received": 142, "gap": 73}
+{"ts": "2026-09-17T17:53:47.614037+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 69, "received": 142, "gap": 73}
+{"ts": "2026-09-17T17:53:48.114273+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 70, "received": 143, "gap": 73}
+{"ts": "2026-09-17T17:53:48.115143+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 70, "received": 143, "gap": 73}
+{"ts": "2026-09-17T17:53:48.615871+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 71, "received": 144, "gap": 73}
+{"ts": "2026-09-17T17:53:48.616525+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 71, "received": 144, "gap": 73}
+{"ts": "2026-09-17T17:53:49.123497+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 72, "received": 145, "gap": 73}
+{"ts": "2026-09-17T17:53:49.124942+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 72, "received": 145, "gap": 73}
+{"ts": "2026-09-17T17:53:49.620439+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 73, "received": 146, "gap": 73}
+{"ts": "2026-09-17T17:53:49.623305+00:00", "event": "chunk_gap_detected", "source": "teacher", "expected": 73, "received": 146, "gap": 73}
+{"ts": "2026-09-17T17:58:19.411775+00:00", "event": "ingestion_server_started", "host": "127.0.0.1", "port": 8765}
+{"ts": "2026-09-17T17:58:27.079919+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/test_20260918_005827/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:58:27.093445+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/lesson_20260918_005827/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:58:27.099871+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/test_20260918_005827/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:58:27.108550+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/lesson_20260918_005827/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T17:58:27.143914+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260918_005827", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-17T17:58:27.143980+00:00", "event": "lesson_started_ingestion", "lesson_dir": "audio/lesson_20260918_005827", "student": "", "sources": {"student": 48000, "teacher": 48000}}
+{"ts": "2026-09-17T17:58:28.337823+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:58:28.337332+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T17:58:29.582955+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:58:29.583364+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T17:58:29.631518+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T17:58:29.632385+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T18:01:07.727535+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_4mtmszv2/lesson_test_123/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T18:01:07.729116+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 1, "received": 3, "gap": 2}
+{"ts": "2026-09-17T18:01:07.956783+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/test_lesson_4mtmszv2/lesson_test_123/student.ogg", "bytes": 19200, "seconds": 0.2, "bytes_queued": 19200, "dropped_chunks": 0, "size_on_disk": 207, "error": null}
+{"ts": "2026-09-17T18:01:17.473002+00:00", "event": "lesson_recorder_open", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_6kffnt1i/lesson_chaos_001/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T18:01:17.475375+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_6kffnt1i/lesson_chaos_001/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T18:01:17.476337+00:00", "event": "deepgram_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-17T18:01:17.476689+00:00", "event": "deepgram_stream_unavailable", "reason": "websocket_client_missing"}
+{"ts": "2026-09-17T18:01:17.476772+00:00", "event": "chunk_gap_detected", "source": "student", "expected": 50, "received": 55, "gap": 5}
+{"ts": "2026-09-17T18:01:17.606629+00:00", "event": "lesson_recorder_close", "source": "student", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_6kffnt1i/lesson_chaos_001/student.ogg", "bytes": 499200, "seconds": 5.2, "bytes_queued": 499200, "dropped_chunks": 0, "size_on_disk": 15075, "error": null}
+{"ts": "2026-09-17T18:01:17.610845+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "/var/folders/0t/6mq1s86x6ngchrz0k_6t3cx80000gn/T/chaos_test_6kffnt1i/lesson_chaos_001/teacher.ogg", "bytes": 480000, "seconds": 5.0, "bytes_queued": 480000, "dropped_chunks": 0, "size_on_disk": 14515, "error": null}
+{"ts": "2026-09-17T18:03:20.247474+00:00", "event": "ingestion_server_started", "host": "127.0.0.1", "port": 8765}
+{"ts": "2026-09-17T18:04:17.336481+00:00", "event": "lesson_ended_ingestion"}
+{"ts": "2026-09-17T18:04:17.521744+00:00", "event": "lesson_dir_recovered", "lesson_dir": "audio/recovered_20260918_010417", "reason": "lesson_ended_audio"}
+{"ts": "2026-09-17T18:04:17.528948+00:00", "event": "lesson_audio_saved", "path": "audio/recovered_20260918_010417/student.webm", "bytes": 1793699}
+{"ts": "2026-09-17T18:04:17.627567+00:00", "event": "lesson_audio_saved", "path": "audio/recovered_20260918_010417/teacher.webm", "bytes": 2948685}
+{"ts": "2026-09-17T18:04:17.631808+00:00", "event": "lesson_ended", "lesson_dir": "audio/recovered_20260918_010417", "active_seconds": 350, "audio_files": ["audio/recovered_20260918_010417/student.webm", "audio/recovered_20260918_010417/teacher.webm"]}
+{"ts": "2026-09-17T18:04:27.293225+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/lesson_20260918_010427/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T18:04:27.293401+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/test_20260918_010427/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T18:04:27.299321+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/test_20260918_010427/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T18:04:27.299883+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/lesson_20260918_010427/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-17T18:04:27.337572+00:00", "event": "lesson_started_ingestion", "lesson_dir": "audio/lesson_20260918_010427", "student": "", "sources": {"student": 48000, "teacher": 48000}}
+{"ts": "2026-09-17T18:04:27.337361+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260918_010427", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-17T18:04:28.425942+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T18:04:28.459672+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-17T18:04:30.190128+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T18:04:30.190775+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T18:04:30.256301+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-17T18:04:30.256848+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}

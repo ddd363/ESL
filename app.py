@@ -2705,6 +2705,11 @@ def render_styles():
             font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
             font-size: 0.78rem; color: #8a93a3; margin-right: 8px;
         }
+        .turn .ts .deepseek-unprocessed {
+            color: #f59e0b;
+            font-weight: bold;
+            margin-left: 2px;
+        }
         .turn .speaker { font-weight: 700; margin-right: 6px; }
         .turn.student .speaker { color: #0f5743; }
         .turn.teacher .speaker { color: #175cd3; }
@@ -2883,12 +2888,13 @@ def _format_word_html(word_item):
     return escaped_token
 
 
-def _turn_html(source, start, text, interim=False, segments=None, words=None):
+def _turn_html(source, start, text, interim=False, segments=None, words=None, unprocessed_deepseek=False):
     """One turn. With `segments` the text is broken into hoverable sentences;
     without it the markup is formatted with word-level highlights."""
     label = SOURCE_LABELS.get(source, str(source).title())
     classes = f"turn {html.escape(str(source))}" + (" interim" if interim else "")
     stamp = "..." if interim else _format_clock(start)
+    star_badge = '<span class="deepseek-unprocessed" title="DeepSeek processing pending">*</span>' if (unprocessed_deepseek and not interim) else ""
     if segments:
         body = "".join(_segment_html(seg) for seg in segments)
     elif words:
@@ -2897,7 +2903,7 @@ def _turn_html(source, start, text, interim=False, segments=None, words=None):
         body = html.escape(text)
     return (
         f'<div class="{classes}">'
-        f'<span class="ts">[{stamp}]</span>'
+        f'<span class="ts">[{stamp}]{star_badge}</span>'
         f'<span class="speaker">{html.escape(label)}:</span>'
         f'<span class="text">{body}</span>'
         f"</div>"
@@ -3153,6 +3159,9 @@ def _render_transcript_pane():
                 if utt_id in cached_utts:
                     t["text"] = cached_utts[utt_id]
                     t["words"] = None
+                    t["deepseek_finalized"] = True
+                else:
+                    t["deepseek_finalized"] = False
         except Exception as e:
             log_event("deepseek_consensus_render_error", error=str(e))
 
@@ -3169,7 +3178,16 @@ def _render_transcript_pane():
     # it off must never erase feedback already gathered, nor abandon sentences
     # from the window that have not settled yet.
     if not (live_feedback_is_on() or live_feedback_engaged()):
-        blocks = [_turn_html(t["source"], t["start"], t["text"], words=t.get("words")) for t in visible_turns]
+        blocks = [
+            _turn_html(
+                t["source"],
+                t["start"],
+                t["text"],
+                words=t.get("words"),
+                unprocessed_deepseek=deepseek_consensus_is_on() and not t.get("deepseek_finalized"),
+            )
+            for t in visible_turns
+        ]
         for source in ("student", "teacher"):
             if source in shown and interim.get(source):
                 blocks.append(_turn_html(source, None, interim[source], interim=True))
@@ -3202,10 +3220,15 @@ def _render_transcript_pane():
     in_flight = set(st.session_state.live_feedback_futures)
 
     blocks = [
-        _turn_html(turn["source"], turn["start"], turn["text"],
-                   segments=turn_segments(turn, word_to_sentence, sentences_by_id,
-                                          feedback, in_flight),
-                   words=turn.get("words"))
+        _turn_html(
+            turn["source"],
+            turn["start"],
+            turn["text"],
+            segments=turn_segments(turn, word_to_sentence, sentences_by_id,
+                                   feedback, in_flight),
+            words=turn.get("words"),
+            unprocessed_deepseek=deepseek_consensus_is_on() and not turn.get("deepseek_finalized"),
+        )
         for turn in visible_turns
     ]
     for source in ("student", "teacher"):
