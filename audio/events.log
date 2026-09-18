@@ -40961,3 +40961,27 @@
 {"ts": "2026-09-17T18:04:30.190775+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
 {"ts": "2026-09-17T18:04:30.256301+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
 {"ts": "2026-09-17T18:04:30.256848+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-17T18:20:00.049942+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-17T18:20:01.066431+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-17T18:20:02.646146+00:00", "event": "lesson_recorder_close", "source": "student", "path": "audio/lesson_20260918_010427/student.ogg", "bytes": 89758720, "seconds": 935.0, "bytes_queued": 89758720, "dropped_chunks": 0, "size_on_disk": 4211728, "error": null}
+{"ts": "2026-09-17T18:20:02.650548+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "audio/lesson_20260918_010427/teacher.ogg", "bytes": 89758720, "seconds": 935.0, "bytes_queued": 89758720, "dropped_chunks": 0, "size_on_disk": 4679509, "error": null}
+{"ts": "2026-09-17T18:20:02.655425+00:00", "event": "lesson_ended_ingestion"}
+{"ts": "2026-09-17T18:20:03.138663+00:00", "event": "lesson_audio_saved", "path": "audio/lesson_20260918_010427/student.webm", "bytes": 5946179}
+{"ts": "2026-09-17T18:20:03.165757+00:00", "event": "lesson_audio_saved", "path": "audio/lesson_20260918_010427/teacher.webm", "bytes": 7967044}
+{"ts": "2026-09-17T18:20:03.613312+00:00", "event": "lesson_ended", "lesson_dir": "audio/lesson_20260918_010427", "active_seconds": 935, "audio_files": ["audio/lesson_20260918_010427/student.webm", "audio/lesson_20260918_010427/teacher.webm"]}
+{"ts": "2026-09-17T18:20:11.697675+00:00", "event": "deepgram_stream_error", "error": "ping/pong timed out"}
+{"ts": "2026-09-17T18:20:13.308715+00:00", "event": "deepgram_stream_error", "error": "ping/pong timed out"}
+{"ts": "2026-09-17T18:20:13.775070+00:00", "event": "gladia_stream_error", "error": "ping/pong timed out"}
+{"ts": "2026-09-17T18:20:13.840994+00:00", "event": "gladia_stream_error", "error": "ping/pong timed out"}
+{"ts": "2026-09-17T18:20:18.632829+00:00", "event": "deepgram_stream_send_error", "error": "[Errno 32] Broken pipe"}
+{"ts": "2026-09-17T18:20:18.633881+00:00", "event": "deepgram_keepalive_error", "error": "[SSL: BAD_LENGTH] bad length (_ssl.c:2427)"}
+{"ts": "2026-09-17T18:20:18.636502+00:00", "event": "deepgram_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T18:20:25.232247+00:00", "event": "gladia_stream_send_error", "error": "[Errno 32] Broken pipe"}
+{"ts": "2026-09-17T18:20:25.234015+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T18:20:27.547760+00:00", "event": "gladia_stream_send_error", "error": "[Errno 32] Broken pipe"}
+{"ts": "2026-09-17T18:20:27.548955+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T18:20:27.884673+00:00", "event": "deepgram_stream_send_error", "error": "[Errno 32] Broken pipe"}
+{"ts": "2026-09-17T18:20:27.884840+00:00", "event": "deepgram_keepalive_error", "error": "[SSL: BAD_LENGTH] bad length (_ssl.c:2427)"}
+{"ts": "2026-09-17T18:20:27.886535+00:00", "event": "deepgram_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-17T18:20:30.066377+00:00", "event": "gladia_stream_init_error", "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"}
+{"ts": "2026-09-17T18:20:31.076296+00:00", "event": "gladia_stream_init_error", "error": "<urlopen error [Errno 8] nodename nor servname provided, or not known>"}
