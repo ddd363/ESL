@@ -536,6 +536,18 @@ class ProviderManager:
                 self._retire_assemblyai_streamer(src, s)
             self.assemblyai_streamers.clear()
 
+    def reset(self):
+        with self.lock:
+            self.stop_all()
+            self.deepgram_offsets.clear()
+            self.gladia_offsets.clear()
+            self.assemblyai_offsets.clear()
+            self.retired_words_deepgram.clear()
+            self.retired_words_gladia.clear()
+            self.retired_words_assemblyai.clear()
+            self.seen_word_keys.clear()
+            self.reconnect_counts = {"deepgram": 0, "gladia": 0, "assemblyai": 0}
+
 
 # ---------------------------------------------------------------------------
 # Global Session & Provider State
@@ -657,6 +669,9 @@ class AudioIngestionHandler(http.server.BaseHTTPRequestHandler):
                 pm.start_streams(sources)
                 self._send_json(200, {"ok": True, "lesson_dir": session.lesson_dir, "idempotent": True})
                 return
+
+            pm = get_provider_manager()
+            pm.reset()
 
             new_session = ActiveLessonSession(lesson_dir=lesson_dir, student=student, capture_mode=capture_mode)
             for src, rate in sources.items():

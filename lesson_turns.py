@@ -28,7 +28,7 @@ overlapping words form their own turn and the student's sentence stays whole.
 from live_sentences import ends_sentence
 
 TURN_GAP_SECONDS = 2.0       # silence that ends a turn, once a sentence has closed
-TURN_HARD_GAP_SECONDS = 8.0  # silence that ends a turn even mid-sentence
+TURN_HARD_GAP_SECONDS = 10.0  # silence that ends a turn even mid-sentence
 TURN_MAX_SECONDS = 60.0      # ceiling, so one speaker's monologue stays readable
 
 

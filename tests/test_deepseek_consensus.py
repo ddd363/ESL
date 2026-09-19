@@ -30,12 +30,11 @@ class TestDeepSeekConsensus(unittest.TestCase):
             {"word": "way_later", "start": 10.0, "end": 10.5, "confidence": 0.90, "source": "student"},
         ]
         extracted = extract_provider_candidates_for_turn(words, "student", start=0.4, end=1.0, padding=0.2)
-        extracted_words = [w["word"] for w in extracted]
-        self.assertIn("Hi", extracted_words)
-        self.assertIn("there", extracted_words)
-        self.assertIn("friend", extracted_words)
-        self.assertNotIn("teacher_word", extracted_words)
-        self.assertNotIn("way_later", extracted_words)
+        self.assertIn("Hi", extracted["text"])
+        self.assertIn("there", extracted["text"])
+        self.assertIn("friend", extracted["text"])
+        self.assertNotIn("teacher_word", extracted["text"])
+        self.assertNotIn("way_later", extracted["text"])
 
     def test_build_utterance_candidates_payload(self):
         turn = {
@@ -57,9 +56,9 @@ class TestDeepSeekConsensus(unittest.TestCase):
         payload = build_utterance_candidates_payload(turn, dg_words, gl_words, aai_words)
         self.assertEqual(payload["speaker"], "Student")
         self.assertEqual(payload["heuristic_consensus_text"], "I went to picnic")
-        self.assertEqual(len(payload["candidates"]["deepgram"]), 3)
-        self.assertEqual(len(payload["candidates"]["gladia"]), 3)
-        self.assertEqual(len(payload["candidates"]["assemblyai"]), 3)
+        self.assertEqual(payload["candidates"]["deepgram"]["text"], "I went picnic")
+        self.assertEqual(payload["candidates"]["gladia"]["text"], "I went panic")
+        self.assertEqual(payload["candidates"]["assemblyai"]["text"], "I went panic")
 
     def test_parse_deepseek_utterance_reply(self):
         # 1. Clean JSON

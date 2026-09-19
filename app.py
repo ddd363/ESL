@@ -2385,7 +2385,7 @@ def drain_deepseek_utterances():
     st.session_state.deepseek_utterances = cache
 
 
-def dispatch_deepseek_utterances(turns, dg_words, gl_words, aai_words):
+def dispatch_deepseek_utterances(turns, dg_words, gl_words, aai_words, now_audio=0.0, real_silence_s=0.0):
     """Submit settled turns to DeepSeek for utterance determination."""
     if not deepseek_consensus_is_on():
         return
@@ -2407,14 +2407,28 @@ def dispatch_deepseek_utterances(turns, dg_words, gl_words, aai_words):
         st.session_state.deepseek_utterances = cache
 
     recording = st.session_state.get("lesson_state") == "recording"
-    target_turns = turns[:-1] if (recording and len(turns) > 1) else turns
+    
+    abandoned = real_silence_s > 10.0
+    target_turns = turns[:-1] if (recording and len(turns) > 1 and not abandoned) else turns
 
     for turn in target_turns:
-        if len(futures) >= 5:
-            break
+        if turn["end"] >= now_audio - 3.0 and not abandoned:
+            continue
+        if turn.get("source") == "teacher":
+            continue
+            
         utt_id = make_utterance_key(turn["source"], turn["start"], turn["end"], turn["text"])
         if utt_id in cache or utt_id in futures:
             continue
+            
+        has_uncertainty = any(w.get("status") == "uncertain" for w in turn.get("words", []))
+        if not has_uncertainty:
+            cache[utt_id] = turn["text"]
+            continue
+
+        if len(futures) >= 5:
+            break
+            
         payload = build_utterance_candidates_payload(turn, dg_words, gl_words, aai_words)
         futures[utt_id] = BACKGROUND_EXECUTOR.submit(
             run_deepseek_utterance_job, utt_id, client, payload, DEEPSEEK_UTTERANCE_MODEL
@@ -2967,7 +2981,7 @@ def turn_segments(turn, word_to_sentence, sentences_by_id, feedback, in_flight):
     which is correct.
     """
     runs = []
-    for word in turn.get("words", []):
+    for word in (turn.get("words") or []):
         token = (word.get("word") or "").strip()
         if not token:
             continue
@@ -3139,6 +3153,18 @@ def _render_transcript_pane():
     # Track the switch before any early return: arming during a silence has to
     # open the window there, or the next thing said falls outside it.
     now_audio = newest_word_end(words)
+    
+    current_word_count = len(words)
+    last_word_count = st.session_state.get("last_word_count", 0)
+    if current_word_count != last_word_count:
+        st.session_state.last_word_count = current_word_count
+        st.session_state.last_word_time = time.time()
+        
+    real_silence_s = 0.0
+    last_word_time = st.session_state.get("last_word_time")
+    if last_word_time is not None:
+        real_silence_s = time.time() - last_word_time
+
     sync_live_feedback_window(now_audio)
     if not turns and not interim:
         st.caption("The lesson transcript will appear here. Timestamps and speakers come from the two microphones.")
@@ -3152,7 +3178,7 @@ def _render_transcript_pane():
             dg_words = collect_raw_deepgram_words()
             gl_words = collect_raw_gladia_words()
             aai_words = collect_raw_assemblyai_words()
-            dispatch_deepseek_utterances(turns, dg_words, gl_words, aai_words)
+            dispatch_deepseek_utterances(turns, dg_words, gl_words, aai_words, now_audio, real_silence_s)
             cached_utts = st.session_state.get("deepseek_utterances") or {}
             for t in visible_turns:
                 utt_id = make_utterance_key(t["source"], t["start"], t["end"], t["text"])

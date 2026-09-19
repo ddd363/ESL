@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "lesson_dir": "audio/test_20260918_000739",
-  "student": "Test",
-  "status": "ended",
-  "started_at": "2026-09-17T17:07:39.756125+00:00",
+  "lesson_dir": "audio/lesson_20260919_145418",
+  "student": "",
+  "status": "recording",
+  "started_at": "2026-09-19T07:54:18.791065+00:00",
   "capture_mode": "audio_worklet",
   "audio_clock_s": 0.0,
   "tracks": {

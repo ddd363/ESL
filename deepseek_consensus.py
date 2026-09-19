@@ -21,12 +21,12 @@ UTTERANCE_WINDOW_PADDING_S = 0.5
 
 DEEPSEEK_UTTERANCE_SYSTEM_PROMPT = (
     "You are an expert speech recognition reconciler for English as a Second Language (ESL) lessons.\n\n"
-    "You are given candidate speech recognition (ASR) words with confidence probabilities (0.0 to 1.0) "
+    "You are given candidate transcript texts and average confidences (0.0 to 1.0) "
     "from three independent providers (Deepgram, Gladia, and AssemblyAI) for a single speaker turn.\n\n"
     "Your objective: Determine the single most likely verbatim utterance actually spoken by the speaker.\n\n"
     "CRITICAL RULES:\n"
-    "1. WEIGH THE EVIDENCE: Compare words across all three providers. Where providers agree or where one provider "
-    "has significantly higher confidence and acoustic plausibility in context, select that word. "
+    "1. WEIGH THE EVIDENCE: Compare text across all three providers. Where providers agree or where one provider "
+    "has significantly higher confidence and acoustic plausibility in context, select that text. "
     "Notice phonetic confusions (e.g. homophones, syllable mishearings, or truncation) and resolve them based on context.\n"
     "2. PRESERVE ESL LEARNER ERRORS: The student is an English learner. DO NOT grammar-correct the student. "
     "If the student made a grammar, tense, word choice, or agreement mistake (e.g. 'I have went', 'she don't know', 'he go yesterday'), "
@@ -50,9 +50,10 @@ def extract_provider_candidates_for_turn(
     start: float,
     end: float,
     padding: float = UTTERANCE_WINDOW_PADDING_S,
-) -> List[Dict[str, Any]]:
+) -> Dict[str, Any]:
     """Extract and format candidate words from a provider within the turn's timeframe."""
     candidates = []
+    confs = []
     window_start = max(0.0, start - padding)
     window_end = end + padding
 
@@ -64,14 +65,14 @@ def extract_provider_candidates_for_turn(
         w_end = w.get("end", w_start)
         # Check time overlap
         if w_end >= window_start and w_start <= window_end:
+            candidates.append(str(w.get("word", "")).strip())
             conf = w.get("confidence")
-            candidates.append({
-                "word": str(w.get("word", "")),
-                "confidence": round(float(conf), 3) if conf is not None else None,
-                "start": round(float(w_start), 2),
-                "end": round(float(w_end), 2),
-            })
-    return candidates
+            if conf is not None:
+                confs.append(float(conf))
+                
+    text = " ".join(c for c in candidates if c)
+    avg_conf = round(sum(confs) / len(confs), 3) if confs else None
+    return {"text": text, "confidence": avg_conf}
 
 
 def build_utterance_candidates_payload(
@@ -160,7 +161,7 @@ def run_deepseek_utterance_job(
             ],
             response_format={"type": "json_object"},
             temperature=0,
-            max_tokens=400,
+            max_tokens=150,
             timeout=15.0,
             stream=False,
         )
