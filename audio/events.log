@@ -44447,3 +44447,520 @@
 {"ts": "2026-09-19T07:54:21.881102+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
 {"ts": "2026-09-19T07:54:21.888354+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
 {"ts": "2026-09-19T07:54:21.888891+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-19T08:28:08.318088+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:28:08.958727+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:28:09.219386+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:28:13.529854+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:28:13.686702+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/test_20260919_152813/student.ogg", "sample_rate": 44100, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-19T08:28:13.692647+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/test_20260919_152813/teacher.ogg", "sample_rate": 44100, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-19T08:28:13.715412+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260919_152813", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-19T08:28:14.657454+00:00", "event": "deepgram_stream_open", "sample_rate": 44100, "model": "nova-3"}
+{"ts": "2026-09-19T08:28:14.696444+00:00", "event": "deepgram_stream_open", "sample_rate": 44100, "model": "nova-3"}
+{"ts": "2026-09-19T08:28:16.339729+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:28:16.357209+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:28:46.340928+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:28:46.343666+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:28:46.364335+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:28:46.364990+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:28:46.543929+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:28:46.544998+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:28:48.810426+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:28:48.823528+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:29:18.810623+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:29:18.810689+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:29:18.811918+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:29:18.812005+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:29:19.641105+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:29:19.642935+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:29:21.854806+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:29:21.964425+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:29:51.869519+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:29:51.871556+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:29:51.985321+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:29:51.985625+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:29:52.772269+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:29:52.774826+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:29:55.375642+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:29:57.237532+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:30:25.378050+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:30:25.380137+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:30:25.886616+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:30:27.254978+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:30:27.256309+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:30:27.897979+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:30:28.169689+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:30:30.163568+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:30:58.178146+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:30:58.179497+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:30:59.081970+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:31:00.165208+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:31:00.165436+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:31:01.109649+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:31:01.229076+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:31:03.385296+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:31:31.232578+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:31:31.234833+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:31:31.416003+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:31:33.401974+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:31:33.435019+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:31:33.402881+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:31:33.898142+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:31:35.544172+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:32:03.898739+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:32:03.899850+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:32:04.820301+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:32:05.545097+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:32:05.546270+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:32:05.833748+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:32:07.029423+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:32:08.032395+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:32:37.045748+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:32:37.047293+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:32:37.947503+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:32:38.033271+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:32:38.033718+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:32:38.950912+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:32:40.162195+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:32:41.163809+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:33:10.163811+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:33:10.164668+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:33:11.111510+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:33:11.168166+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:33:11.168738+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:33:12.134991+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:33:13.519743+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:33:14.293582+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:33:43.524793+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:33:43.526864+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:33:44.291034+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:33:44.292084+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:33:44.307005+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:33:44.308800+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:33:46.295305+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:33:46.676283+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:34:16.296047+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:34:16.296731+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:34:16.420590+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:34:16.676205+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:34:16.677338+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:34:17.426729+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:34:18.474601+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:34:19.629692+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:34:48.477755+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:34:48.478986+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:34:48.663817+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:34:49.670448+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:34:49.702772+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:34:50.673041+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:34:50.995854+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:34:52.858714+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:35:20.998278+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:35:21.000459+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:35:21.064132+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:35:22.848699+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:35:22.849551+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:35:23.079407+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:35:23.400846+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:35:25.297473+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:35:53.402019+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:35:53.404052+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:35:54.261183+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:35:55.280113+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:35:55.280395+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:35:56.082889+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:35:56.281775+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:35:58.489543+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:36:26.084724+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:36:26.086377+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:36:26.467207+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:36:28.492956+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:36:28.493699+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:36:28.828907+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:36:29.475535+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:36:31.661765+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:36:58.834476+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:36:58.836119+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:36:59.669642+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:37:01.662731+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:37:01.663329+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:37:01.674953+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:37:01.788761+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:37:03.940101+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:37:31.796209+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:37:31.798897+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:37:31.925247+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:37:33.941234+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:37:33.941949+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:37:34.158079+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:37:34.949139+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:37:37.163781+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:38:04.158621+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:38:04.159966+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:38:05.133693+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:38:07.169603+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:38:07.170392+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:38:07.617149+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:38:08.158578+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:38:10.384827+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:38:37.655960+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:38:37.657779+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:38:38.417243+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:38:40.452753+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:38:40.453594+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:38:40.658278+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:38:41.464762+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:38:43.663793+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:39:10.658070+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:39:10.659432+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:39:10.691284+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:39:12.981049+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:39:13.663743+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:39:13.664742+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:39:13.713943+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:39:15.787184+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:39:43.020394+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:39:43.022477+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:39:43.889042+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:39:45.788959+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:39:45.789583+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:39:45.897097+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:39:46.264495+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:39:47.931847+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:40:16.289737+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:40:16.290721+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:40:17.093372+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:40:17.933277+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:40:17.934203+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:40:18.095892+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:40:19.220749+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:40:20.224309+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:40:49.221801+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:40:49.223531+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:40:49.235589+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:40:50.229144+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:40:50.229744+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:40:50.245401+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:40:51.414731+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:40:52.490072+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:41:21.416342+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:41:21.417662+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:41:22.405607+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:41:22.492942+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:41:22.493629+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:41:23.416840+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:41:24.677770+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:41:25.439828+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:41:54.685694+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:41:54.687159+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:41:55.433354+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:41:55.434240+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:41:55.678736+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:41:55.679698+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:41:58.035179+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:41:58.035454+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:42:27.959877+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:42:27.959764+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:42:27.961701+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:42:27.961816+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:42:28.883574+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:42:28.884749+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:42:31.108459+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:42:31.418037+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:43:01.096569+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:43:01.097225+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:43:01.418739+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:43:01.419425+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:43:02.072500+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:43:02.073298+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:43:04.514545+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:43:04.628449+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:43:34.515189+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:43:34.517072+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:43:34.631034+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:43:34.631873+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:43:35.259954+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:43:35.261587+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:43:37.650291+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:43:37.764051+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:44:07.633774+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:44:07.634874+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:44:07.766094+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:44:07.766767+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:44:08.455905+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:44:08.457143+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:44:10.449076+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:44:10.638355+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:44:40.451246+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:44:40.452497+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:44:40.623644+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:44:40.638669+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:44:40.638965+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:44:41.629915+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:44:43.020719+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:44:43.583793+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:45:13.072729+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:45:13.073568+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:45:13.587500+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:45:13.588002+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:45:14.094163+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:45:14.095200+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:45:16.099050+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:45:16.201531+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:45:46.101064+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:45:46.102559+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:45:46.203268+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:45:46.204129+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:45:46.293208+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:45:46.294731+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:45:48.340777+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:45:48.563418+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:46:18.353384+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:46:18.354593+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:46:18.507653+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:46:18.564155+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:46:18.565026+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:46:19.512324+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:46:20.894934+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:46:21.700952+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:46:50.891752+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:46:50.893481+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:46:51.703013+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:46:51.704001+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:46:51.746108+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:46:51.747600+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:46:53.763107+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:46:53.937898+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:47:23.760373+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:47:23.762363+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:47:23.918591+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:47:23.919128+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:47:24.029217+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:47:24.030296+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:47:26.192992+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:47:26.202814+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:47:56.199107+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:47:56.200530+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:47:56.214914+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:47:56.215450+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:47:56.215847+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:47:57.225042+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:47:59.365460+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:47:59.628929+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:48:29.367598+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:48:29.369428+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:48:29.399737+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:48:29.763638+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:48:29.764008+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:48:30.422565+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:48:31.650756+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:48:32.669851+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:49:01.653323+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:49:01.656296+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:49:02.530870+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:49:02.674203+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:49:02.675544+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:49:03.537646+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:49:04.564547+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:49:05.688698+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:49:34.567340+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:49:34.569228+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:49:34.635880+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:49:35.637509+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:49:35.638032+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:49:35.638487+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:49:36.985921+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:49:38.127671+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:50:06.961168+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:50:06.963982+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:50:07.793978+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:50:08.128081+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:50:08.128712+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:50:08.800878+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:50:09.968404+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:50:10.965473+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:50:16.034266+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:50:16.583191+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:50:16.884080+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:50:18.065468+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:50:18.091748+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260919_152813", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-19T08:50:39.967994+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:50:39.969315+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:50:40.884004+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:50:40.968486+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:50:40.969100+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:50:41.888698+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:50:42.905195+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:50:43.817520+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:51:12.906229+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:51:12.907201+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:51:13.109037+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:51:13.827469+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:51:13.828280+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:51:14.112198+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:51:15.555587+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:51:16.311032+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:51:45.557271+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:51:45.559400+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:51:46.210368+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:51:46.314983+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:51:46.315435+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:51:47.213023+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:51:48.500251+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:51:49.554284+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:51:50.552601+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:51:56.431689+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:52:18.551556+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:52:18.586922+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:52:19.321343+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:52:19.557901+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:52:19.592034+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:52:20.323456+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:52:21.483926+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:52:22.603698+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:52:51.484870+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:52:51.486014+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:52:51.518591+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:52:52.709813+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:52:52.710230+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:52:53.528254+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:52:53.943819+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:52:55.843046+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:53:23.945234+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:53:23.946186+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:53:24.685424+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:53:25.771322+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:53:25.771616+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:53:26.696382+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:53:27.005146+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:53:29.380730+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:53:57.044692+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:53:57.045606+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:53:57.898392+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:53:59.404243+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:53:59.404717+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:53:59.804884+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:53:59.908375+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:54:02.019049+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:54:23.227840+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:23.701649+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:23.973325+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:25.712434+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:25.870801+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/test_20260919_155425/student.ogg", "sample_rate": 44100, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-19T08:54:25.877305+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/test_20260919_155425/teacher.ogg", "sample_rate": 44100, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-19T08:54:25.889858+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260919_155425", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-19T08:54:27.097997+00:00", "event": "deepgram_stream_open", "sample_rate": 44100, "model": "nova-3"}
+{"ts": "2026-09-19T08:54:27.100056+00:00", "event": "deepgram_stream_open", "sample_rate": 44100, "model": "nova-3"}
+{"ts": "2026-09-19T08:54:28.523338+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:54:28.716632+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:54:29.827621+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:54:29.828161+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:54:30.200109+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:54:32.018289+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:54:32.019004+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:54:32.206317+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:54:32.332158+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:54:34.207011+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:54:39.876063+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:40.372868+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:40.610912+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:42.008400+00:00", "event": "ingestion_server_start_error", "host": "127.0.0.1", "port": 8765, "error": "[Errno 48] Address already in use"}
+{"ts": "2026-09-19T08:54:42.043071+00:00", "event": "lesson_started", "lesson_dir": "audio/test_20260919_155425", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-19T08:54:52.986849+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:54:52.987845+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:54:53.329377+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:54:53.333795+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:54:53.334008+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:54:54.333084+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:54:55.342717+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:54:55.343125+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-19T08:54:56.576269+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:54:56.576908+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-19T08:54:58.523840+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:54:58.524388+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:54:58.822560+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:54:58.861793+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:54:59.382380+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:54:59.383125+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:55:01.585374+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:01.586051+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:02.390427+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:02.390968+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:03.393249+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:55:04.168212+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:04.169138+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:04.411135+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:55:05.582978+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:06.429694+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:26.704137+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:26.705418+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:27.575254+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:55:28.080661+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:28.081407+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:28.581878+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:55:29.729609+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:29.730237+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-19T08:55:30.499925+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:30.500251+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-19T08:55:31.587370+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:31.587413+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:31.587687+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:31.587818+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:32.628884+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:55:32.667098+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:55:34.833395+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:34.870316+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:35.677332+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:35.677620+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:36.370923+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:55:36.371633+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:55:36.677209+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:55:36.677812+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:55:38.813959+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:55:38.816308+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:56:01.400816+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:56:01.402121+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:56:01.820652+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:56:01.885432+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:56:01.886120+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:56:02.825314+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:56:04.076079+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:56:04.076415+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-19T08:56:04.835294+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:56:04.835951+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:56:04.871578+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:56:04.872192+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:56:05.045549+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:56:05.045816+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 44288}
+{"ts": "2026-09-19T08:56:05.837419+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:56:05.838857+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:56:08.095207+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:56:08.095832+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:56:08.813965+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:56:08.814708+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:56:08.817402+00:00", "event": "gladia_stream_error", "error": "fin=1 opcode=8 data=b'\\x118No audio chunk received for 30s'"}
+{"ts": "2026-09-19T08:56:08.818038+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T08:56:08.839702+00:00", "event": "gladia_stream_watchdog_restart", "source": "student"}
+{"ts": "2026-09-19T08:56:08.841311+00:00", "event": "gladia_stream_watchdog_restart", "source": "teacher"}
+{"ts": "2026-09-19T08:56:10.998237+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:56:10.998937+00:00", "event": "gladia_stream_open", "sample_rate": 44100}
+{"ts": "2026-09-19T08:56:22.540044+00:00", "event": "ingestion_server_started", "host": "127.0.0.1", "port": 8765}
+{"ts": "2026-09-19T08:56:25.184496+00:00", "event": "lesson_recorder_open", "source": "student", "path": "audio/lesson_20260919_155625/student.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-19T08:56:25.194020+00:00", "event": "lesson_recorder_open", "source": "teacher", "path": "audio/lesson_20260919_155625/teacher.ogg", "sample_rate": 48000, "encoder": "ffmpeg-opus"}
+{"ts": "2026-09-19T08:56:25.224750+00:00", "event": "lesson_started_ingestion", "lesson_dir": "audio/lesson_20260919_155625", "student": "", "sources": {"student": 48000, "teacher": 48000}}
+{"ts": "2026-09-19T08:56:25.224799+00:00", "event": "lesson_started", "lesson_dir": "audio/lesson_20260919_155625", "student": "Test", "sources": ["student", "teacher"], "capture_mode": "audio_worklet"}
+{"ts": "2026-09-19T08:56:26.293791+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-19T08:56:26.424320+00:00", "event": "deepgram_stream_open", "sample_rate": 48000, "model": "nova-3"}
+{"ts": "2026-09-19T08:56:27.420987+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-19T08:56:27.421759+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-19T08:56:27.425157+00:00", "event": "gladia_stream_open", "sample_rate": 48000}
+{"ts": "2026-09-19T08:56:27.425925+00:00", "event": "gladia_stream_first_chunk_sent", "bytes": 48128}
+{"ts": "2026-09-19T09:02:21.555181+00:00", "event": "lesson_recorder_close", "source": "student", "path": "audio/lesson_20260919_155625/student.ogg", "bytes": 34170880, "seconds": 355.9, "bytes_queued": 34170880, "dropped_chunks": 0, "size_on_disk": 1803576, "error": null}
+{"ts": "2026-09-19T09:02:21.559553+00:00", "event": "lesson_recorder_close", "source": "teacher", "path": "audio/lesson_20260919_155625/teacher.ogg", "bytes": 34170880, "seconds": 355.9, "bytes_queued": 34170880, "dropped_chunks": 0, "size_on_disk": 1820472, "error": null}
+{"ts": "2026-09-19T09:02:21.562254+00:00", "event": "lesson_ended_ingestion"}
+{"ts": "2026-09-19T09:02:21.607535+00:00", "event": "deepgram_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T09:02:21.639289+00:00", "event": "lesson_audio_saved", "path": "audio/lesson_20260919_155625/student.webm", "bytes": 2619662}
+{"ts": "2026-09-19T09:02:21.648249+00:00", "event": "lesson_audio_saved", "path": "audio/lesson_20260919_155625/teacher.webm", "bytes": 3034753}
+{"ts": "2026-09-19T09:02:21.720029+00:00", "event": "lesson_ended", "lesson_dir": "audio/lesson_20260919_155625", "active_seconds": 356, "audio_files": ["audio/lesson_20260919_155625/student.webm", "audio/lesson_20260919_155625/teacher.webm"]}
+{"ts": "2026-09-19T09:02:21.750939+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T09:02:21.751030+00:00", "event": "gladia_stream_close", "status_code": null, "message": null}
+{"ts": "2026-09-19T09:02:21.925321+00:00", "event": "deepgram_stream_close", "status_code": null, "message": null}

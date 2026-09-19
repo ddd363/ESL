@@ -2884,21 +2884,30 @@ def _format_word_html(word_item):
     escaped_token = html.escape(token)
     if word_item.get("status") == "uncertain":
         evidence = word_item.get("evidence") or {}
-        dg_info = evidence.get("deepgram") or {}
-        gl_info = evidence.get("gladia") or {}
-        aai_info = evidence.get("assemblyai") or {}
-        dg_word = dg_info.get("word") if isinstance(dg_info, dict) else None
-        gl_word = gl_info.get("word") if isinstance(gl_info, dict) else None
-        aai_word = aai_info.get("word") if isinstance(aai_info, dict) else None
-        parts = []
-        if dg_word:
-            parts.append(f"Deepgram: {dg_word}")
-        if gl_word:
-            parts.append(f"Gladia: {gl_word}")
-        if aai_word:
-            parts.append(f"AssemblyAI: {aai_word}")
-        tooltip = " | ".join(parts) if parts else "Disputed ASR word"
-        return f'<span class="uncertain-word" title="{html.escape(tooltip)}">{escaped_token}</span>'
+        
+        # Calculate average confidence to filter out display noise
+        confs = []
+        for prov_info in evidence.values():
+            if isinstance(prov_info, dict) and prov_info.get("confidence") is not None:
+                confs.append(prov_info["confidence"])
+        avg_conf = sum(confs) / len(confs) if confs else 0.0
+        
+        if avg_conf < 0.60:
+            dg_info = evidence.get("deepgram") or {}
+            gl_info = evidence.get("gladia") or {}
+            aai_info = evidence.get("assemblyai") or {}
+            dg_word = dg_info.get("word") if isinstance(dg_info, dict) else None
+            gl_word = gl_info.get("word") if isinstance(gl_info, dict) else None
+            aai_word = aai_info.get("word") if isinstance(aai_info, dict) else None
+            parts = []
+            if dg_word:
+                parts.append(f"Deepgram: {dg_word}")
+            if gl_word:
+                parts.append(f"Gladia: {gl_word}")
+            if aai_word:
+                parts.append(f"AssemblyAI: {aai_word}")
+            tooltip = " | ".join(parts) if parts else "Disputed ASR word"
+            return f'<span class="uncertain-word" title="{html.escape(tooltip)}">{escaped_token}</span>'
     return escaped_token
 
 

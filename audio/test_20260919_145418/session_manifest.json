@@ -1,25 +1,25 @@
 {
   "version": 1,
-  "lesson_dir": "audio/test_20260919_145418",
-  "student": "Test",
+  "lesson_dir": "audio/lesson_20260919_155442",
+  "student": "",
   "status": "recording",
   "started_at": "2026-09-19T07:54:18.870514+00:00",
   "capture_mode": "audio_worklet",
-  "audio_clock_s": 0.0,
+  "audio_clock_s": 3592.75,
   "tracks": {
     "student": {
       "sample_rate": 44100,
-      "samples_received": 0,
-      "last_seq": -1,
+      "samples_received": 158418176,
+      "last_seq": 486,
       "dropped_chunks": 0,
-      "duplicate_chunks": 0
+      "duplicate_chunks": 27
     },
     "teacher": {
       "sample_rate": 44100,
-      "samples_received": 0,
-      "last_seq": -1,
+      "samples_received": 158440320,
+      "last_seq": 486,
       "dropped_chunks": 0,
-      "duplicate_chunks": 0
+      "duplicate_chunks": 27
     }
   }
 }

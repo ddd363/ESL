@@ -658,17 +658,19 @@ class AudioIngestionHandler(http.server.BaseHTTPRequestHandler):
 
             session = get_active_session()
             if session and session.state == "recording":
-                session.lesson_dir = lesson_dir
-                session.student = student
-                session.capture_mode = capture_mode
-                for src, rate in sources.items():
-                    if src not in session.tracks:
-                        session.add_track(src, int(rate))
-                session.write_manifest()
-                pm = get_provider_manager()
-                pm.start_streams(sources)
-                self._send_json(200, {"ok": True, "lesson_dir": session.lesson_dir, "idempotent": True})
-                return
+                if session.lesson_dir == lesson_dir:
+                    session.capture_mode = capture_mode
+                    for src, rate in sources.items():
+                        if src not in session.tracks:
+                            session.add_track(src, int(rate))
+                    session.write_manifest()
+                    pm = get_provider_manager()
+                    pm.start_streams(sources)
+                    self._send_json(200, {"ok": True, "lesson_dir": session.lesson_dir, "idempotent": True})
+                    return
+                else:
+                    # User started a new lesson without explicitly stopping the old one (e.g. browser refresh)
+                    session.close()
 
             pm = get_provider_manager()
             pm.reset()
